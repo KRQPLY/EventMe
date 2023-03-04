@@ -1,28 +1,62 @@
 <template>
-  <div class="menu">
-    <div class="option active">Find Events</div>
-    <div class="option"></div>
-    <div class="option">Your Events</div>
+  <div class="menu" v-if="userStore.uid">
+    <div
+      class="option"
+      :class="{ active: currentRouteName === 'findEvents' }"
+      @click="changeRoute('findEvents')"
+    >
+      Find events
+    </div>
+    <div
+      class="option"
+      :class="{ active: currentRouteName === 'myEvents' }"
+      @click="changeRoute('myEvents')"
+    >
+      My events
+    </div>
+    <div
+      class="option"
+      :class="{ active: currentRouteName === 'friends' }"
+      @click="changeRoute('friends')"
+    >
+      Friends
+    </div>
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { useUserStore } from '@/stores/user'
+import { computed } from 'vue'
+import { useRouter } from 'vue-router'
+
+const userStore = useUserStore()
+const router = useRouter()
+const currentRouteName = computed(() => {
+  return router.currentRoute.value.name
+})
+
+function changeRoute(name) {
+  router.push({ name: name })
+}
+</script>
 
 <style lang="scss" scoped>
 .menu {
-  color: $color-white;
-}
-.option {
-  cursor: pointer;
-  &.active {
-    color: $color-java;
+  color: $color-contrast;
+  .option {
+    cursor: pointer;
+    &.active {
+      color: $color-accent;
+    }
   }
 }
+
 @include media-xs {
   .menu {
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 30px;
+    margin-left: 30px;
   }
 }
 </style>

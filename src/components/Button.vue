@@ -1,20 +1,20 @@
 <template>
-  <button class="button">
+  <button class="button" :class="{ filled: filled, desktop: desktop }">
     <slot></slot>
   </button>
 </template>
 
 <script setup>
-import { toRef } from 'vue'
-
-const props = defineProps({
-  color: {
-    type: String,
-    default: '#fff'
+defineProps({
+  filled: {
+    type: Boolean,
+    default: false
+  },
+  desktop: {
+    type: Boolean,
+    default: false
   }
 })
-
-const buttonColor = toRef(props, 'color')
 </script>
 
 <style lang="scss" scoped>
@@ -23,8 +23,26 @@ const buttonColor = toRef(props, 'color')
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 5px;
-  background-color: v-bind(buttonColor);
+  padding: 5px 10px;
+  background: none;
   border: none;
+  border-radius: 2px;
+  font-weight: 300;
+  color: $color-contrast;
+  &.filled {
+    background: $color-accent;
+    color: #fff;
+  }
+  &.desktop {
+    display: none;
+  }
+}
+
+@include media-xs {
+  .button {
+    &.desktop {
+      display: flex;
+    }
+  }
 }
 </style>

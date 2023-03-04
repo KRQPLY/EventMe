@@ -17,7 +17,7 @@ const props = defineProps({
   }
 })
 
-const imageUrl = new URL(`../assets/${props.img}`, import.meta.url).href
+const imageUrl = new URL(props.img, import.meta.url).href
 </script>
 
 <style lang="scss" scoped>
