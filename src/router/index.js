@@ -1,19 +1,46 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import FindEventsView from '../views/FindEventsView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
-      name: 'home',
-      component: HomeView
+      name: 'findEvents',
+      component: FindEventsView
     },
-    // {
-    //   path: '/about',
-    //   name: 'about',
-    //   component: () => import('../views/AboutView.vue')
-    // }
+    {
+      path: '/my-events',
+      name: 'myEvents',
+      component: () => import('../views/MyEventsView.vue')
+    },
+    {
+      path: '/friends',
+      name: 'friends',
+      component: () => import('../views/FriendsView.vue')
+    },
+    {
+      path: '/signin',
+      name: 'signin',
+      component: () => import('../views/LoginView.vue')
+    },
+    {
+      path: '/signup',
+      name: 'signup',
+      component: () => import('../views/LoginView.vue')
+    },
+    {
+      path: '/signin/:matchAll(.*)*',
+      redirect: `/signin`
+    },
+    {
+      path: '/signup/:matchAll(.*)*',
+      redirect: `/signup`
+    },
+    {
+      path: '/:matchAll(.*)*',
+      redirect: `/`
+    }
   ]
 })
 
