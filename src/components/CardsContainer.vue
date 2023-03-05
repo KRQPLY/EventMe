@@ -1,6 +1,8 @@
 <template>
   <div class="cards-container">
-    <slot />
+    <slot>
+      <div class="no-results">No results</div>
+    </slot>
   </div>
 </template>
 
@@ -18,6 +20,11 @@
   justify-items: center;
   gap: 50px 20px;
   max-width: 100vw;
+  .no-results {
+    grid-column-start: 1;
+    grid-column-end: -1;
+    color: $color-accent;
+  }
 }
 @include media-sm {
   .cards-container {
