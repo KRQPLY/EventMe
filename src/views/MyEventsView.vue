@@ -19,20 +19,18 @@ import EventCard from '../components/EventCard.vue'
 import CardsContainer from '@/components/CardsContainer.vue'
 import { useUserStore } from '../stores/user'
 import { useRouter } from 'vue-router'
-import { ref, onBeforeMount } from 'vue'
+import { ref } from 'vue'
 import getData from '@/utils/getData'
 
 const userStore = useUserStore()
 const router = useRouter()
 const events = ref([])
 
-getEvents()
+if (!userStore.uid) {
+  router.push({ name: 'signin' })
+}
 
-onBeforeMount(() => {
-  if (!userStore.uid) {
-    router.push({ name: 'signin' })
-  }
-})
+getEvents()
 
 async function getEvents() {
   const response = await getData('http://localhost:3000/usersEvents')
