@@ -1,12 +1,14 @@
 [data-theme='dark'] {
   --color-main: #000;
-  --color-secondary: #030303;
+  --color-secondary: #1e1e1e;
   --color-contrast: #fff;
 }
 
 [data-theme='light'] {
-  --color-main: #fff;
-  --color-secondary: #f3f3f3;
+  --color-main: #f0f0f0;
+  --color-secondary: #fff;
+  // --color-main: #fff;
+  // --color-secondary: #e4e4e4;
   --color-contrast: #000;
 }
 

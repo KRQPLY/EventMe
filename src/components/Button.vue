@@ -1,5 +1,5 @@
 <template>
-  <button class="button" :class="{ filled: filled, desktop: desktop }">
+  <button class="button" :class="{ filled: filled, desktop: desktop }" :style="{ color: color }">
     <slot></slot>
   </button>
 </template>
@@ -13,7 +13,8 @@ defineProps({
   desktop: {
     type: Boolean,
     default: false
-  }
+  },
+  color: String
 })
 </script>
 
@@ -32,9 +33,15 @@ defineProps({
   &.filled {
     background: $color-accent;
     color: #fff;
+    &:focus-visible {
+      outline: 1px solid #fff;
+    }
   }
   &.desktop {
     display: none;
+  }
+  &:focus {
+    outline: none;
   }
 }
 

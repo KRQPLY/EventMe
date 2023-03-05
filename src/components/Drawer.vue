@@ -24,16 +24,18 @@
       </div>
     </div>
     <div class="sign-buttons">
-      <Button @click="goTo('signin')" v-if="!userStore.uid">Sign in</Button>
+      <Button color="#fff" @click="goTo('signin')" v-if="!userStore.uid">Sign in</Button>
       <Button @click="goTo('signup')" filled v-if="!userStore.uid">Sign up</Button>
-      <Button @click="handleSignOut" v-else>Sign out</Button>
+      <Button color="#fff" @click="handleSignOut" v-else>Sign out</Button>
     </div>
+    <MoonIcon />
   </div>
   <div class="drawer-background"></div>
 </template>
 
 <script setup>
 import Button from './Button.vue'
+import MoonIcon from './MoonIcon.vue'
 import { useUserStore } from '@/stores/user'
 import { computed } from 'vue'
 import { useRouter } from 'vue-router'
@@ -80,7 +82,7 @@ function closeDrawer() {
 
   .option {
     cursor: pointer;
-    color: $color-contrast;
+    color: #fff;
     &.active {
       color: $color-accent;
     }

@@ -11,21 +11,21 @@
   position: relative;
   z-index: 99;
   padding: 40px 40px;
-  background: $color-secondary;
+  background: $color-main;
   display: grid;
   grid-template-columns: repeat(1, 1fr);
+  grid-auto-rows: 1fr;
   justify-items: center;
-  gap: 30px;
+  gap: 50px 20px;
+  max-width: 100vw;
 }
 @include media-sm {
   .cards-container {
-    // padding: 80px 80px;
     grid-template-columns: repeat(2, 1fr);
   }
 }
 @include media-md {
   .cards-container {
-    // padding: 120px 80px;
     grid-template-columns: repeat(3, 1fr);
   }
 }

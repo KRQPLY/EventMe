@@ -1,11 +1,11 @@
 <template>
-  <div class="sign-form">
-    <h1 class="title">{{ signup ? 'Sign up' : 'Sign in' }}</h1>
+  <div class="sign-form" @keyup.enter="handleSubmit">
+    <h1 class="title">{{ isSignup ? 'Sign up' : 'Sign in' }}</h1>
     <FormField name="email" type="email" label="Email" />
     <FormField name="password" type="password" label="Password" />
-    <FormField name="password" type="confirmPassword" label="Confirm password" v-if="signup" />
+    <FormField name="confirmedPassword" type="password" label="Confirm password" v-if="isSignup" />
     <Button @click="handleSubmit" class="button" filled>
-      {{ signup ? 'Sign up' : 'Sign in' }}
+      {{ isSignup ? 'Sign up' : 'Sign in' }}
     </Button>
   </div>
 </template>
@@ -14,9 +14,11 @@
 import FormField from './FormField.vue'
 import Button from './Button.vue'
 import { useUserStore } from '../stores/user'
+import { useForm } from 'vee-validate'
+import * as yup from 'yup'
 
-defineProps({
-  signup: {
+const props = defineProps({
+  isSignup: {
     type: Boolean,
     default: false
   }
@@ -24,9 +26,46 @@ defineProps({
 
 const userStore = useUserStore()
 
-// TODO
+const schema = props.isSignup
+  ? yup.object({
+      email: yup.string().required('email is required').email('email is not valid'),
+      password: yup.string().required('password is required').min(8)
+    })
+  : yup.object({
+      email: yup.string().required('email is required').email('email is not valid'),
+      password: yup.string().required('password is required')
+    })
+
+const { values, setFieldError, validate } = useForm({
+  validationSchema: schema
+})
+
+async function signin() {
+  const validation = await validate()
+  if (!validation.valid) {
+    return
+  }
+  userStore.signin(values.email, values.password)
+}
+
+async function signup() {
+  const validation = await validate()
+  if (!validation.valid) {
+    return
+  }
+  if (values.confirmedPassword !== values.password) {
+    setFieldError('confirmedPassword', "passwords don't match")
+    return
+  }
+  userStore.signup(values.email, values.password, values.confirmedPassword)
+}
+
 function handleSubmit() {
-  userStore.signin()
+  if (props.isSignup) {
+    signup()
+  } else {
+    signin()
+  }
 }
 </script>
 

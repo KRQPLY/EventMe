@@ -1,14 +1,15 @@
 <template>
-  <div class="friends-container">
-    <Hero type="friends" />
-  </div>
+  <div class="event-container"></div>
 </template>
 
 <script setup>
-import Hero from '@/components/Hero.vue'
-import { useUserStore } from '../stores/user'
+import { useUserStore } from '@/stores/user'
 import { useRouter } from 'vue-router'
 import { onBeforeMount } from 'vue'
+
+const props = defineProps({
+  id: String
+})
 
 const userStore = useUserStore()
 const router = useRouter()
