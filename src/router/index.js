@@ -12,22 +12,28 @@ const router = createRouter({
     {
       path: '/my-events',
       name: 'myEvents',
-      component: () => import('../views/MyEventsView.vue')
+      component: () => import('@/views/MyEventsView.vue')
+    },
+    {
+      path: '/event',
+      name: 'event',
+      component: () => import('@/views/EventView.vue'),
+      props: (route) => ({ id: route.query.id })
     },
     {
       path: '/friends',
       name: 'friends',
-      component: () => import('../views/FriendsView.vue')
+      component: () => import('@/views/FriendsView.vue')
     },
     {
       path: '/signin',
       name: 'signin',
-      component: () => import('../views/LoginView.vue')
+      component: () => import('@/views/LoginView.vue')
     },
     {
       path: '/signup',
       name: 'signup',
-      component: () => import('../views/LoginView.vue')
+      component: () => import('@/views/LoginView.vue')
     },
     {
       path: '/signin/:matchAll(.*)*',

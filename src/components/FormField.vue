@@ -1,8 +1,8 @@
 <template>
   <div class="form-field">
     <div class="label">{{ label }}</div>
-    <input v-model="value" :type="type" v-if="type !== 'textarea'" />
-    <textarea v-model="value" rows="3" v-else />
+    <input v-model.lazy="value" :type="type" v-if="type !== 'textarea'" />
+    <textarea v-model.lazy="value" rows="3" v-else />
     <div class="error-container">
       <div class="error-message">
         {{ errorMessage }}
@@ -59,6 +59,7 @@ const { value, errorMessage } = useField<string>(nameRef)
     outline: none;
     &:focus {
       border-color: $color-accent;
+      color: $color-accent;
     }
   }
 

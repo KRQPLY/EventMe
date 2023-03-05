@@ -1,7 +1,7 @@
 <template>
   <div class="login-container">
     <div class="forms">
-      <SignForm signup v-if="signType === 'signup'" />
+      <SignForm is-signup v-if="signType === 'signup'" />
       <SignForm v-else />
     </div>
     <div class="credit desktop">
@@ -23,13 +23,19 @@
 
 <script setup>
 import SignForm from '../components/SignForm.vue'
+import { useUserStore } from '../stores/user'
 import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 
+const userStore = useUserStore()
 const router = useRouter()
 const signType = computed(() => {
   return router.currentRoute.value.name
 })
+
+if (userStore.uid) {
+  router.push({ name: 'findEvents' })
+}
 </script>
 
 <style lang="scss" scoped>
@@ -57,7 +63,7 @@ const signType = computed(() => {
 
 @include media-xs {
   .login-container {
-    padding: 80px 0;
+    padding-top: 40px;
     background-image: url('@/assets/sign-background-md.jpg');
   }
 }

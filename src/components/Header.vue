@@ -5,6 +5,7 @@
       <Menu class="desktop" />
     </div>
     <div class="right">
+      <MoonIcon class="theme-switch desktop" />
       <Icon
         width="32px"
         img="../assets/burger-white.svg"
@@ -30,21 +31,13 @@
 import Icon from '@/components/Icon.vue'
 import Menu from './Menu.vue'
 import Button from './Button.vue'
+import MoonIcon from './MoonIcon.vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 
 const userStore = useUserStore()
 const router = useRouter()
-// import { ref } from 'vue'
 
-// const isThemeDark = ref(true)
-
-// function changeTheme() {
-//   isThemeDark.value
-//     ? document.documentElement.setAttribute('data-theme', 'light')
-//     : document.documentElement.setAttribute('data-theme', 'dark')
-//   isThemeDark.value = !isThemeDark.value
-// }
 function goTo(name) {
   router.push({ name: name })
 }
@@ -66,6 +59,9 @@ function goTo(name) {
     display: flex;
     align-items: center;
     gap: 5px;
+  }
+  .theme-switch {
+    margin-right: 25px;
   }
   .title {
     cursor: pointer;

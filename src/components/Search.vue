@@ -1,16 +1,34 @@
 <template>
   <div class="search">
-    <input type="text" placeholder="Search" v-model="value" />
-    <Button><Icon img="../assets/search.png" width="16px" /></Button>
+    <input
+      type="text"
+      placeholder="Search"
+      :value="value"
+      @input="updateValue"
+      @keyup.enter="$emit('search')"
+    />
+    <Button @click="$emit('search')">
+      <Icon img="../assets/search.png" width="20px" />
+    </Button>
   </div>
 </template>
 
 <script setup lang="ts">
 import Icon from './Icon.vue'
 import Button from './Button.vue'
-import { ref } from 'vue'
 
-const value = ref('')
+defineProps({
+  value: {
+    type: String,
+    default: '',
+    required: true
+  }
+})
+const emits = defineEmits(['update:value', 'search'])
+
+const updateValue = (e: Event) => {
+  emits('update:value', (e.target as HTMLInputElement).value)
+}
 </script>
 
 <style lang="scss" scoped>
@@ -19,16 +37,17 @@ const value = ref('')
   top: -27px;
   padding: 10px;
   width: fit-content;
-  background: #fff;
+  background: $color-secondary;
   display: flex;
   border-radius: 7px;
 
   input {
+    background: $color-secondary;
     padding: 5px;
     width: 200px;
     border: none;
     outline: none;
-    border-right: 2px solid $color-silver;
+    border-right: 2px solid #000;
     font-weight: 500;
     color: $color-accent;
     &:focus {
