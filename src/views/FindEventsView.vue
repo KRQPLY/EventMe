@@ -3,13 +3,13 @@
     <Hero type="findEvents" />
     <Search v-model:value="value" @search="handleSearch" />
     <CardsContainer>
-      <!-- <EventCard
+      <EventCard
         v-for="event in events"
         :id="event.id"
         :author="event.author"
         :image-url="event.imageUrl"
         :participants-number="event.participantsNumber"
-      /> -->
+      />
     </CardsContainer>
   </div>
 </template>
