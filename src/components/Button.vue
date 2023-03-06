@@ -34,7 +34,7 @@ defineProps({
     background: $color-accent;
     color: #fff;
     &:focus-visible {
-      outline: 1px solid #fff;
+      box-shadow: 0 0 1px 2px rgba($color-accent, 0.6);
     }
   }
   &.desktop {

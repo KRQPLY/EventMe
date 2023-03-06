@@ -1,8 +1,10 @@
 <template>
-  <img class="icon" :src="imageUrl" alt="icon" :class="{ clickable: clickable }" />
+  <img class="icon" :src="getImageUrl(img)" alt="icon" :class="{ clickable: clickable }" />
 </template>
 
 <script setup>
+import getImageUrl from '@/utils/getImageUrl'
+
 const props = defineProps({
   img: {
     type: String,
@@ -16,8 +18,6 @@ const props = defineProps({
     type: Boolean
   }
 })
-
-const imageUrl = new URL(props.img, import.meta.url).href
 </script>
 
 <style lang="scss" scoped>
