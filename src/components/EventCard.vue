@@ -1,6 +1,6 @@
 <template>
   <div class="project-card" @click="goTo">
-    <img class="img" :src="imageUrl" alt="event-photo" />
+    <img class="img" :src="getImageUrl(imageUrl)" alt="event-photo" />
     <div class="info">
       <div class="author"><Icon clickable width="16px" img="../assets/user.png" />{{ author }}</div>
       <div class="participants">{{ nFormatter(participantsNumber) }}</div>
@@ -12,17 +12,19 @@
 import Icon from './Icon.vue'
 import { useRouter } from 'vue-router'
 import nFormatter from '@/utils/nFormatter'
+import getImageUrl from '@/utils/getImageUrl'
 
 const props = defineProps({
   id: Number,
   author: String,
-  imageUrl: String,
-  participantsNumber: Number
+  participantsNumber: Number,
+  imageUrl: {
+    type: String,
+    default: '../assets/find-background-sm.jpg'
+  }
 })
 
 const router = useRouter()
-const url = props.imageUrl ? props.imageUrl : '../assets/find-background-sm.jpg'
-const imageUrl = new URL(url, import.meta.url).href
 
 function goTo() {
   router.push({ name: 'event', query: { id: props.id } })

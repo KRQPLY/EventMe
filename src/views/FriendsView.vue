@@ -8,16 +8,13 @@
 import Hero from '@/components/Hero.vue'
 import { useUserStore } from '../stores/user'
 import { useRouter } from 'vue-router'
-import { onBeforeMount } from 'vue'
 
 const userStore = useUserStore()
 const router = useRouter()
 
-onBeforeMount(() => {
-  if (!userStore.uid) {
-    router.push({ name: 'signin' })
-  }
-})
+if (!userStore.uid) {
+  router.push({ name: 'signin' })
+}
 </script>
 
 <style lang="scss" scoped></style>

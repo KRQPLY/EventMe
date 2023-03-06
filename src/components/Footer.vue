@@ -19,7 +19,7 @@
     color: $color-contrast;
   }
   .logo {
-    font-weight: 200;
+    font-weight: 300;
   }
 }
 
