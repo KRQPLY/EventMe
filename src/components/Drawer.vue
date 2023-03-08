@@ -4,29 +4,29 @@
       <div
         class="option"
         :class="{ active: currentRouteName === 'findEvents' }"
-        @click="goTo('findEvents')"
+        @click="handleInDrawerClick('findEvents')"
       >
         Find Events
       </div>
       <div
         class="option"
         :class="{ active: currentRouteName === 'myEvents' }"
-        @click="goTo('myEvents')"
+        @click="handleInDrawerClick('myEvents')"
       >
         My Events
       </div>
       <div
         class="option"
         :class="{ active: currentRouteName === 'friends' }"
-        @click="goTo('friends')"
+        @click="handleInDrawerClick('friends')"
       >
         Friends
       </div>
     </div>
     <div class="sign-buttons">
-      <Button color="#fff" @click="goTo('signin')" v-if="!userStore.uid">Sign in</Button>
-      <Button @click="goTo('signup')" filled v-if="!userStore.uid">Sign up</Button>
-      <Button color="#fff" @click="handleSignOut" v-else>Sign out</Button>
+      <Button @click="handleInDrawerClick('signin')" v-if="!userStore.uid">Sign in</Button>
+      <Button @click="handleInDrawerClick('signup')" filled v-if="!userStore.uid">Sign up</Button>
+      <Button @click="handleSignOut" v-else>Sign out</Button>
     </div>
     <MoonIcon />
   </div>
@@ -47,13 +47,14 @@ const currentRouteName = computed(() => {
   return router.currentRoute.value.name
 })
 
-function goTo(name) {
-  router.push({ name: name })
+function handleInDrawerClick(name) {
+  userStore.redirect(name)
   closeDrawer()
 }
 
 function handleSignOut() {
   userStore.signout()
+  userStore.redirect('signin')
   closeDrawer()
 }
 
@@ -73,6 +74,7 @@ function closeDrawer() {
   padding: 50px 0;
   width: 100%;
   font-weight: 200;
+  background-color: $color-main;
   .options {
     display: flex;
     flex-direction: column;
@@ -82,7 +84,7 @@ function closeDrawer() {
 
   .option {
     cursor: pointer;
-    color: #fff;
+    color: $color-contrast;
     &.active {
       color: $color-accent;
     }

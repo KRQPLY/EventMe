@@ -8,6 +8,10 @@
 <script setup>
 import { ref } from 'vue'
 
+defineProps({
+  secondary: { type: Boolean, default: false }
+})
+
 const isThemeDark = ref(true)
 
 function changeTheme() {
@@ -28,7 +32,6 @@ function changeTheme() {
     width: 30px;
     height: 30px;
     transform: translate(-50%, -50%);
-    // transition: unset;
   }
   .moon-background {
     position: absolute;
@@ -39,11 +42,6 @@ function changeTheme() {
       border-radius: 50%;
       box-shadow: 3.5px 3px 0 0 $color-contrast;
       transition: box-shadow 0.5s ease;
-    }
-  }
-  &:hover {
-    .circle {
-      background-color: $color-secondary;
     }
   }
 }

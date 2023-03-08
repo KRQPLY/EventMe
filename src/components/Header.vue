@@ -1,7 +1,7 @@
 <template>
-  <div class="header">
+  <div class="header-container sticky">
     <div class="left">
-      <div class="title" @click="goTo('findEvents')">EventMe</div>
+      <div class="title" @click="userStore.redirect('findEvents')">evento</div>
       <Menu class="desktop" />
     </div>
     <div class="right">
@@ -20,11 +20,14 @@
         clickable
         class="mobile light"
       />
-      <Button @click="goTo('signin')" desktop v-if="!userStore.uid">Sign in</Button>
-      <Button @click="goTo('signup')" filled desktop v-if="!userStore.uid">Sign up</Button>
-      <Button @click="userStore.signout()" desktop v-else>Sign out</Button>
+      <Button @click="userStore.redirect('signin')" desktop v-if="!userStore.uid">Sign in</Button>
+      <Button @click="userStore.redirect('signup')" filled desktop v-if="!userStore.uid"
+        >Sign up</Button
+      >
+      <Button @click="handleSignout" desktop v-else>Sign out</Button>
     </div>
   </div>
+  <div class="header-box"></div>
 </template>
 
 <script setup>
@@ -32,19 +35,20 @@ import Icon from '@/components/Icon.vue'
 import Menu from './Menu.vue'
 import Button from './Button.vue'
 import MoonIcon from './MoonIcon.vue'
-import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 
-const userStore = useUserStore()
-const router = useRouter()
+defineEmits(['toggleDrawer'])
 
-function goTo(name) {
-  router.push({ name: name })
+const userStore = useUserStore()
+
+function handleSignout() {
+  userStore.signout()
+  userStore.redirect('signin')
 }
 </script>
 
 <style lang="scss" scoped>
-.header {
+.header-container {
   box-sizing: border-box;
   height: $height-header;
   position: relative;
@@ -64,10 +68,19 @@ function goTo(name) {
     margin-right: 25px;
   }
   .title {
+    font-family: 'Vibur', sans-serif;
     cursor: pointer;
     color: $color-contrast;
     font-size: 30px;
     font-weight: 200;
   }
+  &.sticky {
+    position: fixed;
+    top: 0;
+    width: 100%;
+  }
+}
+.header-box {
+  height: $height-header;
 }
 </style>
