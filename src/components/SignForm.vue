@@ -21,7 +21,12 @@ const props = defineProps({
   isSignup: {
     type: Boolean,
     default: false
-  }
+  },
+  redirect: {
+    type: String,
+    default: 'findEvents'
+  },
+  redirectId: Number
 })
 
 const userStore = useUserStore()
@@ -45,7 +50,9 @@ async function signin() {
   if (!validation.valid) {
     return
   }
-  userStore.signin(values.email, values.password)
+  const query = props.redirectId ? { id: props.redirectId } : {}
+  await userStore.signin(values.email, values.password)
+  userStore.redirect(props.redirect, query)
 }
 
 async function signup() {
@@ -57,7 +64,9 @@ async function signup() {
     setFieldError('confirmedPassword', "passwords don't match")
     return
   }
-  userStore.signup(values.email, values.password, values.confirmedPassword)
+  const query = props.redirectId ? { id: props.redirectId } : {}
+  await userStore.signup(values.email, values.password, values.confirmedPassword)
+  userStore.redirect(props.redirect, query)
 }
 
 function handleSubmit() {

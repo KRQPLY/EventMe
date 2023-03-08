@@ -1,8 +1,13 @@
 <template>
   <div class="login-container">
     <div class="forms">
-      <SignForm is-signup v-if="signType === 'signup'" />
-      <SignForm v-else />
+      <SignForm
+        is-signup
+        v-if="signType === 'signup'"
+        :redirect="redirect"
+        :redirect-id="redirectId"
+      />
+      <SignForm v-else :redirect="redirect" :redirect-id="redirectId" />
     </div>
     <div class="credit desktop">
       Image by
@@ -33,8 +38,16 @@ const signType = computed(() => {
   return router.currentRoute.value.name
 })
 
+defineProps({
+  redirect: {
+    type: String,
+    default: 'findEvents'
+  },
+  redirectId: Number
+})
+
 if (userStore.uid) {
-  router.push({ name: 'findEvents' })
+  userStore.redirect('findEvents')
 }
 </script>
 

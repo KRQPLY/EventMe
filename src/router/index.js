@@ -28,12 +28,20 @@ const router = createRouter({
     {
       path: '/signin',
       name: 'signin',
-      component: () => import('@/views/LoginView.vue')
+      component: () => import('@/views/LoginView.vue'),
+      props: (route) => ({
+        redirect: route.query.redirect,
+        redirectId: Number(route.query.redirectId)
+      })
     },
     {
       path: '/signup',
       name: 'signup',
-      component: () => import('@/views/LoginView.vue')
+      component: () => import('@/views/LoginView.vue'),
+      props: (route) => ({
+        redirect: route.query.redirect,
+        redirectId: Number(route.query.redirectId)
+      })
     },
     {
       path: '/signin/:matchAll(.*)*',
