@@ -6,6 +6,8 @@
       :author="event.author"
       :date="event.date"
       :image-url="event.imageUrl"
+      :marker="event.marker"
+      v-if="event"
     />
   </div>
 </template>
@@ -21,7 +23,7 @@ const props = defineProps({
 })
 
 const userStore = useUserStore()
-const event = ref({})
+const event = ref(null)
 
 if (!userStore.uid) {
   userStore.redirect('signin', { redirect: 'event', redirectId: props.id })

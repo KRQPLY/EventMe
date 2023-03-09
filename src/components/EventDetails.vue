@@ -23,6 +23,7 @@
       </div>
       <div class="author">By: {{ author }}</div>
     </div>
+    <div id="map"></div>
   </div>
 </template>
 
@@ -30,16 +31,33 @@
 import Button from '@/components/Button.vue'
 import getImageUrl from '@/utils/getImageUrl'
 import toDateTime from '@/utils/toDateTime'
+import 'leaflet/dist/leaflet.css'
+import L from 'leaflet'
+import { onMounted, ref } from 'vue'
 
 const props = defineProps({
   description: String,
   name: String,
   author: String,
   date: Number,
+  marker: {
+    type: Array,
+    default: [51.505, -0.09]
+  },
   imageUrl: {
     type: String,
     default: '../assets/find-background-sm.jpg'
   }
+})
+
+const map = ref(null)
+
+onMounted(() => {
+  map.value = L.map('map').setView(props.marker, 13)
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19
+  }).addTo(map.value)
+  L.marker(props.marker).addTo(map.value)
 })
 </script>
 
@@ -77,6 +95,10 @@ const props = defineProps({
   img {
     border-radius: 7px;
     width: 100%;
+  }
+  #map {
+    height: 180px;
+    border-radius: 7px;
   }
 }
 </style>
