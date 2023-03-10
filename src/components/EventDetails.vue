@@ -32,7 +32,9 @@ import Button from '@/components/Button.vue'
 import getImageUrl from '@/utils/getImageUrl'
 import toDateTime from '@/utils/toDateTime'
 import 'leaflet/dist/leaflet.css'
+import 'leaflet-routing-machine/dist/leaflet-routing-machine.css'
 import L from 'leaflet'
+import 'leaflet-routing-machine'
 import { onMounted, ref } from 'vue'
 
 const props = defineProps({
@@ -53,11 +55,24 @@ const props = defineProps({
 const map = ref(null)
 
 onMounted(() => {
-  map.value = L.map('map').setView(props.marker, 13)
-  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19
-  }).addTo(map.value)
-  L.marker(props.marker).addTo(map.value)
+  navigator.geolocation.getCurrentPosition(
+    (location) => {
+      map.value = L.map('map').setView([location.coords.latitude, location.coords.longitude], 13)
+      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19
+      }).addTo(map.value)
+      L.marker(props.marker).addTo(map.value)
+      L.Routing.control({
+        waypoints: [
+          L.latLng(location.coords.latitude, location.coords.longitude),
+          L.latLng(...props.marker)
+        ]
+      }).addTo(map.value)
+    },
+    (error) => {
+      console.error(error)
+    }
+  )
 })
 </script>
 
@@ -97,8 +112,16 @@ onMounted(() => {
     width: 100%;
   }
   #map {
-    height: 180px;
+    color: black;
     border-radius: 7px;
+    aspect-ratio: 2/1;
+  }
+}
+@include media-sm {
+  .event-details {
+    #map {
+      aspect-ratio: 3/1;
+    }
   }
 }
 </style>
