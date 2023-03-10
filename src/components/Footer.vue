@@ -1,6 +1,6 @@
 <template>
   <div class="footer">
-    <div class="content">© 2023 <span class="logo">EventMe</span>. All rights reserved.</div>
+    <div class="content">© 2023 <span class="logo">evento</span>. All rights reserved.</div>
   </div>
 </template>
 
@@ -12,6 +12,7 @@
   height: $height-footer;
   display: flex;
   justify-content: center;
+  align-items: center;
   padding: 20px;
   background-color: $color-main;
   font-size: 8px;
@@ -19,6 +20,8 @@
     color: $color-contrast;
   }
   .logo {
+    font-family: 'Vibur', sans-serif;
+    font-size: 20px;
     font-weight: 300;
   }
 }

@@ -18,16 +18,14 @@ import Hero from '@/components/Hero.vue'
 import EventCard from '../components/EventCard.vue'
 import CardsContainer from '@/components/CardsContainer.vue'
 import { useUserStore } from '../stores/user'
-import { useRouter } from 'vue-router'
 import { ref } from 'vue'
 import getData from '@/utils/getData'
 
 const userStore = useUserStore()
-const router = useRouter()
 const events = ref([])
 
 if (!userStore.uid) {
-  router.push({ name: 'signin' })
+  userStore.redirect('signin', { redirect: 'myEvents' })
 }
 
 getEvents()

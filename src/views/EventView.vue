@@ -1,29 +1,35 @@
 <template>
   <div class="event-container">
-    <EventDetails :description="event.description" :name="event.name" :image-url="event.imageUrl" />
+    <EventDetails
+      :description="event.description"
+      :name="event.name"
+      :author="event.author"
+      :date="event.date"
+      :image-url="event.imageUrl"
+      :marker="event.marker"
+      v-if="event"
+    />
   </div>
 </template>
 
 <script setup>
 import EventDetails from '../components/EventDetails.vue'
 import { useUserStore } from '@/stores/user'
-import { useRouter } from 'vue-router'
-import getData from '@/utils/getData'
 import { ref } from 'vue'
+import getData from '@/utils/getData'
 
 const props = defineProps({
   id: String
 })
 
 const userStore = useUserStore()
-const router = useRouter()
-const event = ref({})
+const event = ref(null)
 
 if (!userStore.uid) {
-  router.push({ name: 'signin' })
+  userStore.redirect('signin', { redirect: 'event', redirectId: props.id })
 }
 if (!props.id) {
-  router.push({ name: 'findEvents' })
+  userStore.redirect('findEvents')
 }
 
 getEvent()
@@ -39,38 +45,36 @@ async function getEvent() {
 
 <style lang="scss" scoped>
 .event-container {
-  display: flex;
-  flex-direction: column;
-  padding: 10px;
+  padding: 0 10px;
 }
 @include media-xs {
   .event-container {
-    padding: 10px 30px;
+    padding: 0 30px;
   }
 }
 @include media-sm {
   .event-container {
-    padding: 10px 70px;
+    padding: 0 70px;
   }
 }
 @include media-md {
   .event-container {
-    padding: 10px 150px;
+    padding: 0 150px;
   }
 }
 @include media-lg {
   .event-container {
-    padding: 10px 250px;
+    padding: 0 250px;
   }
 }
 @include media-xl {
   .event-container {
-    padding: 10px 350px;
+    padding: 0 350px;
   }
 }
 @include media-hd {
   .event-container {
-    padding: 10px 450px;
+    padding: 0 450px;
   }
 }
 </style>

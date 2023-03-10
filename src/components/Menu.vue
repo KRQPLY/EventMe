@@ -3,21 +3,21 @@
     <div
       class="option"
       :class="{ active: currentRouteName === 'findEvents' }"
-      @click="changeRoute('findEvents')"
+      @click="userStore.redirect('findEvents')"
     >
       Find events
     </div>
     <div
       class="option"
       :class="{ active: currentRouteName === 'myEvents' }"
-      @click="changeRoute('myEvents')"
+      @click="userStore.redirect('myEvents')"
     >
       My events
     </div>
     <div
       class="option"
       :class="{ active: currentRouteName === 'friends' }"
-      @click="changeRoute('friends')"
+      @click="userStore.redirect('friends')"
     >
       Friends
     </div>
@@ -34,10 +34,6 @@ const router = useRouter()
 const currentRouteName = computed(() => {
   return router.currentRoute.value.name
 })
-
-function changeRoute(name) {
-  router.push({ name: name })
-}
 </script>
 
 <style lang="scss" scoped>
