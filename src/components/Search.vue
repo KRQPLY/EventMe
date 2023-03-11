@@ -8,13 +8,13 @@
       @keyup.enter="$emit('search')"
     />
     <Button @click="$emit('search')">
-      <Icon img="../assets/search.png" width="20px" />
+      <IconSearch />
     </Button>
   </div>
 </template>
 
 <script setup lang="ts">
-import Icon from './Icon.vue'
+import IconSearch from './IconSearch.vue'
 import Button from './Button.vue'
 
 defineProps({

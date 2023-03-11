@@ -2,14 +2,14 @@
   <div class="project-card" @click="userStore.redirect('event', { id: props.id })">
     <img class="img" :src="getImageUrl(imageUrl)" alt="event-photo" />
     <div class="info">
-      <div class="author"><Icon clickable width="16px" img="@/assets/user.png" />{{ author }}</div>
+      <div class="author"><IconUser />{{ author }}</div>
       <div class="participants">{{ nFormatter(participantsNumber) }}</div>
     </div>
   </div>
 </template>
 
 <script setup>
-import Icon from './Icon.vue'
+import IconUser from './IconUser.vue'
 import nFormatter from '@/utils/nFormatter'
 import getImageUrl from '@/utils/getImageUrl'
 import { useUserStore } from '../stores/user'
@@ -46,6 +46,7 @@ const userStore = useUserStore()
     font-size: 14px;
     color: $color-contrast;
     .author {
+      cursor: pointer;
       display: flex;
       align-items: center;
       gap: 5px;

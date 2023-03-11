@@ -1,5 +1,5 @@
 <template>
-  <button class="button" :class="{ filled: filled, desktop: desktop }" :style="{ color: color }">
+  <button class="button" :class="{ filled, desktop, mobile }" :style="{ color: color }">
     <slot></slot>
   </button>
 </template>
@@ -11,6 +11,10 @@ defineProps({
     default: false
   },
   desktop: {
+    type: Boolean,
+    default: false
+  },
+  mobile: {
     type: Boolean,
     default: false
   },
@@ -49,6 +53,9 @@ defineProps({
   .button {
     &.desktop {
       display: flex;
+    }
+    &.mobile {
+      display: none;
     }
   }
 }
