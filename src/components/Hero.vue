@@ -78,7 +78,7 @@ if (props.type === 'friends') {
 
 @include media-xs {
   .hero {
-    height: 400px;
+    height: 350px;
     font-size: 70px;
     &.my-events {
       background-image: url('@/assets/my-background-md.jpg');
@@ -105,7 +105,7 @@ if (props.type === 'friends') {
 }
 @include media-md {
   .hero {
-    height: 500px;
+    height: 400px;
     font-size: 100px;
   }
 }
