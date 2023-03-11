@@ -6,20 +6,9 @@
     </div>
     <div class="right">
       <MoonIcon class="theme-switch desktop" />
-      <Icon
-        width="32px"
-        img="../assets/burger-white.svg"
-        @click="$emit('toggleDrawer')"
-        clickable
-        class="mobile dark"
-      />
-      <Icon
-        width="32px"
-        img="../assets/burger-black.svg"
-        @click="$emit('toggleDrawer')"
-        clickable
-        class="mobile light"
-      />
+      <Button @click="$emit('toggleDrawer')" mobile>
+        <IconBurger />
+      </Button>
       <Button @click="userStore.redirect('signin')" desktop v-if="!userStore.uid">Sign in</Button>
       <Button @click="userStore.redirect('signup')" filled desktop v-if="!userStore.uid"
         >Sign up</Button
@@ -31,7 +20,7 @@
 </template>
 
 <script setup>
-import Icon from '@/components/Icon.vue'
+import IconBurger from './IconBurger.vue'
 import Menu from './Menu.vue'
 import Button from './Button.vue'
 import MoonIcon from './MoonIcon.vue'
