@@ -58,7 +58,7 @@ if (userStore.uid) {
   justify-content: center;
   position: relative;
   background-image: url('@/assets/sign-background-sm.jpg');
-  background-color: #cccccc;
+  background-color: $color-main;
   background-position: bottom left;
   background-repeat: no-repeat;
   background-size: cover;

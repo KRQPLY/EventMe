@@ -14,7 +14,6 @@
 </template>
 
 <script setup lang="ts">
-import Icon from './Icon.vue'
 import IconSearch from './IconSearch.vue'
 import Button from './Button.vue'
 
