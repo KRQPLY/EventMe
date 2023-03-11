@@ -54,7 +54,7 @@ if (props.type === 'friends') {
   display: flex;
   justify-content: center;
   align-items: flex-end;
-  background-color: #cccccc;
+  background-color: $color-main;
   background-position: bottom;
   background-repeat: no-repeat;
   background-size: cover;
