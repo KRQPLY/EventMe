@@ -80,7 +80,7 @@ if (userStore.uid) {
     background-image: url('@/assets/sign-background-md.jpg');
   }
 }
-@include media-xs {
+@include media-hd {
   .login-container {
     background-image: url('@/assets/sign-background-xl.jpg');
   }
