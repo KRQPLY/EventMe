@@ -35,6 +35,7 @@ import 'leaflet/dist/leaflet.css'
 import 'leaflet-routing-machine/dist/leaflet-routing-machine.css'
 import L from 'leaflet'
 import 'leaflet-routing-machine'
+import markerIconPng from 'leaflet/dist/images/marker-icon.png'
 import { onMounted, ref } from 'vue'
 
 const props = defineProps({
@@ -61,12 +62,21 @@ onMounted(() => {
       L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19
       }).addTo(map.value)
-      L.marker(props.marker).addTo(map.value)
       L.Routing.control({
         waypoints: [
           L.latLng(location.coords.latitude, location.coords.longitude),
           L.latLng(...props.marker)
-        ]
+        ],
+        createMarker: function (i, start, n) {
+          var marker = L.marker(start.latLng, {
+            draggable: true,
+            icon: L.icon({
+              iconUrl: markerIconPng,
+              iconAnchor: [15, 40]
+            })
+          })
+          return marker
+        }
       }).addTo(map.value)
     },
     (error) => {
