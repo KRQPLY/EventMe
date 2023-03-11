@@ -2,7 +2,7 @@
   <div class="project-card" @click="userStore.redirect('event', { id: props.id })">
     <img class="img" :src="getImageUrl(imageUrl)" alt="event-photo" />
     <div class="info">
-      <div class="author"><Icon clickable width="16px" img="../assets/user.png" />{{ author }}</div>
+      <div class="author"><Icon clickable width="16px" img="@/assets/user.png" />{{ author }}</div>
       <div class="participants">{{ nFormatter(participantsNumber) }}</div>
     </div>
   </div>
