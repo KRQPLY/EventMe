@@ -1,7 +1,7 @@
 <template>
   <div class="header-container sticky">
     <div class="left">
-      <div class="title" @click="userStore.redirect('findEvents')">evento</div>
+      <div class="title" @click="router.push({ name: 'findEvents' })">evento</div>
       <Menu class="desktop" />
     </div>
     <div class="right">
@@ -9,8 +9,10 @@
       <Button @click="$emit('toggleDrawer')" mobile>
         <IconBurger />
       </Button>
-      <Button @click="userStore.redirect('signin')" desktop v-if="!userStore.uid">Sign in</Button>
-      <Button @click="userStore.redirect('signup')" filled desktop v-if="!userStore.uid"
+      <Button @click="router.push({ name: 'signin' })" desktop v-if="!userStore.uid"
+        >Sign in</Button
+      >
+      <Button @click="router.push({ name: 'signup' })" filled desktop v-if="!userStore.uid"
         >Sign up</Button
       >
       <Button @click="handleSignout" desktop v-else>Sign out</Button>
@@ -25,14 +27,16 @@ import Menu from './Menu.vue'
 import Button from './Button.vue'
 import MoonIcon from './MoonIcon.vue'
 import { useUserStore } from '@/stores/user'
+import { useRouter } from 'vue-router'
 
 defineEmits(['toggleDrawer'])
 
 const userStore = useUserStore()
+const router = useRouter()
 
 function handleSignout() {
   userStore.signout()
-  userStore.redirect('signin')
+  router.push({ name: 'signin' })
 }
 </script>
 

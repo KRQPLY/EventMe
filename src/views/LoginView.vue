@@ -28,11 +28,9 @@
 
 <script setup>
 import SignForm from '../components/SignForm.vue'
-import { useUserStore } from '../stores/user'
 import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 
-const userStore = useUserStore()
 const router = useRouter()
 const signType = computed(() => {
   return router.currentRoute.value.name
@@ -45,10 +43,6 @@ defineProps({
   },
   redirectId: Number
 })
-
-if (userStore.uid) {
-  userStore.redirect('findEvents')
-}
 </script>
 
 <style lang="scss" scoped>

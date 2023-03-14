@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { useUserStore } from '@/stores/user'
 import FindEventsView from '../views/FindEventsView.vue'
 
 const router = createRouter({
@@ -7,23 +8,32 @@ const router = createRouter({
     {
       path: '/',
       name: 'findEvents',
-      component: FindEventsView
+      component: FindEventsView,
+      meta: { requiresAuth: false }
     },
     {
       path: '/my-events',
       name: 'myEvents',
-      component: () => import('@/views/MyEventsView.vue')
+      component: () => import('@/views/MyEventsView.vue'),
+      meta: { requiresAuth: true }
     },
     {
       path: '/event',
       name: 'event',
       component: () => import('@/views/EventView.vue'),
-      props: (route) => ({ id: route.query.id })
+      props: (route) => ({ id: route.query.id }),
+      meta: { requiresAuth: true },
+      beforeEnter: (to, from) => {
+        if (!to.query.id) {
+          return { name: 'findEvents' }
+        }
+      }
     },
     {
       path: '/friends',
       name: 'friends',
-      component: () => import('@/views/FriendsView.vue')
+      component: () => import('@/views/FriendsView.vue'),
+      meta: { requiresAuth: true }
     },
     {
       path: '/signin',
@@ -32,7 +42,8 @@ const router = createRouter({
       props: (route) => ({
         redirect: route.query.redirect,
         redirectId: Number(route.query.redirectId)
-      })
+      }),
+      meta: { requiresAuth: false }
     },
     {
       path: '/signup',
@@ -41,7 +52,8 @@ const router = createRouter({
       props: (route) => ({
         redirect: route.query.redirect,
         redirectId: Number(route.query.redirectId)
-      })
+      }),
+      meta: { requiresAuth: false }
     },
     {
       path: '/signin/:matchAll(.*)*',
@@ -58,6 +70,14 @@ const router = createRouter({
   ],
   scrollBehavior(to, from, savedPosition) {
     return { top: 0 }
+  }
+})
+
+router.beforeEach((to, from) => {
+  const userStore = useUserStore()
+
+  if (!userStore.uid && to.meta.requiresAuth) {
+    return { name: 'signin', query: { redirect: to.name, redirectId: to.query.id } }
   }
 })
 

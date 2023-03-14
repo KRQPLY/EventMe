@@ -14,7 +14,6 @@
 
 <script setup>
 import EventDetails from '../components/EventDetails.vue'
-import { useUserStore } from '@/stores/user'
 import { ref } from 'vue'
 import getData from '@/helpers/getData'
 
@@ -22,15 +21,7 @@ const props = defineProps({
   id: String
 })
 
-const userStore = useUserStore()
 const event = ref(null)
-
-if (!userStore.uid) {
-  userStore.redirect('signin', { redirect: 'event', redirectId: props.id })
-}
-if (!props.id) {
-  userStore.redirect('findEvents')
-}
 
 getEvent()
 
