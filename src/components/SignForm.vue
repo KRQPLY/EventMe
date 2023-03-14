@@ -90,6 +90,7 @@ function handleSubmit() {
   color: #fff;
   font-weight: 200;
   backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(2px);
   .title {
     font-weight: 200;
   }
