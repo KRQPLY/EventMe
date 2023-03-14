@@ -16,6 +16,7 @@ import Button from './Button.vue'
 import { useUserStore } from '../stores/user'
 import { useForm } from 'vee-validate'
 import * as yup from 'yup'
+import { useRouter } from 'vue-router'
 
 const props = defineProps({
   isSignup: {
@@ -30,6 +31,7 @@ const props = defineProps({
 })
 
 const userStore = useUserStore()
+const router = useRouter()
 
 const schema = props.isSignup
   ? yup.object({
@@ -52,7 +54,7 @@ async function signin() {
   }
   const query = props.redirectId ? { id: props.redirectId } : {}
   await userStore.signin(values.email, values.password)
-  userStore.redirect(props.redirect, query)
+  router.push({ name: props.redirect, query })
 }
 
 async function signup() {
@@ -66,7 +68,7 @@ async function signup() {
   }
   const query = props.redirectId ? { id: props.redirectId } : {}
   await userStore.signup(values.email, values.password, values.confirmedPassword)
-  userStore.redirect(props.redirect, query)
+  router.push({ name: props.redirect, query })
 }
 
 function handleSubmit() {

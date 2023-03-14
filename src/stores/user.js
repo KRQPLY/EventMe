@@ -25,9 +25,6 @@ export const useUserStore = defineStore('user', () => {
     uid.value = ''
     updateLocalStorage('uid', '')
   }
-  function redirect(name, query = {}) {
-    router.push({ name, query })
-  }
 
-  return { uid, signin, signup, signout, redirect }
+  return { uid, signin, signup, signout}
 })

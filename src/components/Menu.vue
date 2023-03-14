@@ -3,21 +3,21 @@
     <div
       class="option"
       :class="{ active: currentRouteName === 'findEvents' }"
-      @click="userStore.redirect('findEvents')"
+      @click="router.push({ name: 'findEvents' })"
     >
       Find events
     </div>
     <div
       class="option"
       :class="{ active: currentRouteName === 'myEvents' }"
-      @click="userStore.redirect('myEvents')"
+      @click="router.push({ name: 'myEvents' })"
     >
       My events
     </div>
     <div
       class="option"
       :class="{ active: currentRouteName === 'friends' }"
-      @click="userStore.redirect('friends')"
+      @click="router.push({ name: 'friends' })"
     >
       Friends
     </div>

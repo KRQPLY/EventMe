@@ -48,13 +48,13 @@ const currentRouteName = computed(() => {
 })
 
 function handleInDrawerClick(name) {
-  userStore.redirect(name)
+  router.push({ name })
   closeDrawer()
 }
 
 function handleSignOut() {
   userStore.signout()
-  userStore.redirect('signin')
+  router.push({ name: 'signin' })
   closeDrawer()
 }
 

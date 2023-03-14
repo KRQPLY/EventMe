@@ -1,5 +1,5 @@
 <template>
-  <div class="project-card" @click="userStore.redirect('event', { id: props.id })">
+  <div class="project-card" @click="router.push({ name: 'event', query: { id: props.id } })">
     <img class="img" :src="getImageUrl(imageUrl)" alt="event-photo" />
     <div class="info">
       <div class="author"><IconUser />{{ author }}</div>
@@ -12,7 +12,7 @@
 import IconUser from './IconUser.vue'
 import nFormatter from '@/helpers/nFormatter'
 import getImageUrl from '@/helpers/getImageUrl'
-import { useUserStore } from '../stores/user'
+import { useRouter } from 'vue-router'
 
 const props = defineProps({
   id: Number,
@@ -24,7 +24,7 @@ const props = defineProps({
   }
 })
 
-const userStore = useUserStore()
+const router = useRouter()
 </script>
 
 <style lang="scss" scoped>
