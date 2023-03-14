@@ -25,7 +25,7 @@ const events = ref([])
 getEvents()
 
 async function getEvents() {
-  const response = await getData('http://localhost:3000/usersEvents')
+  const response = await getData(`${import.meta.env.VITE_API_URL}usersEvents`)
 
   if (response.length) {
     events.value = response
