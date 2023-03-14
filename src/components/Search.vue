@@ -45,6 +45,7 @@ const updateValue = (e: Event) => {
     background: $color-secondary;
     padding: 5px;
     width: 200px;
+    border-radius: 0;
     border: none;
     outline: none;
     border-right: 2px solid #000;
