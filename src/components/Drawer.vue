@@ -101,6 +101,7 @@ function closeDrawer() {
   bottom: 0;
   width: 100%;
   backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
 }
 @include media-xs {
   .drawer {
