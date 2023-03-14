@@ -19,7 +19,7 @@ import EventCard from '../components/EventCard.vue'
 import CardsContainer from '@/components/CardsContainer.vue'
 import { useUserStore } from '../stores/user'
 import { ref } from 'vue'
-import getData from '@/utils/getData'
+import getData from '@/helpers/getData'
 
 const userStore = useUserStore()
 const events = ref([])

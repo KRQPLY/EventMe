@@ -1,9 +1,9 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { useRouter } from 'vue-router'
-import postData from '@/utils/getData'
-import updateLocalStorage from '@/utils/updateLocalStorage'
-import getLocalStorage from '@/utils/getLocalStorage'
+import postData from '@/helpers/getData'
+import updateLocalStorage from '@/helpers/updateLocalStorage'
+import getLocalStorage from '@/helpers/getLocalStorage'
 
 export const useUserStore = defineStore('user', () => {
   const url = 'http://localhost:3000/'

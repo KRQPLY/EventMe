@@ -3,7 +3,7 @@
 </template>
 
 <script setup>
-import getImageUrl from '@/utils/getImageUrl'
+import getImageUrl from '@/helpers/getImageUrl'
 
 const props = defineProps({
   img: {

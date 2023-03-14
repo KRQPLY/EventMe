@@ -29,8 +29,8 @@
 
 <script setup>
 import Button from '@/components/Button.vue'
-import getImageUrl from '@/utils/getImageUrl'
-import toDateTime from '@/utils/toDateTime'
+import getImageUrl from '@/helpers/getImageUrl'
+import toDateTime from '@/helpers/toDateTime'
 import 'leaflet/dist/leaflet.css'
 import 'leaflet-routing-machine/dist/leaflet-routing-machine.css'
 import L from 'leaflet'

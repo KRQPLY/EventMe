@@ -20,7 +20,7 @@ import Hero from '@/components/Hero.vue'
 import EventCard from '../components/EventCard.vue'
 import CardsContainer from '@/components/CardsContainer.vue'
 import { ref } from 'vue'
-import getData from '@/utils/getData'
+import getData from '@/helpers/getData'
 
 const value = ref('')
 const events = ref([])

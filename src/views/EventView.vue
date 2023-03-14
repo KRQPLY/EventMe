@@ -16,7 +16,7 @@
 import EventDetails from '../components/EventDetails.vue'
 import { useUserStore } from '@/stores/user'
 import { ref } from 'vue'
-import getData from '@/utils/getData'
+import getData from '@/helpers/getData'
 
 const props = defineProps({
   id: String

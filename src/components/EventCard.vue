@@ -10,8 +10,8 @@
 
 <script setup>
 import IconUser from './IconUser.vue'
-import nFormatter from '@/utils/nFormatter'
-import getImageUrl from '@/utils/getImageUrl'
+import nFormatter from '@/helpers/nFormatter'
+import getImageUrl from '@/helpers/getImageUrl'
 import { useUserStore } from '../stores/user'
 
 const props = defineProps({

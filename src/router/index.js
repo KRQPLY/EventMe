@@ -55,7 +55,10 @@ const router = createRouter({
       path: '/:matchAll(.*)*',
       redirect: `/`
     }
-  ]
+  ],
+  scrollBehavior(to, from, savedPosition) {
+    return { top: 0 }
+  }
 })
 
 export default router
