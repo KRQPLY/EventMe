@@ -53,6 +53,7 @@ const updateValue = (e: Event) => {
     color: $color-accent;
     &:focus {
       outline: none;
+      border: none;
       border-right: 2px solid $color-accent;
     }
   }
