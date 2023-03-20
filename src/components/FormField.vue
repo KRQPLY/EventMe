@@ -36,8 +36,6 @@ const { value, errorMessage } = useField<string>(nameRef)
 
 <stye lang="scss" scoped>
 .form-field {
-  margin-top: 20px;
-
   &:focus-within {
     .label {
       color: $color-accent;

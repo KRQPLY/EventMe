@@ -30,6 +30,12 @@ const router = createRouter({
       }
     },
     {
+      path: '/add-event',
+      name: 'AddEvent',
+      component: () => import('@/views/AddEventView.vue'),
+      meta: { requiresAuth: true }
+    },
+    {
       path: '/friends',
       name: 'friends',
       component: () => import('@/views/FriendsView.vue'),
@@ -78,6 +84,8 @@ router.beforeEach((to, from) => {
 
   if (!userStore.uid && to.meta.requiresAuth) {
     return { name: 'signin', query: { redirect: to.name, redirectId: to.query.id } }
+  } else if (userStore.uid && ['signin', 'signup'].includes(to.name)) {
+    return { name: 'findEvents' }
   }
 })
 

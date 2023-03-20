@@ -47,7 +47,7 @@ defineProps({
 
 <style lang="scss" scoped>
 .login-container {
-  padding-top: 10px;
+  padding: 10px 0;
   display: flex;
   justify-content: center;
   position: relative;
@@ -70,7 +70,7 @@ defineProps({
 
 @include media-xs {
   .login-container {
-    padding-top: 40px;
+    padding: 40px 0;
     background-image: url('@/assets/sign-background-md.jpg');
   }
 }

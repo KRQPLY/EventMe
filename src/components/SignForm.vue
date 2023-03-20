@@ -2,9 +2,11 @@
   <div class="sign-form" @keyup.enter="handleSubmit">
     <h1 class="title">{{ isSignup ? 'Sign up' : 'Sign in' }}</h1>
     <FormField name="email" type="email" label="Email" />
+    <FormField name="username" type="text" label="Username" v-if="isSignup" />
+    <FormField name="age" type="number" label="Age" v-if="isSignup" />
     <FormField name="password" type="password" label="Password" />
     <FormField name="confirmedPassword" type="password" label="Confirm password" v-if="isSignup" />
-    <Button @click="handleSubmit" class="button" filled>
+    <Button @click="handleSubmit" filled>
       {{ isSignup ? 'Sign up' : 'Sign in' }}
     </Button>
   </div>
@@ -36,6 +38,12 @@ const router = useRouter()
 const schema = props.isSignup
   ? yup.object({
       email: yup.string().required('email is required').email('email is not valid'),
+      username: yup.string().required('username is required'),
+      age: yup
+        .number('please enter your age')
+        .required('please enter your age')
+        .min(13, 'you must be 13 or older')
+        .max(120, 'Nah man stop the cap'),
       password: yup.string().required('password is required').min(8)
     })
   : yup.object({
@@ -85,17 +93,14 @@ function handleSubmit() {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 20px;
   padding: 20px;
   border-radius: 10px;
   color: #fff;
   font-weight: 200;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: rgba(0, 0, 0, 0.3);
   .title {
     font-weight: 200;
-  }
-  .button {
-    margin-top: 40px;
   }
 }
 </style>
