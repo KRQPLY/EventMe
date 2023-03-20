@@ -1,25 +1,23 @@
 <template>
-  <div class="moon-container" @click="changeTheme">
+  <div class="moon-container" @click="toggleDark()">
     <div class="circle"></div>
     <div class="moon-background"><div class="moon"></div></div>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { useDark, useToggle } from '@vueuse/core'
 
 defineProps({
   secondary: { type: Boolean, default: false }
 })
 
-const isThemeDark = ref(true)
-
-function changeTheme() {
-  isThemeDark.value
-    ? document.documentElement.setAttribute('data-theme', 'light')
-    : document.documentElement.setAttribute('data-theme', 'dark')
-  isThemeDark.value = !isThemeDark.value
-}
+const isDark = useDark({
+  attribute: 'data-theme',
+  valueDark: 'dark',
+  valueLight: 'light'
+})
+const toggleDark = useToggle(isDark)
 </script>
 
 <style lang="scss" scoped>
