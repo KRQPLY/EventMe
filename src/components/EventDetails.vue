@@ -58,32 +58,39 @@ const map = ref(null)
 onMounted(() => {
   navigator.geolocation.getCurrentPosition(
     (location) => {
-      map.value = L.map('map').setView([location.coords.latitude, location.coords.longitude], 13)
-      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19
-      }).addTo(map.value)
-      L.Routing.control({
-        waypoints: [
-          L.latLng(location.coords.latitude, location.coords.longitude),
-          L.latLng(...props.marker)
-        ],
-        createMarker: function (i, start, n) {
-          var marker = L.marker(start.latLng, {
-            draggable: true,
-            icon: L.icon({
-              iconUrl: markerIconPng,
-              iconAnchor: [15, 40]
-            })
-          })
-          return marker
-        }
-      }).addTo(map.value)
+      initMap(location)
     },
     (error) => {
-      console.error(error)
+      initMap(false)
     }
   )
 })
+
+function initMap(location) {
+  const defaultView = location
+    ? [location.coords.latitude, location.coords.longitude]
+    : props.marker
+  const waypoints = location
+    ? [L.latLng(location.coords.latitude, location.coords.longitude), L.latLng(...props.marker)]
+    : [L.latLng(...props.marker)]
+  map.value = L.map('map').setView(defaultView, 13)
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19
+  }).addTo(map.value)
+  L.Routing.control({
+    waypoints,
+    createMarker: function (i, start, n) {
+      var marker = L.marker(start.latLng, {
+        draggable: true,
+        icon: L.icon({
+          iconUrl: markerIconPng,
+          iconAnchor: [15, 40]
+        })
+      })
+      return marker
+    }
+  }).addTo(map.value)
+}
 </script>
 
 <style lang="scss" scoped>
