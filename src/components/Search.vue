@@ -42,6 +42,7 @@ const updateValue = (e: Event) => {
   border-radius: 7px;
 
   input {
+    font-size: 16px;
     background: $color-secondary;
     padding: 5px;
     width: 200px;

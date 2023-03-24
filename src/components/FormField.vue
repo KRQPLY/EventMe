@@ -47,6 +47,7 @@ const { value, errorMessage } = useField<string>(nameRef)
 
   input,
   textarea {
+    font-size: 16px;
     width: 230px;
     padding: 0;
     color: #fff;
