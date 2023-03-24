@@ -1,6 +1,6 @@
 <template>
   <div class="drawer">
-    <div class="options" v-if="userStore.uid">
+    <div class="options" v-if="userStore.token">
       <div
         class="option"
         :class="{ active: currentRouteName === 'findEvents' }"
@@ -24,8 +24,8 @@
       </div>
     </div>
     <div class="sign-buttons">
-      <Button @click="handleInDrawerClick('signin')" v-if="!userStore.uid">Sign in</Button>
-      <Button @click="handleInDrawerClick('signup')" filled v-if="!userStore.uid">Sign up</Button>
+      <Button @click="handleInDrawerClick('signin')" v-if="!userStore.token">Sign in</Button>
+      <Button @click="handleInDrawerClick('signup')" filled v-if="!userStore.token">Sign up</Button>
       <Button @click="handleSignOut" v-else>Sign out</Button>
     </div>
     <MoonIcon />
@@ -52,8 +52,8 @@ function handleInDrawerClick(name) {
   closeDrawer()
 }
 
-function handleSignOut() {
-  userStore.signout()
+async function handleSignOut() {
+  await userStore.signout()
   router.push({ name: 'signin' })
   closeDrawer()
 }

@@ -9,10 +9,10 @@
       <Button @click="$emit('toggleDrawer')" mobile>
         <IconBurger />
       </Button>
-      <Button @click="router.push({ name: 'signin' })" desktop v-if="!userStore.uid"
+      <Button @click="router.push({ name: 'signin' })" desktop v-if="!userStore.token"
         >Sign in</Button
       >
-      <Button @click="router.push({ name: 'signup' })" filled desktop v-if="!userStore.uid"
+      <Button @click="router.push({ name: 'signup' })" filled desktop v-if="!userStore.token"
         >Sign up</Button
       >
       <Button @click="handleSignout" desktop v-else>Sign out</Button>
@@ -34,8 +34,8 @@ defineEmits(['toggleDrawer'])
 const userStore = useUserStore()
 const router = useRouter()
 
-function handleSignout() {
-  userStore.signout()
+async function handleSignout() {
+  await userStore.signout()
   router.push({ name: 'signin' })
 }
 </script>

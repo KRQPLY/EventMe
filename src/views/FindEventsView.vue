@@ -32,7 +32,7 @@ function handleSearch() {
 }
 
 async function getEvents() {
-  const response = await getData(`${import.meta.env.VITE_API_URL}events`)
+  const response = await getData(`${import.meta.env.VITE_API_URL}/events`)
 
   if (response.length) {
     events.value = response

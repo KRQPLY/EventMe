@@ -31,7 +31,7 @@ defineProps({
   padding: 5px 10px;
   background: none;
   border: none;
-  border-radius: 2px;
+  border-radius: 25% / 50%;
   font-weight: 300;
   color: $color-contrast;
   &.filled {

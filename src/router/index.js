@@ -82,9 +82,9 @@ const router = createRouter({
 router.beforeEach((to, from) => {
   const userStore = useUserStore()
 
-  if (!userStore.uid && to.meta.requiresAuth) {
+  if (!userStore.token && to.meta.requiresAuth) {
     return { name: 'signin', query: { redirect: to.name, redirectId: to.query.id } }
-  } else if (userStore.uid && ['signin', 'signup'].includes(to.name)) {
+  } else if (userStore.token && ['signin', 'signup'].includes(to.name)) {
     return { name: 'findEvents' }
   }
 })

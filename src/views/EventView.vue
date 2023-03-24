@@ -26,7 +26,7 @@ const event = ref(null)
 getEvent()
 
 async function getEvent() {
-  const response = await getData(`${import.meta.env.VITE_API_URL}events/${props.id}`)
+  const response = await getData(`${import.meta.env.VITE_API_URL}/events/${props.id}`)
 
   if (response) {
     event.value = response

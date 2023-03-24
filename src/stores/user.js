@@ -1,28 +1,41 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import getData from '@/helpers/getData'
-import updateLocalStorage from '@/helpers/updateLocalStorage'
-import getLocalStorage from '@/helpers/getLocalStorage'
+import { useCookies } from '@vueuse/integrations/useCookies'
+import postData from '@/helpers/postData'
 
 export const useUserStore = defineStore('user', () => {
   const url = import.meta.env.VITE_API_URL
-  const uid = ref(getLocalStorage('uid') || '')
+  const cookies = useCookies(['token'])
+  const token = ref(cookies.get('token'))
   async function signin(email, password) {
-    const response = await getData(`${url}auth`, { email, password })
+    const response = await postData(`${url}/auth/signin`, { email, password })
 
-    uid.value = response.uid
-    updateLocalStorage('uid', response.uid)
+    // to be deleted after backend setup
+    cookies.set('token', 'kjlsddjasd')
+    //
+    token.value = cookies.get('token')
   }
-  async function signup(email, password, confirmedPassword) {
-    const response = await getData(`${url}auth`, { email, password, confirmedPassword })
+  async function signup(email, username, dateOfBirth, password) {
+    const response = await postData(`${url}/auth/signup`, {
+      email,
+      username,
+      dateOfBirth,
+      password
+    })
 
-    uid.value = response.uid
-    updateLocalStorage('uid', response.uid)
+    // to be deleted after backend setup
+    cookies.set('token', 'kjlsddjasd')
+    //
+    token.value = cookies.get('token')
   }
-  function signout() {
-    uid.value = ''
-    updateLocalStorage('uid', '')
+  async function signout() {
+    const response = await postData(`${url}/user/signout`)
+
+    // to be deleted after backend setup
+    cookies.remove('token')
+    //
+    token.value = cookies.get('token')
   }
 
-  return { uid, signin, signup, signout }
+  return { token, signin, signup, signout }
 })

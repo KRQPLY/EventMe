@@ -1,5 +1,5 @@
 <template>
-  <div class="menu" v-if="userStore.uid">
+  <div class="menu" v-if="userStore.token">
     <div
       class="option"
       :class="{ active: currentRouteName === 'findEvents' }"
