@@ -11,7 +11,7 @@ export const useUserStore = defineStore('user', () => {
     const response = await postData(`${url}/auth/signin`, { email, password })
 
     // to be deleted after backend setup
-    cookies.set('token', 'kjlsddjasd')
+    // cookies.set('token', 'kjlsddjasd')
     //
     token.value = cookies.get('token')
   }
@@ -24,7 +24,7 @@ export const useUserStore = defineStore('user', () => {
     })
 
     // to be deleted after backend setup
-    cookies.set('token', 'kjlsddjasd')
+    // cookies.set('token', 'kjlsddjasd')
     //
     token.value = cookies.get('token')
   }
@@ -32,7 +32,7 @@ export const useUserStore = defineStore('user', () => {
     const response = await postData(`${url}/user/signout`)
 
     // to be deleted after backend setup
-    cookies.remove('token')
+    // cookies.remove('token')
     //
     token.value = cookies.get('token')
   }

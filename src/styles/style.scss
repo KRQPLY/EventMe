@@ -41,13 +41,9 @@ body {
   color: #fff;
   text-shadow: 0 0 7px #fff, 0 0 10px #fff, 0 0 21px #fff, 0 0 40px $color-accent,
     0 0 5px $color-accent, 0 0 10px $color-accent;
-}
-
-@include media-xs {
-  .neon-text {
+  @include media-xs {
     text-shadow: 0 0 7px #fff, 0 0 10px #fff, 0 0 21px #fff, 0 0 30px $color-accent,
-      0 0 40px $color-accent, 0 0 50px $color-accent, 0 0 60px $color-accent,
-      0 0 70px $color-accent;
+      0 0 40px $color-accent, 0 0 50px $color-accent, 0 0 60px $color-accent, 0 0 70px $color-accent;
   }
 }
 
