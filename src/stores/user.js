@@ -1,19 +1,15 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import { useCookies } from '@vueuse/integrations/useCookies'
+import { useStorage } from '@vueuse/core'
 import postData from '@/helpers/postData'
 
 export const useUserStore = defineStore('user', () => {
   const url = import.meta.env.VITE_API_URL
-  const cookies = useCookies(['token'])
-  const token = ref(cookies.get('token'))
+  const token = ref(useStorage('token', ''))
   async function signin(email, password) {
     const response = await postData(`${url}/auth/signin`, { email, password })
 
-    // to be deleted after backend setup
-    // cookies.set('token', 'kjlsddjasd')
-    //
-    token.value = cookies.get('token')
+    token.value = response.token
   }
   async function signup(email, username, dateOfBirth, password) {
     const response = await postData(`${url}/auth/signup`, {
@@ -23,18 +19,12 @@ export const useUserStore = defineStore('user', () => {
       password
     })
 
-    // to be deleted after backend setup
-    // cookies.set('token', 'kjlsddjasd')
-    //
-    token.value = cookies.get('token')
+    token.value = response.token
   }
   async function signout() {
     const response = await postData(`${url}/user/signout`)
 
-    // to be deleted after backend setup
-    // cookies.remove('token')
-    //
-    token.value = cookies.get('token')
+    token.value = ''
   }
 
   return { token, signin, signup, signout }
