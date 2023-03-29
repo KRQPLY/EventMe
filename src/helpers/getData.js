@@ -4,6 +4,7 @@ export default async function getData(endpoint) {
   try {
     const response = await axios.get(endpoint, {
       headers: {
+        'Access-Control-Allow-Origin': '*',
         'content-type': 'application/json'
       }
     })
