@@ -11,8 +11,8 @@ export const useUserStore = defineStore('user', () => {
       password
     })
 
-    // token.value = response.token
-    token.value = 's'
+    token.value = response.token
+    // token.value = 's'
   }
   async function signup(email, username, dateOfBirth, password) {
     const response = await postData(`${import.meta.env.VITE_API_URL}/auth/signup`, {
@@ -22,8 +22,8 @@ export const useUserStore = defineStore('user', () => {
       password
     })
 
-    // token.value = response.token
-    token.value = 's'
+    token.value = response.token
+    // token.value = 's'
   }
   async function signout() {
     token.value = ''
