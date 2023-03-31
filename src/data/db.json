@@ -101,7 +101,7 @@
       "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur lacus ipsum, luctus eget volutpat ac, mollis a odio. Nam et malesuada leo, nec hendrerit nisi. Sed ultrices erat nec nunc porta feugiat."
     }
   ],
-  "usersEvents": [
+  "user-events": [
     {
       "id": 1,
       "name": "Burning Man",

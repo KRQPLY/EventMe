@@ -35,7 +35,7 @@ const searchValue = ref('')
 getEvents()
 
 async function getEvents() {
-  const response = await getData(`${import.meta.env.VITE_API_URL}/usersEvents`)
+  const response = await getData(`${import.meta.env.VITE_API_URL}/user-events`)
 
   if (response.length) {
     events.value = response
