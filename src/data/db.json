@@ -1,17 +1,27 @@
 {
   "signin": {
-    "email": "k@q",
-    "password": "k"
+    "email": "m@q",
+    "password": "m"
   },
   "signup": {
-    "email": "k@q.p",
-    "username": "krqply",
-    "dateOfBirth": 977011200,
-    "password": "haslohaslo"
+    "email": "k@q",
+    "username": "k",
+    "dateOfBirth": 1147651200,
+    "password": "passwordpassword"
   },
   "signout": {},
   "users": [],
-  "events": [
+  "events": {
+    "name": "test",
+    "category": "hi",
+    "marker": [
+      54.0263099,
+      12.4684089
+    ],
+    "startDate": 1678320000,
+    "imageUrl": "http://res.cloudinary.com/dqipqpwdf/image/upload/v1680299746/evento/qylosbklcbpvkkeiwvca.jpg"
+  },
+  "events2": [
     {
       "id": 1,
       "name": "Burning Man",

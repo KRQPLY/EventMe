@@ -1,8 +1,11 @@
 <template>
-  <div class="form-field">
-    <div class="label">{{ label }}</div>
-    <input v-model.lazy="value" :type="type" v-if="type !== 'textarea'" />
-    <textarea v-model.lazy="value" rows="5" v-else />
+  <div class="form-file">
+    <label for="file-upload" class="label">{{ label }}</label>
+    <label for="file-upload" class="custom-upload">
+      <input id="file-upload" type="file" accept="image/*" @change="handleChange" />
+      {{ value ? value.name : 'choose file' }}
+      <IconUpload />
+    </label>
     <div class="error-container">
       <div class="error-message">
         {{ errorMessage }}
@@ -14,13 +17,10 @@
 <script setup>
 import { toRef } from 'vue'
 import { useField } from 'vee-validate'
+import IconUpload from '@/components/IconUpload.vue'
 
 const props = defineProps({
   name: {
-    type: String,
-    required: true
-  },
-  type: {
     type: String,
     required: true
   },
@@ -30,40 +30,33 @@ const props = defineProps({
 })
 
 const nameRef = toRef(props, 'name')
-
 const { value, errorMessage } = useField(nameRef)
+
+function handleChange(e) {
+  value.value = e.target.files[0]
+}
 </script>
 
-<stye lang="scss" scoped>
-.form-field {
+<style lang="scss" scoped>
+.form-file {
   .label {
     color: #fff;
   }
 
-  input,
-  textarea {
-    font-size: 16px;
+  .custom-upload {
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
     width: 230px;
-    padding: 0;
-    color: #fff;
-    background: none;
-    border: none;
-    border-radius: 0;
     border-bottom: 1px solid #fff;
-    outline: none;
-    &:focus {
-      border-color: $color-accent;
-      color: $color-accent;
-    }
+    cursor: pointer;
+    font-weight: 300;
   }
 
-  input {
-    color-scheme: dark;
-    height: 40px;
-  }
-
-  textarea {
-    resize: none;
+  input[type='file'] {
+    display: none;
   }
 
   .error-container {
@@ -75,17 +68,10 @@ const { value, errorMessage } = useField(nameRef)
     font-size: 10px;
     color: rgb(230, 27, 27);
   }
-
-  &:focus-within {
-    .label {
-      color: $color-accent;
-    }
-  }
 }
 @include media-xs {
-  .form-field {
-    input,
-    textarea {
+  .form-file {
+    .custom-upload {
       width: 400px;
     }
     .error-container {
@@ -96,4 +82,4 @@ const { value, errorMessage } = useField(nameRef)
     }
   }
 }
-</stye>
+</style>

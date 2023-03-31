@@ -1,7 +1,9 @@
 <template>
   <div class="find-events-container">
     <Hero type="findEvents" />
-    <Search v-model:value="value" @search="handleSearch" />
+    <ControlsContainer>
+      <Search v-model:value="value" @search="handleSearch" />
+    </ControlsContainer>
     <CardsContainer>
       <EventCard
         v-for="event in events"
@@ -16,6 +18,7 @@
 
 <script setup>
 import Search from '@/components/Search.vue'
+import ControlsContainer from '@/components/ControlsContainer.vue'
 import Hero from '@/components/Hero.vue'
 import EventCard from '../components/EventCard.vue'
 import CardsContainer from '@/components/CardsContainer.vue'

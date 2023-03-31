@@ -74,9 +74,15 @@ function initMap(location) {
     ? [L.latLng(location.coords.latitude, location.coords.longitude), L.latLng(...props.marker)]
     : [L.latLng(...props.marker)]
   map.value = L.map('map').setView(defaultView, 13)
-  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19
-  }).addTo(map.value)
+  L.tileLayer(
+    `https://maps.geoapify.com/v1/tile/osm-bright/{z}/{x}/{y}.png?apiKey=${
+      import.meta.env.VITE_GEOAPIFY_KEY
+    }`,
+    {
+      maxZoom: 20,
+      id: 'osm-bright'
+    }
+  ).addTo(map.value)
   L.Routing.control({
     waypoints,
     createMarker: function (i, start, n) {

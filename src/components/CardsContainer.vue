@@ -12,7 +12,7 @@
 .cards-container {
   position: relative;
   z-index: 99;
-  padding: 40px 40px;
+  padding: 40px 20px;
   background: $color-main;
   display: grid;
   grid-template-columns: repeat(1, 1fr);
@@ -24,6 +24,11 @@
     grid-column-start: 1;
     grid-column-end: -1;
     color: $color-accent;
+  }
+}
+@include media-xs {
+  .cards-container {
+    padding: 40px 40px;
   }
 }
 @include media-sm {

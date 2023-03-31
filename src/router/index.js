@@ -30,9 +30,21 @@ const router = createRouter({
       }
     },
     {
-      path: '/add-event',
-      name: 'AddEvent',
-      component: () => import('@/views/AddEventView.vue'),
+      path: '/edit-event',
+      name: 'editEvent',
+      component: () => import('@/views/EditEventView.vue'),
+      props: (route) => ({ id: Number(route.query.id) }),
+      meta: { requiresAuth: true },
+      beforeEnter: (to, from) => {
+        if (!to.query.id) {
+          return { name: 'findEvents' }
+        }
+      }
+    },
+    {
+      path: '/create-event',
+      name: 'createEvent',
+      component: () => import('@/views/CreateEventView.vue'),
       meta: { requiresAuth: true }
     },
     {

@@ -33,13 +33,11 @@ const updateValue = (e: Event) => {
 
 <style lang="scss" scoped>
 .search {
-  position: relative;
-  top: -27px;
   padding: 10px;
   width: fit-content;
   background: $color-secondary;
   display: flex;
-  border-radius: 7px;
+  border-radius: 10% / 50%;
 
   input {
     font-size: 16px;
@@ -62,6 +60,7 @@ const updateValue = (e: Event) => {
 
 @include media-xs {
   .search {
+    border-radius: 6% / 50%;
     input {
       width: 280px;
     }
@@ -69,8 +68,6 @@ const updateValue = (e: Event) => {
 }
 @include media-md {
   .search {
-    top: -32px;
-
     input {
       padding: 10px;
       width: 350px;
