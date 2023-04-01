@@ -25,7 +25,7 @@ const emits = defineEmits(['sort'])
 
 const isOptionsVisible = ref(false)
 const value = ref('')
-const options = ['closest', 'popularity']
+const options = ['soonest', 'popularity']
 
 function handleSelect(option) {
   value.value = option
