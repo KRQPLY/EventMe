@@ -1,33 +1,23 @@
 <template>
   <div class="search">
-    <input
-      type="text"
-      placeholder="Search"
-      :value="value"
-      @input="updateValue"
-      @keyup.enter="$emit('search')"
-    />
-    <Button @click="$emit('search')">
+    <input type="text" placeholder="Search" v-model="value" @keyup.enter="updateValue" />
+    <Button @click="updateValue">
       <IconSearch />
     </Button>
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import IconSearch from './IconSearch.vue'
 import Button from './Button.vue'
+import { ref } from 'vue'
 
-defineProps({
-  value: {
-    type: String,
-    default: '',
-    required: true
-  }
-})
-const emits = defineEmits(['update:value', 'search'])
+const emits = defineEmits(['search'])
 
-const updateValue = (e: Event) => {
-  emits('update:value', (e.target as HTMLInputElement).value)
+const value = ref('')
+
+const updateValue = () => {
+  emits('search', value.value)
 }
 </script>
 

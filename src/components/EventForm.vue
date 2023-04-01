@@ -26,12 +26,15 @@ import uploadImage from '@/helpers/uploadImage'
 import postData from '@/helpers/postData'
 import putData from '@/helpers/putData'
 import toTimeDate from '@/helpers/toTimeDate'
+import { useRouter } from 'vue-router'
 import { useForm } from 'vee-validate'
 import * as yup from 'yup'
 
 const props = defineProps({
   eventId: Number
 })
+
+const router = useRouter()
 
 const schema = props.eventId
   ? yup.object({
@@ -106,9 +109,14 @@ async function handleSubmit() {
   })(values)
 
   if (props.eventId) {
-    await putData(`${import.meta.env.VITE_API_URL}/events`, { ...data, eventId: props.eventId })
+    await putData(`${import.meta.env.VITE_API_URL}/events`, {
+      ...data,
+      eventId: props.eventId
+    })
+    router.push({ name: 'event', query: { id: props.eventId } })
   } else {
-    await postData(`${import.meta.env.VITE_API_URL}/events`, data)
+    const response = await postData(`${import.meta.env.VITE_API_URL}/events`, data)
+    router.push({ name: 'event', query: { id: response.id } })
   }
 }
 </script>

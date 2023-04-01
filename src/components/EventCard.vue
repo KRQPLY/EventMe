@@ -1,9 +1,10 @@
 <template>
   <div class="project-card" @click="router.push({ name: 'event', query: { id: props.id } })">
+    <div class="info"></div>
     <img class="img" :src="getImageUrl(imageUrl)" alt="event-photo" />
     <div class="info">
-      <div class="author"><IconUser />{{ author }}</div>
-      <div class="participants">{{ nFormatter(participantsNumber) }}</div>
+      <div class="name">{{ name }}</div>
+      <div class="participants"><IconUser />{{ nFormatter(participantsNumber) }}</div>
     </div>
   </div>
 </template>
@@ -16,7 +17,7 @@ import { useRouter } from 'vue-router'
 
 const props = defineProps({
   id: Number,
-  author: String,
+  name: String,
   participantsNumber: Number,
   imageUrl: {
     type: String,
@@ -45,7 +46,8 @@ const router = useRouter()
     font-weight: 300;
     font-size: 14px;
     color: $color-contrast;
-    .author {
+    .name,
+    .participants {
       cursor: pointer;
       display: flex;
       align-items: center;

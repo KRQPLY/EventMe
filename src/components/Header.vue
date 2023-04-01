@@ -35,7 +35,7 @@ const userStore = useUserStore()
 const router = useRouter()
 
 async function handleSignout() {
-  await userStore.signout()
+  userStore.signout()
   router.push({ name: 'signin' })
 }
 </script>
@@ -45,7 +45,7 @@ async function handleSignout() {
   box-sizing: border-box;
   height: $height-header;
   position: relative;
-  z-index: 1000;
+  z-index: 1001;
   padding: 10px;
   display: flex;
   justify-content: space-between;

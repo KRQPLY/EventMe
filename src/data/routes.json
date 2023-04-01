@@ -2,5 +2,5 @@
     "/auth/signin": "/signin",
     "/auth/signup": "/signup",
     "/user/signout": "/signout",
-    "/user/remove": "/signout"
+    "/user/remove": "/delete"
   }

@@ -2,44 +2,82 @@
   <div class="find-events-container">
     <Hero type="findEvents" />
     <ControlsContainer>
-      <Search v-model:value="value" @search="handleSearch" />
+      <Search @search="handleSearch" />
+      <template v-slot:row>
+        <Filter @filter="handleFilterChange" />
+        <Select @sort="handleSortChange" />
+      </template>
     </ControlsContainer>
     <CardsContainer>
       <EventCard
         v-for="event in events"
         :id="event.id"
-        :author="event.author"
+        :name="event.name"
         :image-url="event.imageUrl"
         :participants-number="event.participantsNumber"
       />
     </CardsContainer>
+    <Pagination @page-change="handlePageChange" :results="250" v-model="page" />
   </div>
 </template>
 
 <script setup>
 import Search from '@/components/Search.vue'
+import Filter from '@/components/Filter.vue'
 import ControlsContainer from '@/components/ControlsContainer.vue'
 import Hero from '@/components/Hero.vue'
-import EventCard from '../components/EventCard.vue'
+import EventCard from '@/components/EventCard.vue'
 import CardsContainer from '@/components/CardsContainer.vue'
+import Pagination from '@/components/Pagination.vue'
+import Select from '@/components/Select.vue'
 import { ref } from 'vue'
 import getData from '@/helpers/getData'
 
-const value = ref('')
+const name = ref('')
+const page = ref(1)
+const sort = ref('')
+const filter = ref('')
 const events = ref([])
 
 getEvents()
 
-function handleSearch() {
-  console.log(value.value)
-}
-
 async function getEvents() {
-  const response = await getData(`${import.meta.env.VITE_API_URL}/events`)
+  const response = await getData(
+    `${import.meta.env.VITE_API_URL}/events?page=${page.value}&sort-by=${
+      sort.value ? sort.value : null
+    }&filter=${filter.value ? filter.value : null}&name=${name.value ? name.value : null}`
+  )
 
   if (response.length) {
     events.value = response
   }
+}
+
+function handleSearch(searchVal) {
+  name.value = searchVal
+  page.value = 1
+  getEvents()
+  console.log('search')
+}
+
+function handlePageChange(pageNum) {
+  page.value = pageNum
+  getEvents()
+  console.log('page')
+}
+
+function handleSortChange(sortVal) {
+  sort.value = sortVal
+  page.value = 1
+  getEvents()
+  console.log('sort')
+}
+
+function handleFilterChange(filterVal) {
+  filter.value = filterVal
+  page.value = 1
+  getEvents()
+  console.log('filter')
 }
 </script>
 

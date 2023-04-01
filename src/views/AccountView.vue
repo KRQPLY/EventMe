@@ -1,6 +1,6 @@
 <template>
-  <div class="friends-container">
-    <Hero type="friends" />
+  <div class="account-container">
+    <Hero type="account" />
   </div>
 </template>
 

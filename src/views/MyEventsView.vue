@@ -2,16 +2,13 @@
   <div class="my-events-container">
     <Hero type="myEvents" />
     <ControlsContainer>
-      <Search v-model:value="searchValue" @search="getEvents" />
-      <template v-slot:row-first>
-        <Button filled>Todo</Button>
-      </template>
+      <Search @search="getEvents" />
     </ControlsContainer>
-    <CardsContainer>
+    <CardsContainer class="cards-container">
       <EventCard
         v-for="event in events"
         :id="event.id"
-        :author="event.author"
+        :name="event.name"
         :image-url="event.imageUrl"
         :participants-number="event.participantsNumber"
       />
@@ -21,7 +18,6 @@
 
 <script setup>
 import Hero from '@/components/Hero.vue'
-import Button from '../components/Button.vue'
 import ControlsContainer from '@/components/ControlsContainer.vue'
 import Search from '../components/Search.vue'
 import EventCard from '../components/EventCard.vue'
@@ -43,4 +39,10 @@ async function getEvents() {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.my-events-container {
+  .cards-container {
+    margin-top: 15px;
+  }
+}
+</style>

@@ -4,10 +4,7 @@
       <slot></slot>
     </div>
     <div class="controls-row">
-      <slot name="row-first"></slot>
-    </div>
-    <div class="controls-row">
-      <slot name="row-second"></slot>
+      <slot name="row"></slot>
     </div>
   </div>
 </template>
@@ -36,6 +33,7 @@
     justify-content: space-between;
     width: 100%;
     padding: 0 20px;
+    margin-top: 50px;
   }
 }
 

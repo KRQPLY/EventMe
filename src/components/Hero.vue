@@ -39,12 +39,12 @@ if (props.type === 'myEvents') {
   content.name = 'Mariya Muschard'
   content.img = 'my-events'
 }
-if (props.type === 'friends') {
-  content.title = 'friends'
+if (props.type === 'account') {
+  content.title = 'my account'
   content.url =
     'https://pixabay.com/users/sasint-3639875/?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=1807524'
   content.name = 'Sasin Tipchai'
-  content.img = 'friends'
+  content.img = 'account'
 }
 </script>
 
@@ -68,8 +68,8 @@ if (props.type === 'friends') {
   &.find-events {
     background-image: url('@/assets/find-background-sm.jpg');
   }
-  &.friends {
-    background-image: url('@/assets/friends-background-sm.jpg');
+  &.account {
+    background-image: url('@/assets/account-background-sm.jpg');
   }
   .credit {
     display: none;
@@ -86,9 +86,9 @@ if (props.type === 'friends') {
     &.find-events {
       background-image: url('@/assets/find-background-md.jpg');
     }
-    &.friends {
+    &.account {
       background-position: center;
-      background-image: url('@/assets/friends-background-md.jpg');
+      background-image: url('@/assets/account-background-md.jpg');
     }
     .credit {
       display: block;
@@ -118,8 +118,8 @@ if (props.type === 'friends') {
     &.find-events {
       background-image: url('@/assets/find-background-xl.jpg');
     }
-    &.friends {
-      background-image: url('@/assets/friends-background-xl.jpg');
+    &.account {
+      background-image: url('@/assets/account-background-xl.jpg');
     }
   }
 }

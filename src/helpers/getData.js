@@ -6,10 +6,6 @@ export default async function getData(endpoint) {
 
     return response.data
   } catch (e) {
-    if (typeof e === 'string') {
-      console.error(e.toUpperCase())
-    } else if (e instanceof Error) {
-      console.error(e.message)
-    }
+    console.error(e)
   }
 }

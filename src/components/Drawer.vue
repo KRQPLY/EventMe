@@ -17,10 +17,10 @@
       </div>
       <div
         class="option"
-        :class="{ active: currentRouteName === 'friends' }"
-        @click="handleInDrawerClick('friends')"
+        :class="{ active: currentRouteName === 'account' }"
+        @click="handleInDrawerClick('account')"
       >
-        Friends
+        {{ userStore.username }}
       </div>
     </div>
     <div class="sign-buttons">
@@ -53,7 +53,7 @@ function handleInDrawerClick(name) {
 }
 
 async function handleSignOut() {
-  await userStore.signout()
+  userStore.signout()
   router.push({ name: 'signin' })
   closeDrawer()
 }
@@ -70,7 +70,7 @@ function closeDrawer() {
   flex-direction: column;
   align-items: center;
   gap: 50px;
-  z-index: 1000;
+  z-index: 1001;
   padding: 50px 0;
   width: 100%;
   font-weight: 200;
@@ -96,7 +96,7 @@ function closeDrawer() {
 
 .drawer-background {
   position: fixed;
-  z-index: 999;
+  z-index: 1000;
   top: 0;
   bottom: 0;
   width: 100%;

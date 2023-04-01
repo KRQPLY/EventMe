@@ -16,10 +16,10 @@
     </div>
     <div
       class="option"
-      :class="{ active: currentRouteName === 'friends' }"
-      @click="router.push({ name: 'friends' })"
+      :class="{ active: currentRouteName === 'account' }"
+      @click="router.push({ name: 'account' })"
     >
-      Friends
+      {{ userStore.username }}
     </div>
   </div>
 </template>
