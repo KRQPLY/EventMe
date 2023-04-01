@@ -17,7 +17,12 @@
         :participants-number="event.participantsNumber"
       />
     </CardsContainer>
-    <Pagination @page-change="handlePageChange" :results="results" v-model="page" />
+    <Pagination
+      @page-change="handlePageChange"
+      :results="results"
+      v-model="page"
+      v-if="events.length"
+    />
   </div>
 </template>
 
@@ -38,7 +43,7 @@ const page = ref(1)
 const sort = ref('')
 const filter = ref('')
 const events = ref([])
-const results = ref(1)
+const results = ref(0)
 
 getEvents()
 
@@ -54,7 +59,7 @@ async function getEvents() {
     results.value = response.info.results
   } else {
     events.value = []
-    results.value = 1
+    results.value = 0
   }
 }
 
