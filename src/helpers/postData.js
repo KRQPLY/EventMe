@@ -6,7 +6,6 @@ export default async function postData(endpoint, data) {
     const token = useStorage('token', '')
     const response = await axios.post(endpoint, data, {
       headers: {
-        'content-type': 'application/json',
         Authorization: `Bearer ${token.value}`
       }
     })

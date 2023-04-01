@@ -6,7 +6,6 @@ export default async function putData(endpoint, data) {
     const token = useStorage('token', '')
     const response = await axios.put(endpoint, data, {
       headers: {
-        'content-type': 'application/json',
         Authorization: `Bearer ${token.value}`
       }
     })

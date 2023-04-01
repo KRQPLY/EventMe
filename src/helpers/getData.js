@@ -6,7 +6,6 @@ export default async function getData(endpoint) {
     const token = useStorage('token', '')
     const response = await axios.get(endpoint, {
       headers: {
-        'content-type': 'application/json',
         Authorization: `Bearer ${token.value}`
       }
     })
