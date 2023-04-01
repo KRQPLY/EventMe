@@ -49,7 +49,7 @@ async function getEvents() {
   )
 
   if (response.length) {
-    events.value = response
+    events.value = response.eventsList
   }
 }
 
