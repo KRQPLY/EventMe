@@ -52,6 +52,9 @@ async function getEvents() {
   if (response.eventsList.length) {
     events.value = response.eventsList
     results.value = response.info.results
+  } else {
+    events.value = []
+    results.value = 1
   }
 }
 
