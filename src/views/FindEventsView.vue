@@ -44,9 +44,9 @@ getEvents()
 
 async function getEvents() {
   const response = await getData(
-    `${import.meta.env.VITE_API_URL}/events?page=${page.value}&sort-by=${
-      sort.value ? sort.value : null
-    }&filter=${filter.value ? filter.value : null}&name=${name.value ? name.value : null}`
+    `${import.meta.env.VITE_API_URL}/events?page=${page.value}&sort-by=${sort.value}&filter=${
+      filter.value
+    }&name=${name.value}`
   )
 
   if (response.eventsList.length) {
