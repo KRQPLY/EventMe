@@ -7,7 +7,6 @@ export default async function getData(endpoint) {
     const response = await axios.get(endpoint, {
       headers: {
         'content-type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
         Authorization: `Bearer ${token.value}`
       }
     })
