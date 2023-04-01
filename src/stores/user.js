@@ -13,10 +13,10 @@ export const useUserStore = defineStore('user', () => {
       password
     })
 
-    // token.value = response.token
-    // username.value = response.username
-    token.value = 's'
-    username.value = 'krqply'
+    token.value = response.token
+    username.value = response.username
+    // token.value = 's'
+    // username.value = 'krqply'
   }
   async function signup(email, nick, dateOfBirth, password) {
     const response = await postData(`${import.meta.env.VITE_API_URL}/auth/signup`, {
@@ -26,10 +26,10 @@ export const useUserStore = defineStore('user', () => {
       password
     })
 
-    // token.value = response.token
-    // username.value = response.username
-    token.value = 's'
-    username.value = 'krqply'
+    token.value = response.token
+    username.value = response.username
+    // token.value = 's'
+    // username.value = 'krqply'
   }
   function signout() {
     token.value = ''
