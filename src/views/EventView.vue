@@ -4,7 +4,7 @@
       :description="event.description"
       :name="event.name"
       :author="event.author"
-      :date="event.date"
+      :date="event.startDate"
       :image-url="event.imageUrl"
       :marker="event.marker"
       v-if="event"
