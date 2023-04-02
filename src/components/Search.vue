@@ -37,13 +37,11 @@ const updateValue = () => {
     border-radius: 0;
     border: none;
     outline: none;
-    border-right: 2px solid $color-contrast;
     font-weight: 500;
     color: $color-contrast;
     &:focus {
       outline: none;
       border: none;
-      border-right: 2px solid $color-accent;
       color: $color-accent;
     }
   }
