@@ -5,21 +5,11 @@
     viewBox="0 0 30 30"
     width="20px"
     height="20px"
+    class="svg"
   >
-    <circle
-      style="fill: none; stroke: #000000; stroke-width: 2; stroke-miterlimit: 10"
-      cx="13"
-      cy="13"
-      r="9"
-    />
+    <circle style="fill: none; stroke-width: 2; stroke-miterlimit: 10" cx="13" cy="13" r="9" />
     <line
-      style="
-        fill: none;
-        stroke: #000000;
-        stroke-width: 2;
-        stroke-linecap: round;
-        stroke-miterlimit: 10;
-      "
+      style="fill: none; stroke-width: 2; stroke-linecap: round; stroke-miterlimit: 10"
       x1="26"
       y1="26"
       x2="19.437"
@@ -30,4 +20,9 @@
 
 <script setup></script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.svg {
+  stroke: $color-contrast;
+  transition: stroke 0.5s ease;
+}
+</style>

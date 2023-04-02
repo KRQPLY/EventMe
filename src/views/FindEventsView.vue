@@ -67,27 +67,23 @@ function handleSearch(searchVal) {
   name.value = searchVal
   page.value = 1
   getEvents()
-  console.log('search')
 }
 
 function handlePageChange(pageNum) {
   page.value = pageNum
   getEvents()
-  console.log('page')
 }
 
 function handleSortChange(sortVal) {
   sort.value = sortVal
   page.value = 1
   getEvents()
-  console.log('sort')
 }
 
 function handleFilterChange(filterVal) {
   filter.value = filterVal
   page.value = 1
   getEvents()
-  console.log('filter')
 }
 </script>
 
