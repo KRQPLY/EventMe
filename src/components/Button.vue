@@ -1,5 +1,9 @@
 <template>
-  <button class="button" :class="{ filled, desktop, mobile }" :style="{ color: color }">
+  <button
+    class="button"
+    :class="{ filled, desktop, mobile, danger, checked }"
+    :style="{ color: color, 'border-radius': radius }"
+  >
     <slot></slot>
   </button>
 </template>
@@ -7,6 +11,18 @@
 <script setup>
 defineProps({
   filled: {
+    type: Boolean,
+    default: false
+  },
+  radius: {
+    type: String,
+    default: '25% / 50%'
+  },
+  danger: {
+    type: Boolean,
+    default: false
+  },
+  checked: {
     type: Boolean,
     default: false
   },
@@ -31,7 +47,6 @@ defineProps({
   padding: 5px 10px;
   background: none;
   border: none;
-  border-radius: 25% / 50%;
   font-weight: 300;
   color: $color-contrast;
   &.filled {
@@ -40,6 +55,12 @@ defineProps({
     &:focus-visible {
       box-shadow: 0 0 1px 2px rgba($color-accent, 0.6);
     }
+  }
+  &.danger {
+    background-color: $color-danger;
+  }
+  &.checked {
+    background-color: $color-silver;
   }
   &.desktop {
     display: none;

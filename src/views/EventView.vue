@@ -1,19 +1,24 @@
 <template>
   <div class="event-container">
     <EventDetails
+      :event-id="event.id"
       :description="event.description"
       :name="event.name"
       :author="event.author"
-      :date="event.startDate"
+      :max-participants-number="event.maxParticipantsNumber"
+      :start-date="event.startDate"
+      :end-date="event.endDate"
+      :participants-usernames="event.participantsUsernames"
       :image-url="event.imageUrl"
       :marker="event.marker"
       v-if="event"
+      @update="getEvent"
     />
   </div>
 </template>
 
 <script setup>
-import EventDetails from '../components/EventDetails.vue'
+import EventDetails from '@/components/EventDetails.vue'
 import { ref } from 'vue'
 import getData from '@/helpers/getData'
 

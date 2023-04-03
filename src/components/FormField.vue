@@ -73,7 +73,7 @@ const { value, errorMessage } = useField(nameRef)
   .error-message {
     font-weight: 400;
     font-size: 10px;
-    color: rgb(230, 27, 27);
+    color: $color-danger;
   }
 
   &:focus-within {

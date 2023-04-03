@@ -1,14 +1,20 @@
 import axios from 'axios'
 import { useStorage } from '@vueuse/core'
 
-export default async function deleteData(endpoint) {
+export default async function deleteData(endpoint, authorization = false) {
   try {
     const token = useStorage('token', '')
-    const response = await axios.delete(endpoint, {
-      headers: {
-        Authorization: `Bearer ${token.value}`
+    let config
+
+    if (authorization) {
+      config = {
+        headers: {
+          Authorization: `Bearer ${token.value}`
+        }
       }
-    })
+    }
+
+    const response = await axios.delete(endpoint, config)
 
     return response.data
   } catch (e) {

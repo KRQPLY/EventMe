@@ -2,7 +2,7 @@
   <div class="my-events-container">
     <Hero type="myEvents" />
     <ControlsContainer>
-      <Search @search="getEvents" />
+      <Search @search="handleSearch" />
     </ControlsContainer>
     <CardsContainer class="cards-container">
       <EventCard
@@ -26,16 +26,21 @@ import { ref } from 'vue'
 import getData from '@/helpers/getData'
 
 const events = ref([])
-const searchValue = ref('')
+const search = ref('')
 
 getEvents()
 
 async function getEvents() {
-  const response = await getData(`${import.meta.env.VITE_API_URL}/user-events`)
+  const response = await getData(`${import.meta.env.VITE_API_URL}/user-events`, true)
 
   if (response.length) {
     events.value = response
   }
+}
+
+function handleSearch(searchVal) {
+  search.value = searchVal
+  events.value = events.value.filter((event) => event.name.includes(search.value))
 }
 </script>
 

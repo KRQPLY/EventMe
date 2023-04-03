@@ -66,7 +66,7 @@ function handleChange(e) {
   .error-message {
     font-weight: 400;
     font-size: 10px;
-    color: rgb(230, 27, 27);
+    color: $color-danger;
   }
 }
 @include media-xs {

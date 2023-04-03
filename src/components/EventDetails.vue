@@ -5,13 +5,25 @@
         <div class="name">
           {{ name }}
         </div>
-        <Button filled>Join</Button>
+        <Button
+          filled
+          :checked="isJoined"
+          :radius="isJoined ? '25% / 50%' : '35% / 50%'"
+          @click="handleJoin"
+          >{{ isJoined ? 'Joined' : 'Join' }}</Button
+        >
       </div>
     </div>
     <div class="section">
       <div class="banner">
-        <div class="date">{{ toDateTime(date) }}</div>
-        <div class="date">{{ toDateTime(date, true) }}</div>
+        <div>
+          <div class="label">start</div>
+          <div class="date">{{ toDateTime(startDate) }} {{ toDateTime(startDate, true) }}</div>
+        </div>
+        <div v-if="endDate">
+          <div class="label">end</div>
+          <div class="date">{{ toDateTime(endDate) }} {{ toDateTime(endDate, true) }}</div>
+        </div>
       </div>
     </div>
     <div class="img">
@@ -24,6 +36,23 @@
       <div class="author">By: {{ author }}</div>
     </div>
     <div id="map"></div>
+    <div class="section" v-if="maxParticipantsNumber">
+      <div class="banner">
+        <div class="label">max participants</div>
+        <div class="label">{{ nFormatter(maxParticipantsNumber) }}</div>
+      </div>
+    </div>
+    <div class="section" v-if="author === userStore.username">
+      <div class="label">settings</div>
+      <div class="settings">
+        <Button
+          filled
+          radius="35% / 50%"
+          @click="router.push({ name: 'editEvent', query: { id: eventId } })"
+          >Edit</Button
+        ><Button filled danger @click="handleDelete">Delete</Button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -36,13 +65,22 @@ import 'leaflet-routing-machine/dist/leaflet-routing-machine.css'
 import L from 'leaflet'
 import 'leaflet-routing-machine'
 import markerIconPng from 'leaflet/dist/images/marker-icon.png'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, computed, toRef } from 'vue'
+import { useUserStore } from '@/stores/user'
+import { useRouter } from 'vue-router'
+import deleteData from '@/helpers/deleteData'
+import postData from '@/helpers/postData'
+import nFormatter from '@/helpers/nFormatter'
 
 const props = defineProps({
+  eventId: Number,
   description: String,
   name: String,
   author: String,
-  date: Number,
+  maxParticipantsNumber: Number,
+  startDate: Number,
+  endDate: Number,
+  participantsUsernames: Array,
   marker: {
     type: Array,
     default: [51.505, -0.09]
@@ -53,7 +91,14 @@ const props = defineProps({
   }
 })
 
+const emits = defineEmits(['update'])
+
+const userStore = useUserStore()
+const router = useRouter()
+const participants = toRef(props, 'participantsUsernames')
 const map = ref(null)
+
+const isJoined = computed(() => participants.value.includes(userStore.username))
 
 onMounted(() => {
   navigator.geolocation.getCurrentPosition(
@@ -65,6 +110,20 @@ onMounted(() => {
     }
   )
 })
+
+function handleDelete() {
+  deleteData(`${import.meta.env.VITE_API_URL}/api/events/${props.eventId}`, true)
+  router.push({ name: 'findEvents' })
+}
+
+async function handleJoin() {
+  if (isJoined.value) {
+    await deleteData(`${import.meta.env.VITE_API_URL}/api/user-events/${props.eventId}`, true)
+  } else {
+    await postData(`${import.meta.env.VITE_API_URL}/api/user-events`, { id: props.eventId })
+  }
+  emits('update')
+}
 
 function initMap(location) {
   const defaultView = location
@@ -114,6 +173,12 @@ function initMap(location) {
       justify-content: space-between;
       align-items: center;
     }
+    .label {
+      font-size: 12px;
+    }
+    .date {
+      font-size: 12px;
+    }
     .name {
       display: flex;
       justify-content: space-between;
@@ -128,6 +193,11 @@ function initMap(location) {
     .description {
       font-weight: 300;
       text-align: justify;
+    }
+    .settings {
+      margin-top: 10px;
+      display: flex;
+      justify-content: space-between;
     }
   }
   img {

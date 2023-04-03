@@ -5,8 +5,12 @@
     <FormField name="category" type="text" label="Category" />
     <FormFile name="image" label="Upload image" />
     <FormAdress name="marker" label="Address" />
-    <FormField name="startDate" type="date" label="Start date" />
-    <FormField name="endDate" type="date" :label="`End date${eventId ? '' : ' (optional)'}`" />
+    <FormField name="startDate" type="datetime-local" label="Start date" />
+    <FormField
+      name="endDate"
+      type="datetime-local"
+      :label="`End date${eventId ? '' : ' (optional)'}`"
+    />
     <FormField
       name="maxParticipantsNumber"
       type="number"
@@ -111,12 +115,12 @@ async function handleSubmit() {
   if (props.eventId) {
     await putData(`${import.meta.env.VITE_API_URL}/events`, {
       ...data,
-      eventId: props.eventId
+      id: props.eventId
     })
     router.push({ name: 'event', query: { id: props.eventId } })
   } else {
     const response = await postData(`${import.meta.env.VITE_API_URL}/events`, data)
-    router.push({ name: 'event', query: { id: response.id } })
+    router.push({ name: 'event', query: { id: response.eventId } })
   }
 }
 </script>

@@ -100,7 +100,7 @@ function handleAddressChange(addressFormatted, coords) {
   .error-message {
     font-weight: 400;
     font-size: 10px;
-    color: rgb(230, 27, 27);
+    color: $color-danger;
   }
 
   .autocompletes-container {
