@@ -112,15 +112,15 @@ onMounted(() => {
 })
 
 function handleDelete() {
-  deleteData(`${import.meta.env.VITE_API_URL}/api/events/${props.eventId}`, true)
+  deleteData(`${import.meta.env.VITE_API_URL}/events/${props.eventId}`, true)
   router.push({ name: 'findEvents' })
 }
 
 async function handleJoin() {
   if (isJoined.value) {
-    await deleteData(`${import.meta.env.VITE_API_URL}/api/user-events/${props.eventId}`, true)
+    await deleteData(`${import.meta.env.VITE_API_URL}/user-events/${props.eventId}`, true)
   } else {
-    await postData(`${import.meta.env.VITE_API_URL}/api/user-events`, { id: props.eventId })
+    await postData(`${import.meta.env.VITE_API_URL}/user-events`, { id: props.eventId })
   }
   emits('update')
 }
