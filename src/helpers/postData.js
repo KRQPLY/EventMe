@@ -13,5 +13,6 @@ export default async function postData(endpoint, data) {
     return response.data
   } catch (e) {
     console.error(e)
+    return e.response.data
   }
 }

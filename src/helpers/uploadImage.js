@@ -11,7 +11,7 @@ export default async function uploadImage(file) {
   try {
     const response = await axios.post(apiUrl, formData)
 
-    return response.data.url
+    return response.data.secure_url
   } catch (e) {
     console.error(e)
   }

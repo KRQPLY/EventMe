@@ -27,7 +27,13 @@
         <UsersList :users="friendsRequested" v-else-if="option === 'invited'" />
       </div>
       <div class="add-friend" v-if="option === 'invite'">
-        <FormField name="username" type="text" label="Enter username" theme-responsive />
+        <FormField
+          name="username"
+          type="text"
+          label="Enter username"
+          theme-responsive
+          @keyup.enter="handleInvite"
+        />
         <Button filled @click="handleInvite">Invite</Button>
       </div>
     </div>
@@ -45,16 +51,16 @@ import postData from '@/helpers/postData'
 
 const props = defineProps({ friendsData: { type: Array, default: [] } })
 
-defineEmits(['updated'])
+const emits = defineEmits(['updated'])
 
 const friendsRef = toRef(props, 'friendsData')
 const option = ref('friends')
 
-const { values, setFieldError } = useForm()
+const { values, setFieldError, setFieldValue } = useForm()
 
 const friendsAccepted = computed(() =>
   friendsRef.value
-    .filter((friend) => !friend.invitationReceived && !friend.invitationSent)
+    .filter((friend) => friend.invitationReceived && friend.invitationSent)
     .map((friend) => friend.username)
 )
 const friendsRequested = computed(() =>
@@ -69,10 +75,14 @@ function handleSelect(optionVal) {
 }
 
 async function handleInvite() {
-  console.log(values.username)
   const response = await postData(`${import.meta.env.VITE_API_URL}/friends/${values.username}`)
 
-  // TODO check if proceeded and set field error if not
+  if (!response.error) {
+    setFieldError('username', response.error)
+  } else {
+    setFieldValue('username')
+  }
+  emits('updated')
 }
 </script>
 
@@ -107,7 +117,7 @@ async function handleInvite() {
       align-items: center;
       gap: 10px;
       background-color: $color-secondary;
-      padding: 10px 20px;
+      padding: 10px 10px;
       border-radius: 7px;
       display: flex;
       justify-content: space-between;
@@ -120,6 +130,7 @@ async function handleInvite() {
     padding: 0 30px;
     .options-container {
       .add-friend {
+        padding: 10px 20px;
         flex-direction: row;
       }
     }

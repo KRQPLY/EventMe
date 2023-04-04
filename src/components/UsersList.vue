@@ -73,8 +73,8 @@ async function handleAccept(username) {
           display: flex;
         }
         &.empty {
+          flex-direction: column;
           color: $color-accent;
-          text-align: center;
         }
         &:first-child {
           padding-top: 0;
