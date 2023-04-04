@@ -40,7 +40,7 @@ defineProps({
 const emits = defineEmits(['updated'])
 
 async function handleDelete(username) {
-  const response = await deleteData(`${import.meta.env.VITE_API_URL}/friends/${username}`)
+  const response = await deleteData(`${import.meta.env.VITE_API_URL}/friends/${username}`, true)
 
   // TODO check if deleted
   emits('updated')
