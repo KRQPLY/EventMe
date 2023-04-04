@@ -64,10 +64,14 @@ const friendsAccepted = computed(() =>
     .map((friend) => friend.username)
 )
 const friendsRequested = computed(() =>
-  friendsRef.value.filter((friend) => friend.invitationSent).map((friend) => friend.username)
+  friendsRef.value
+    .filter((friend) => friend.invitationSent && !friend.invitationReceived)
+    .map((friend) => friend.username)
 )
 const friendsRequesting = computed(() =>
-  friendsRef.value.filter((friend) => friend.invitationReceived).map((friend) => friend.username)
+  friendsRef.value
+    .filter((friend) => friend.invitationReceived && !friend.invitationSent)
+    .map((friend) => friend.username)
 )
 
 function handleSelect(optionVal) {
