@@ -30,7 +30,7 @@
     </div>
     <MoonIcon />
   </div>
-  <div class="drawer-background"></div>
+  <div class="drawer-background" @click="closeDrawer"></div>
 </template>
 
 <script setup>
@@ -70,7 +70,7 @@ function closeDrawer() {
   flex-direction: column;
   align-items: center;
   gap: 50px;
-  z-index: 1001;
+  z-index: 1100;
   padding: 50px 0;
   width: 100%;
   font-weight: 200;
@@ -96,7 +96,7 @@ function closeDrawer() {
 
 .drawer-background {
   position: fixed;
-  z-index: 1000;
+  z-index: 1050;
   top: 0;
   bottom: 0;
   width: 100%;

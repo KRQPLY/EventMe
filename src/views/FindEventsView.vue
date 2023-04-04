@@ -5,7 +5,7 @@
       <Search @search="handleSearch" />
       <template v-slot:row>
         <Filter @filter="handleFilterChange" />
-        <Select @sort="handleSortChange" />
+        <Select @select="handleSortChange" :options="['soonest', 'popularity']" label="Sort by" />
       </template>
     </ControlsContainer>
     <CardsContainer>

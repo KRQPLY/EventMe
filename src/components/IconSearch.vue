@@ -23,6 +23,6 @@
 <style lang="scss" scoped>
 .svg {
   stroke: $color-contrast;
-  transition: stroke 0.5s ease;
+  transition: stroke 0.4s ease;
 }
 </style>

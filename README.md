@@ -1,12 +1,9 @@
 # EventMe
 
-[DEMO](https://evento-krqply.netlify.app/)
-
-### Start a json server to get the data and logins
+Feel free to check out here: [CLICK](https://evento-krqply.netlify.app/)
 
 ```sh
 npm install
-npx json-server --watch src/data/db.json --routes src/data/routes.json
 ```
 
 ### Compile and Hot-Reload for Development

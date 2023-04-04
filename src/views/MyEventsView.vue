@@ -6,7 +6,7 @@
     </ControlsContainer>
     <CardsContainer class="cards-container">
       <EventCard
-        v-for="event in events"
+        v-for="event in eventsFiltered"
         :id="event.id"
         :name="event.name"
         :image-url="event.imageUrl"
@@ -22,11 +22,15 @@ import ControlsContainer from '@/components/ControlsContainer.vue'
 import Search from '../components/Search.vue'
 import EventCard from '../components/EventCard.vue'
 import CardsContainer from '@/components/CardsContainer.vue'
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import getData from '@/helpers/getData'
 
 const events = ref([])
 const search = ref('')
+
+const eventsFiltered = computed(() =>
+  events.value.filter((event) => event.name.toLowerCase().includes(search.value.toLowerCase()))
+)
 
 getEvents()
 
@@ -40,7 +44,6 @@ async function getEvents() {
 
 function handleSearch(searchVal) {
   search.value = searchVal
-  events.value = events.value.filter((event) => event.name.includes(search.value))
 }
 </script>
 

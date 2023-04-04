@@ -1,6 +1,0 @@
-{
-    "/auth/signin": "/signin",
-    "/auth/signup": "/signup",
-    "/user/signout": "/signout",
-    "/user/remove": "/delete"
-  }

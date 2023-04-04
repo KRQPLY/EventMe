@@ -1,5 +1,5 @@
 <template>
-  <div class="form-field">
+  <div class="form-field" :class="{ 'theme-responsive': themeResponsive }">
     <div class="label">{{ label }}</div>
     <input v-model.lazy="value" :type="type" v-if="type !== 'textarea'" />
     <textarea v-model.lazy="value" rows="5" v-else />
@@ -26,6 +26,10 @@ const props = defineProps({
   },
   label: {
     type: String
+  },
+  themeResponsive: {
+    type: Boolean,
+    default: false
   }
 })
 
@@ -81,7 +85,31 @@ const { value, errorMessage } = useField(nameRef)
       color: $color-accent;
     }
   }
+
+  &.theme-responsive {
+    .label {
+      color: $color-contrast;
+    }
+
+    input,
+    textarea {
+      color: $color-contrast;
+      border-color: $color-contrast;
+
+      &:focus {
+        border-color: $color-accent;
+        color: $color-accent;
+      }
+    }
+
+    &:focus-within {
+      .label {
+        color: $color-accent;
+      }
+    }
+  }
 }
+
 @include media-xs {
   .form-field {
     input,

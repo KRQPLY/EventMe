@@ -21,7 +21,8 @@ const props = defineProps({
   participantsNumber: Number,
   imageUrl: {
     type: String,
-    default: '../assets/find-background-sm.jpg'
+    default:
+      'https://res.cloudinary.com/dqipqpwdf/image/upload/v1680613127/evento/default_g7tz6t.png'
   }
 })
 

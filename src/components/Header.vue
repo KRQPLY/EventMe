@@ -45,7 +45,7 @@ async function handleSignout() {
   box-sizing: border-box;
   height: $height-header;
   position: relative;
-  z-index: 1001;
+  z-index: 1100;
   padding: 10px;
   display: flex;
   justify-content: space-between;

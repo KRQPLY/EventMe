@@ -1,7 +1,7 @@
 <template>
   <div class="select-container" :class="{ open: isOptionsVisible }">
     <div class="select" @click="isOptionsVisible = !isOptionsVisible">
-      {{ value ? value : 'Sort by' }}
+      {{ value ? value : label }}
     </div>
     <div class="options-container" v-if="isOptionsVisible">
       <div class="options">
@@ -21,16 +21,27 @@
 <script setup>
 import { ref } from 'vue'
 
-const emits = defineEmits(['sort'])
+const props = defineProps({
+  options: {
+    type: Array
+  },
+  label: {
+    type: String
+  },
+  defaultOption: {
+    type: String
+  }
+})
+
+const emits = defineEmits(['select'])
 
 const isOptionsVisible = ref(false)
-const value = ref('')
-const options = ['soonest', 'popularity']
+const value = ref(props.defaultOption || '')
 
 function handleSelect(option) {
   value.value = option
   isOptionsVisible.value = !isOptionsVisible.value
-  emits('sort', option)
+  emits('select', option)
 }
 </script>
 
@@ -39,6 +50,7 @@ function handleSelect(option) {
   position: relative;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: start;
   background-color: $color-secondary;
   border-radius: 20%/50%;

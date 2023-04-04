@@ -13,10 +13,10 @@ export const useUserStore = defineStore('user', () => {
       password
     })
 
-    token.value = response.token
-    username.value = response.username
-    // token.value = 's'
-    // username.value = 'krqply'
+    if (response.token) {
+      token.value = response.token
+      username.value = response.username
+    }
   }
   async function signup(email, nick, dateOfBirth, password) {
     const response = await postData(`${import.meta.env.VITE_API_URL}/auth/signup`, {
@@ -26,17 +26,17 @@ export const useUserStore = defineStore('user', () => {
       password
     })
 
-    token.value = response.token
-    username.value = response.username
-    // token.value = 's'
-    // username.value = 'krqply'
+    if (response.token) {
+      token.value = response.token
+      username.value = response.username
+    }
   }
   function signout() {
     token.value = ''
     username.value = ''
   }
   async function removeAccount() {
-    await deleteData(`${import.meta.env.VITE_API_URL}/user/remove`)
+    await deleteData(`${import.meta.env.VITE_API_URL}/user/remove`, true)
     signout()
   }
 

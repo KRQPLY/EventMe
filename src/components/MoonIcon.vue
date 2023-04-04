@@ -39,7 +39,7 @@ const toggleDark = useToggle(isDark)
       height: 15px;
       border-radius: 50%;
       box-shadow: 3.5px 3px 0 0 $color-contrast;
-      transition: box-shadow 0.5s ease;
+      transition: box-shadow 0.4s ease;
     }
   }
 }
