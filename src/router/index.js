@@ -78,7 +78,7 @@ const router = createRouter({
         redirectId: Number(route.query.redirectId)
       }),
       meta: { requiresAuth: false },
-      beforeEnter: checkIfLoggedIn
+      beforeEnter: checkIfUserLoggedIn
     },
     {
       path: '/signup',
@@ -89,7 +89,7 @@ const router = createRouter({
         redirectId: Number(route.query.redirectId)
       }),
       meta: { requiresAuth: false },
-      beforeEnter: checkIfLoggedIn
+      beforeEnter: checkIfUserLoggedIn
     },
     {
       path: '/signin/:matchAll(.*)*',
@@ -109,6 +109,6 @@ const router = createRouter({
   }
 })
 
-router.beforeResolve(checkIfUserLoggedIn)
+router.beforeResolve(checkIfTokenValid)
 
 export default router
