@@ -1,6 +1,22 @@
+import FindEventsView from '@/views/FindEventsView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
-import { useUserStore } from '@/stores/user'
-import FindEventsView from '../views/FindEventsView.vue'
+import validateToken from '@/helpers/validateToken'
+
+async function checkIfUserLoggedIn() {
+  const isTokenValid = await validateToken()
+
+  if (isTokenValid) {
+    return { name: 'findEvents' }
+  }
+}
+
+async function checkIfTokenValid(to) {
+  const isTokenValid = await validateToken()
+
+  if (!isTokenValid && to.meta.requiresAuth) {
+    return { name: 'signin', query: { redirect: to.name, redirectId: to.query.id } }
+  }
+}
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -61,7 +77,8 @@ const router = createRouter({
         redirect: route.query.redirect,
         redirectId: Number(route.query.redirectId)
       }),
-      meta: { requiresAuth: false }
+      meta: { requiresAuth: false },
+      beforeEnter: checkIfLoggedIn
     },
     {
       path: '/signup',
@@ -71,7 +88,8 @@ const router = createRouter({
         redirect: route.query.redirect,
         redirectId: Number(route.query.redirectId)
       }),
-      meta: { requiresAuth: false }
+      meta: { requiresAuth: false },
+      beforeEnter: checkIfLoggedIn
     },
     {
       path: '/signin/:matchAll(.*)*',
@@ -86,19 +104,11 @@ const router = createRouter({
       redirect: `/`
     }
   ],
-  scrollBehavior(to, from, savedPosition) {
+  scrollBehavior() {
     return { top: 0 }
   }
 })
 
-router.beforeEach((to, from) => {
-  const userStore = useUserStore()
-
-  if (!userStore.token && to.meta.requiresAuth) {
-    return { name: 'signin', query: { redirect: to.name, redirectId: to.query.id } }
-  } else if (userStore.token && ['signin', 'signup'].includes(to.name)) {
-    return { name: 'findEvents' }
-  }
-})
+router.beforeResolve(checkIfUserLoggedIn)
 
 export default router
