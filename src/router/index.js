@@ -2,6 +2,7 @@ import FindEventsView from '@/views/FindEventsView.vue'
 import validateToken from '@/helpers/validateToken'
 import { createRouter, createWebHistory } from 'vue-router'
 import { useStorage } from '@vueuse/core'
+import { useUserStore } from '@/stores/user'
 
 function checkIfTokenInStorage() {
   const token = useStorage('token', '')
@@ -12,9 +13,13 @@ function checkIfTokenInStorage() {
 }
 
 function checkIfTokenValid(to) {
-  const isTokenValid =  validateToken()
+  const isTokenValid = validateToken()
 
   if (!isTokenValid && to.meta.requiresAuth) {
+    const userStore = useUserStore()
+
+    userStore.signout()
+
     return { name: 'signin', query: { redirect: to.name, redirectId: to.query.id } }
   }
 }
