@@ -54,7 +54,7 @@ async function getEvents() {
     }&name=${name.value}`
   )
 
-  if (response.eventsList) {
+  if (response) {
     events.value = response.eventsList
     results.value = response.info.results
   } else {
@@ -66,23 +66,27 @@ async function getEvents() {
 function handleSearch(searchVal) {
   name.value = searchVal
   page.value = 1
+  
   getEvents()
 }
 
 function handlePageChange(pageNum) {
   page.value = pageNum
+
   getEvents()
 }
 
 function handleSortChange(sortVal) {
   sort.value = sortVal
   page.value = 1
+
   getEvents()
 }
 
 function handleFilterChange(filterVal) {
   filter.value = filterVal
   page.value = 1
+  
   getEvents()
 }
 </script>

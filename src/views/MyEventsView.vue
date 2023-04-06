@@ -9,68 +9,87 @@
     </ControlsContainer>
     <CardsContainer class="cards-container">
       <EventCard
-        v-for="event in eventsFiltered"
+        v-for="event in events"
         :id="event.id"
         :name="event.name"
         :image-url="event.imageUrl"
         :participants-number="event.participantsNumber"
       />
     </CardsContainer>
+    <Pagination
+      @page-change="handlePageChange"
+      :results="results"
+      v-model="page"
+      v-if="events.length"
+    />
   </div>
 </template>
 
 <script setup>
 import Hero from '@/components/Hero.vue'
 import ControlsContainer from '@/components/ControlsContainer.vue'
-import Search from '../components/Search.vue'
-import EventCard from '../components/EventCard.vue'
+import Search from '@/components/Search.vue'
+import EventCard from '@/components/EventCard.vue'
 import CardsContainer from '@/components/CardsContainer.vue'
+import Pagination from '@/components/Pagination.vue'
 import Select from '@/components/Select.vue'
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import getData from '@/helpers/getData'
 
+const name = ref('')
+const page = ref(1)
 const events = ref([])
-const search = ref('')
-
-const eventsFiltered = computed(() =>
-  events.value.filter((event) => event.name.toLowerCase().includes(search.value.toLowerCase()))
-)
+const results = ref(0)
+const endpoint = ref('user-events')
 
 getEvents()
 
 async function getEvents() {
-  const response = await getData(`${import.meta.env.VITE_API_URL}/user-events`, true)
+  const response = await getData(
+    `${import.meta.env.VITE_API_URL}/${endpoint.value}?page=${page.value}&name=${name.value}`,
+    true
+  )
 
   if (response) {
-    events.value = response
-  }
-}
-
-async function getInvitations() {
-  const response = await getData(`${import.meta.env.VITE_API_URL}/event-invite`, true)
-
-  if (response) {
-    events.value = response
+    events.value = response.eventsList
+    results.value = response.info.results
+  } else {
+    events.value = []
+    results.value = 0
   }
 }
 
 function handleSearch(searchVal) {
-  search.value = searchVal
+  name.value = searchVal
+  page.value = 1
+
+  getEvents()
+}
+
+function handlePageChange(pageNum) {
+  page.value = pageNum
+
+  getEvents()
 }
 
 function handleSelect(option) {
   if (option === 'joined') {
-    getEvents()
+    endpoint.value = 'user-events'
   } else if (option === 'invites') {
-    getInvitations()
+    endpoint.value = 'event-invite'
   }
+
+  page.value = 1
+
+  getEvents()
 }
 </script>
 
 <style lang="scss" scoped>
 .my-events-container {
-  .cards-container {
-    margin-top: 15px;
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
 }
 </style>
