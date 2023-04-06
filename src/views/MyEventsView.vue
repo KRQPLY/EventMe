@@ -41,7 +41,7 @@ getEvents()
 async function getEvents() {
   const response = await getData(`${import.meta.env.VITE_API_URL}/user-events`, true)
 
-  if (response.length) {
+  if (response) {
     events.value = response
   }
 }
@@ -49,7 +49,7 @@ async function getEvents() {
 async function getInvitations() {
   const response = await getData(`${import.meta.env.VITE_API_URL}/event-invite`, true)
 
-  if (response.length) {
+  if (response) {
     events.value = response
   }
 }
