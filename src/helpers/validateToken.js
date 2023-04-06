@@ -1,28 +1,21 @@
-import axios from 'axios'
 import { useStorage } from '@vueuse/core'
+import parseJwt from './parseJwt'
 
-export default async function validateToken() {
+export default function validateToken() {
   const token = useStorage('token', '')
-  const username = useStorage('username', '')
 
   if (!token.value) {
     return false
   }
 
-  try {
-    await axios.get(`${import.meta.env.VITE_API_URL}/user/is-token-valid`, {
-      headers: {
-        Authorization: `Bearer ${token.value}`
-      }
-    })
+  const parsedToken = parseJwt(token.value)
 
-    return true
-  } catch (e) {
-    console.error(e)
-
-    token.value = ''
-    username.value = ''
-
+  if (!parsedToken) {
     return false
   }
+
+  const tokenExp = new Date(parsedToken.exp * 1000)
+  const timeNow = new Date()
+
+  return timeNow < tokenExp
 }

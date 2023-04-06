@@ -1,17 +1,18 @@
 import FindEventsView from '@/views/FindEventsView.vue'
-import { createRouter, createWebHistory } from 'vue-router'
 import validateToken from '@/helpers/validateToken'
+import { createRouter, createWebHistory } from 'vue-router'
+import { useStorage } from '@vueuse/core'
 
-async function checkIfUserLoggedIn() {
-  const isTokenValid = await validateToken()
+function checkIfTokenInStorage() {
+  const token = useStorage('token', '')
 
-  if (isTokenValid) {
+  if (token.value) {
     return { name: 'findEvents' }
   }
 }
 
-async function checkIfTokenValid(to) {
-  const isTokenValid = await validateToken()
+function checkIfTokenValid(to) {
+  const isTokenValid =  validateToken()
 
   if (!isTokenValid && to.meta.requiresAuth) {
     return { name: 'signin', query: { redirect: to.name, redirectId: to.query.id } }
@@ -78,7 +79,7 @@ const router = createRouter({
         redirectId: Number(route.query.redirectId)
       }),
       meta: { requiresAuth: false },
-      beforeEnter: checkIfUserLoggedIn
+      beforeEnter: checkIfTokenInStorage
     },
     {
       path: '/signup',
@@ -89,7 +90,7 @@ const router = createRouter({
         redirectId: Number(route.query.redirectId)
       }),
       meta: { requiresAuth: false },
-      beforeEnter: checkIfUserLoggedIn
+      beforeEnter: checkIfTokenInStorage
     },
     {
       path: '/signin/:matchAll(.*)*',
