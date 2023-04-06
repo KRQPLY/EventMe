@@ -9,6 +9,9 @@
           <div class="buttons">
             <Button v-if="acceptButton" @click="handleAccept(user)">accept</Button>
             <Button filled danger v-if="deleteButton" @click="handleDelete(user)">delete</Button>
+            <Button v-if="customButton" @click="$emit('custom-click', user)">{{
+              customButton
+            }}</Button>
           </div>
         </div>
         <div class="result empty" v-if="!users.length">No results</div>
@@ -34,10 +37,14 @@ defineProps({
   acceptButton: {
     type: Boolean,
     default: false
+  },
+  customButton: {
+    type: String,
+    default: ''
   }
 })
 
-const emits = defineEmits(['updated'])
+const emits = defineEmits(['updated', 'custom-click'])
 
 async function handleDelete(username) {
   const response = await deleteData(`${import.meta.env.VITE_API_URL}/friends/${username}`, true)

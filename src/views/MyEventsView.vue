@@ -3,6 +3,9 @@
     <Hero type="myEvents" />
     <ControlsContainer>
       <Search @search="handleSearch" />
+      <template v-slot:row>
+        <Select @select="handleSelect" :options="['joined', 'invites']" default-option="joined" />
+      </template>
     </ControlsContainer>
     <CardsContainer class="cards-container">
       <EventCard
@@ -22,6 +25,7 @@ import ControlsContainer from '@/components/ControlsContainer.vue'
 import Search from '../components/Search.vue'
 import EventCard from '../components/EventCard.vue'
 import CardsContainer from '@/components/CardsContainer.vue'
+import Select from '@/components/Select.vue'
 import { ref, computed } from 'vue'
 import getData from '@/helpers/getData'
 
@@ -42,8 +46,24 @@ async function getEvents() {
   }
 }
 
+async function getInvitations() {
+  const response = await getData(`${import.meta.env.VITE_API_URL}/event-invite`, true)
+
+  if (response.length) {
+    events.value = response
+  }
+}
+
 function handleSearch(searchVal) {
   search.value = searchVal
+}
+
+function handleSelect(option) {
+  if (option === 'joined') {
+    getEvents()
+  } else if (option === 'invites') {
+    getInvitations()
+  }
 }
 </script>
 

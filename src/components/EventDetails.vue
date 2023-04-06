@@ -5,13 +5,15 @@
         <div class="name">
           {{ name }}
         </div>
-        <Button
-          filled
-          :checked="isJoined"
-          :radius="isJoined ? '25% / 50%' : '35% / 50%'"
-          @click="handleJoin"
-          >{{ isJoined ? 'Joined' : 'Join' }}</Button
-        >
+        <div class="participation">
+          <Button filled radius="35% / 50%" @click="toggleUserParticipation" v-if="!isJoined"
+            >Join</Button
+          >
+          <Button filled checked @click="toggleUserParticipation" v-if="isJoined">Joined</Button>
+          <Button filled radius="30% / 50%" @click="isInviteModalVisible = true" v-if="isJoined"
+            >Invite</Button
+          >
+        </div>
       </div>
     </div>
     <div class="section">
@@ -50,14 +52,29 @@
           radius="35% / 50%"
           @click="router.push({ name: 'editEvent', query: { id: eventId } })"
           >Edit</Button
-        ><Button filled danger @click="handleDelete">Delete</Button>
+        ><Button filled danger @click="isDeleteEventModalVisible = true">Delete</Button>
       </div>
     </div>
+    <Modal :visible="isInviteModalVisible" @close="isInviteModalVisible = false">
+      <template v-slot:header>Select a friend</template>
+      <template v-slot:body>
+        <UsersList :users="friendsData" custom-button="Invite" @custom-click="inviteFriend" />
+      </template>
+    </Modal>
+    <Modal :visible="isDeleteEventModalVisible" @close="isDeleteEventModalVisible = false">
+      <template v-slot:header>Are you sure you want to delete that event?</template>
+      <template v-slot:body>
+        <Button filled @click="isDeleteEventModalVisible = false">Cancel</Button>
+        <Button filled danger @click="deleteEvent">Delete</Button>
+      </template>
+    </Modal>
   </div>
 </template>
 
 <script setup>
 import Button from '@/components/Button.vue'
+import Modal from '@/components/Modal.vue'
+import UsersList from './UsersList.vue'
 import getImageUrl from '@/helpers/getImageUrl'
 import toDateTime from '@/helpers/toDateTime'
 import 'leaflet/dist/leaflet.css'
@@ -70,6 +87,7 @@ import { useUserStore } from '@/stores/user'
 import { useRouter } from 'vue-router'
 import deleteData from '@/helpers/deleteData'
 import postData from '@/helpers/postData'
+import getData from '@/helpers/getData'
 import nFormatter from '@/helpers/nFormatter'
 
 const props = defineProps({
@@ -96,6 +114,9 @@ const emits = defineEmits(['update'])
 const userStore = useUserStore()
 const router = useRouter()
 const participants = toRef(props, 'participantsUsernames')
+const isInviteModalVisible = ref(false)
+const isDeleteEventModalVisible = ref(false)
+const friendsData = ref([])
 const map = ref(null)
 
 const isJoined = computed(() => participants.value.includes(userStore.username))
@@ -109,22 +130,40 @@ onMounted(() => {
       initMap(false)
     }
   )
+  getFriends()
 })
 
-async function handleDelete() {
+async function getFriends() {
+  const response = await getData(`${import.meta.env.VITE_API_URL}/friends`, true)
+
+  if (response) {
+    friendsData.value = response
+      .filter((friend) => friend.invitationReceived && friend.invitationSent)
+      .map((friend) => friend.username)
+  }
+}
+
+async function deleteEvent() {
   await deleteData(`${import.meta.env.VITE_API_URL}/events/${props.eventId}`, true)
 
   // TODO check if deleted
   router.push({ name: 'findEvents' })
 }
 
-async function handleJoin() {
+async function toggleUserParticipation() {
   if (isJoined.value) {
     await deleteData(`${import.meta.env.VITE_API_URL}/user-events/${props.eventId}`, true)
   } else {
     await postData(`${import.meta.env.VITE_API_URL}/user-events/${props.eventId}`)
   }
   emits('update')
+}
+
+async function inviteFriend(friendsUsername) {
+  await postData(`${import.meta.env.VITE_API_URL}/event-invite`, {
+    username: friendsUsername,
+    id: props.eventId
+  })
 }
 
 function initMap(location) {
@@ -187,6 +226,10 @@ function initMap(location) {
       font-size: 20px;
       font-weight: 400;
     }
+    .participation {
+      display: flex;
+      gap: 10px;
+    }
     .author {
       margin-top: 20px;
       text-align: end;
@@ -202,6 +245,9 @@ function initMap(location) {
       justify-content: space-between;
     }
   }
+  .users-list {
+    width: 240px;
+  }
   img {
     border-radius: 7px;
     width: 100%;
@@ -212,8 +258,12 @@ function initMap(location) {
     aspect-ratio: 2/1;
   }
 }
+
 @include media-sm {
   .event-details {
+    .users-list {
+      width: 300px;
+    }
     #map {
       aspect-ratio: 3/1;
     }
