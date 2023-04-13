@@ -50,7 +50,7 @@
       </div>
     </div>
     <div class="section">
-      <div class="comment" v-for="comment in comments">
+      <div class="comment" v-for="comment in commentsSorted">
         <div class="banner">
           <div class="label">{{ comment.author }}</div>
           <div class="date">
@@ -165,6 +165,7 @@ const map = ref(null)
 const comments = ref([])
 
 const isJoined = computed(() => participantsUsernames.value.includes(userStore.username))
+const commentsSorted = computed(() => comments.value.sort((a, b) => a.date - b.date))
 
 onMounted(() => {
   navigator.geolocation.getCurrentPosition(
