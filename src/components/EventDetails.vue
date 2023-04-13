@@ -40,8 +40,13 @@
     <div id="map"></div>
     <div class="section" v-if="maxParticipantsNumber">
       <div class="banner">
-        <div class="label">max participants</div>
-        <div class="label">{{ nFormatter(maxParticipantsNumber) }}</div>
+        <Button filled checked radius="15% / 50%" @click="isParticipantsModalVisible = true"
+          >participants</Button
+        >
+        <div class="label">
+          {{ nFormatter(participantsNumber)
+          }}{{ maxParticipantsNumber ? ` / ${nFormatter(maxParticipantsNumber)}` : '' }}
+        </div>
       </div>
     </div>
     <div class="section">
@@ -81,8 +86,24 @@
     <Modal :visible="isDeleteEventModalVisible" @close="isDeleteEventModalVisible = false">
       <template v-slot:header>Are you sure you want to delete that event?</template>
       <template v-slot:body>
-        <Button filled @click="isDeleteEventModalVisible = false">Cancel</Button>
-        <Button filled danger @click="deleteEvent">Delete</Button>
+        <div class="settings-buttons">
+          <Button filled @click="isDeleteEventModalVisible = false">Cancel</Button>
+          <Button filled danger @click="deleteEvent">Delete</Button>
+        </div>
+      </template>
+    </Modal>
+    <Modal :visible="isParticipantsModalVisible" @close="isParticipantsModalVisible = false">
+      <template v-slot:header>Participants</template>
+      <template v-slot:body>
+        <div class="participants">
+          <UsersList
+            :users="invitedBy"
+            custom-button="accept invite"
+            @custom-click="toggleUserParticipation"
+            v-if="invitedBy.length"
+          />
+          <UsersList :users="participantsUsernames" />
+        </div>
       </template>
     </Modal>
   </div>
@@ -114,9 +135,11 @@ const props = defineProps({
   description: String,
   name: String,
   author: String,
+  participantsNumber: Number,
   maxParticipantsNumber: Number,
   startDate: Number,
   endDate: Number,
+  invitedBy: Array,
   participantsUsernames: Array,
   marker: {
     type: Array,
@@ -132,14 +155,16 @@ const emits = defineEmits(['update'])
 
 const userStore = useUserStore()
 const router = useRouter()
-const participants = toRef(props, 'participantsUsernames')
+const invitedBy = toRef(props, 'invitedBy')
+const participantsUsernames = toRef(props, 'participantsUsernames')
 const isInviteModalVisible = ref(false)
 const isDeleteEventModalVisible = ref(false)
+const isParticipantsModalVisible = ref(false)
 const friendsData = ref([])
 const map = ref(null)
 const comments = ref([])
 
-const isJoined = computed(() => participants.value.includes(userStore.username))
+const isJoined = computed(() => participantsUsernames.value.includes(userStore.username))
 
 onMounted(() => {
   navigator.geolocation.getCurrentPosition(
@@ -207,9 +232,7 @@ async function addComment() {
 }
 
 function initMap(location) {
-  const defaultView = location
-    ? [location.coords.latitude, location.coords.longitude]
-    : props.marker
+  const defaultView = props.marker
   const waypoints = location
     ? [L.latLng(location.coords.latitude, location.coords.longitude), L.latLng(...props.marker)]
     : [L.latLng(...props.marker)]
@@ -293,8 +316,19 @@ function initMap(location) {
       justify-content: space-between;
     }
   }
+  .settings-buttons {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 10px 15px;
+  }
   .users-list {
     width: 240px;
+
+    .participants {
+      display: flex;
+      flex-direction: column;
+    }
   }
   img {
     border-radius: 7px;

@@ -57,21 +57,17 @@ onClickOutside(modal, () => emits('close'))
 }
 
 .modal-header {
-  padding: 15px;
-  display: flex;
-}
-
-.modal-header {
   position: relative;
-  border-bottom: 1px solid $color-main;
+  display: flex;
   justify-content: space-between;
+  border-bottom: 1px solid $color-main;
+  padding: 15px;
 }
 
 .modal-body {
   position: relative;
   display: flex;
   justify-content: space-between;
-  padding: 20px 10px;
   max-height: 300px;
   overflow-x: auto;
 }
