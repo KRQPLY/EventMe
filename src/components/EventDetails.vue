@@ -44,6 +44,21 @@
         <div class="label">{{ nFormatter(maxParticipantsNumber) }}</div>
       </div>
     </div>
+    <div class="section">
+      <div class="comment" v-for="comment in comments">
+        <div class="banner">
+          <div class="label">{{ comment.author }}</div>
+          <div class="date">
+            {{ toDateTime(comment.date) }} {{ toDateTime(comment.date, true) }}
+          </div>
+        </div>
+        <div>{{ comment.content }}</div>
+      </div>
+      <div class="banner banner--responsive">
+        <FormField name="comment" type="text" theme-responsive @keyup.enter="addComment" />
+        <Button filled radius="20% / 50%" @click="addComment">comment</Button>
+      </div>
+    </div>
     <div class="section" v-if="author === userStore.username">
       <div class="label">settings</div>
       <div class="settings">
@@ -51,8 +66,10 @@
           filled
           radius="35% / 50%"
           @click="router.push({ name: 'editEvent', query: { id: eventId } })"
-          >Edit</Button
-        ><Button filled danger @click="isDeleteEventModalVisible = true">Delete</Button>
+        >
+          Edit
+        </Button>
+        <Button filled danger @click="isDeleteEventModalVisible = true">Delete</Button>
       </div>
     </div>
     <Modal :visible="isInviteModalVisible" @close="isInviteModalVisible = false">
@@ -74,7 +91,8 @@
 <script setup>
 import Button from '@/components/Button.vue'
 import Modal from '@/components/Modal.vue'
-import UsersList from './UsersList.vue'
+import FormField from '@/components/FormField.vue'
+import UsersList from '@/components/UsersList.vue'
 import getImageUrl from '@/helpers/getImageUrl'
 import toDateTime from '@/helpers/toDateTime'
 import 'leaflet/dist/leaflet.css'
@@ -85,6 +103,7 @@ import markerIconPng from 'leaflet/dist/images/marker-icon.png'
 import { onMounted, ref, computed, toRef } from 'vue'
 import { useUserStore } from '@/stores/user'
 import { useRouter } from 'vue-router'
+import { useForm } from 'vee-validate'
 import deleteData from '@/helpers/deleteData'
 import postData from '@/helpers/postData'
 import getData from '@/helpers/getData'
@@ -118,6 +137,7 @@ const isInviteModalVisible = ref(false)
 const isDeleteEventModalVisible = ref(false)
 const friendsData = ref([])
 const map = ref(null)
+const comments = ref([])
 
 const isJoined = computed(() => participants.value.includes(userStore.username))
 
@@ -131,7 +151,10 @@ onMounted(() => {
     }
   )
   getFriends()
+  getComments()
 })
+
+const { values, setFieldValue } = useForm()
 
 async function getFriends() {
   const response = await getData(`${import.meta.env.VITE_API_URL}/friends`, true)
@@ -164,6 +187,23 @@ async function inviteFriend(friendsUsername) {
     username: friendsUsername,
     id: props.eventId
   })
+}
+
+async function getComments() {
+  const response = await getData(`${import.meta.env.VITE_API_URL}/comments/${props.eventId}`, true)
+
+  if (response) {
+    comments.value = response
+  }
+}
+
+async function addComment() {
+  await postData(`${import.meta.env.VITE_API_URL}/comments/${props.eventId}`, {
+    content: values.comment
+  })
+
+  setFieldValue('comment')
+  getComments()
 }
 
 function initMap(location) {
@@ -213,6 +253,10 @@ function initMap(location) {
       display: flex;
       justify-content: space-between;
       align-items: center;
+
+      &--responsive {
+        flex-direction: column;
+      }
     }
     .label {
       font-size: 12px;
@@ -239,6 +283,10 @@ function initMap(location) {
       font-weight: 300;
       text-align: justify;
     }
+    .comment {
+      padding: 5px 0;
+      border-bottom: 1px solid $color-main;
+    }
     .settings {
       margin-top: 10px;
       display: flex;
@@ -261,6 +309,13 @@ function initMap(location) {
 
 @include media-sm {
   .event-details {
+    .section {
+      .banner {
+        &--responsive {
+          flex-direction: row;
+        }
+      }
+    }
     .users-list {
       width: 300px;
     }
