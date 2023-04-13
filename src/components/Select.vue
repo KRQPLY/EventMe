@@ -2,6 +2,7 @@
   <div class="select-container" :class="{ open: isOptionsVisible }">
     <div class="select" @click="isOptionsVisible = !isOptionsVisible">
       {{ value ? value : label }}
+      <IconArrowDown />
     </div>
     <div class="options-container" v-if="isOptionsVisible">
       <div class="options">
@@ -20,6 +21,7 @@
 
 <script setup>
 import { ref } from 'vue'
+import IconArrowDown from './IconArrowDown.vue'
 
 const props = defineProps({
   options: {
@@ -55,9 +57,13 @@ function handleSelect(option) {
   background-color: $color-secondary;
   border-radius: 20%/50%;
   color: $color-contrast;
+  font-weight: 300;
   .select {
-    width: 80px;
-    padding: 10px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 95px;
+    padding: 10px 10px 10px 15px;
   }
   .options-container {
     position: absolute;
@@ -71,7 +77,6 @@ function handleSelect(option) {
       .option {
         padding: 10px 15px;
         border-top: 1px solid $color-main;
-        font-size: 14px;
         &.active {
           color: $color-accent;
         }
@@ -87,7 +92,8 @@ function handleSelect(option) {
   .select-container {
     border-radius: 10%/50%;
     .select {
-      width: 200px;
+      padding: 10px 15px;
+      width: 170px;
     }
   }
 }

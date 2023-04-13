@@ -38,7 +38,7 @@
       <div class="author">By: {{ author }}</div>
     </div>
     <div id="map"></div>
-    <div class="section" v-if="maxParticipantsNumber">
+    <div class="section">
       <div class="banner">
         <Button filled checked radius="15% / 50%" @click="isParticipantsModalVisible = true"
           >participants</Button

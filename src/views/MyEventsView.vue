@@ -5,6 +5,7 @@
       <Search @search="handleSearch" />
       <template v-slot:row>
         <Select @select="handleSelect" :options="['joined', 'invites']" default-option="joined" />
+        <CreateEventButton @click="router.push({ name: 'createEvent' })" />
       </template>
     </ControlsContainer>
     <CardsContainer class="cards-container">
@@ -29,13 +30,16 @@
 import Hero from '@/components/Hero.vue'
 import ControlsContainer from '@/components/ControlsContainer.vue'
 import Search from '@/components/Search.vue'
+import CreateEventButton from '@/components/CreateEventButton.vue'
 import EventCard from '@/components/EventCard.vue'
 import CardsContainer from '@/components/CardsContainer.vue'
 import Pagination from '@/components/Pagination.vue'
 import Select from '@/components/Select.vue'
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 import getData from '@/helpers/getData'
 
+const router = useRouter()
 const name = ref('')
 const page = ref(1)
 const events = ref([])

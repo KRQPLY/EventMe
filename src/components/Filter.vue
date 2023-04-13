@@ -26,8 +26,9 @@ const updateValue = () => {
     border: none;
     border-radius: 20%/50%;
     outline: none;
-    font-weight: 500;
     color: $color-contrast;
+    font-weight: 300;
+
     &:focus {
       outline: none;
       border: none;
@@ -38,7 +39,7 @@ const updateValue = () => {
 @include media-xs {
   .filter {
     input {
-      width: 200px;
+      width: 170px;
       border-radius: 10%/50%;
     }
   }

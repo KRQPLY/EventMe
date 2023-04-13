@@ -17,14 +17,7 @@ defineProps({
   padding: 10px 0;
   display: flex;
   justify-content: center;
-  background-color: $color-main;
-  background-image: linear-gradient(135deg, $color-secondary 25%, transparent 25%),
-    linear-gradient(225deg, $color-secondary 25%, transparent 25%),
-    linear-gradient(45deg, $color-secondary 25%, transparent 25%),
-    linear-gradient(315deg, $color-secondary 25%, $color-main 25%);
-  background-position: 10px 0, 10px 0, 0 0, 0 0;
-  background-size: 20px 20px;
-  background-repeat: repeat;
+  background-color: $color-secondary;
 }
 @include media-xs {
   .edit-event-container {

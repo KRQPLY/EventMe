@@ -37,7 +37,7 @@ const updateValue = () => {
     border-radius: 0;
     border: none;
     outline: none;
-    font-weight: 500;
+    font-weight: 400;
     color: $color-contrast;
     &:focus {
       outline: none;

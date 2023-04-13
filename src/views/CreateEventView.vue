@@ -13,25 +13,7 @@ import EventForm from '@/components/EventForm.vue'
   padding: 10px 0;
   display: flex;
   justify-content: center;
-  background-color: $color-main;
-  background-image: repeating-linear-gradient(
-      45deg,
-      $color-secondary 25%,
-      transparent 25%,
-      transparent 75%,
-      $color-secondary 75%,
-      $color-secondary
-    ),
-    repeating-linear-gradient(
-      45deg,
-      $color-secondary 25%,
-      $color-main 25%,
-      $color-main 75%,
-      $color-secondary 75%,
-      $color-secondary
-    );
-  background-position: 0 0, 10px 10px;
-  background-size: 20px 20px;
+  background-color: $color-secondary;
 }
 @include media-xs {
   .create-event-container {
