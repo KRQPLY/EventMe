@@ -25,12 +25,11 @@ const isDrawerVisible = ref(false)
 
 .fade-enter-active,
 .fade-leave-active {
-  transition: all 0.3s ease-in-out;
+  transition: opacity 0.2s ease-in-out;
 }
 
 .fade-enter-from,
 .fade-leave-to {
-  transform: translateY(-50vh);
   opacity: 0;
 }
 </style>

@@ -104,7 +104,7 @@ function closeDrawer() {
 
 .drawer-background {
   position: fixed;
-  height: 150vh;
+  height: 100vh;
   width: 100%;
   background: rgba(0, 0, 0, 0.6);
 }
