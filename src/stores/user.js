@@ -13,9 +13,11 @@ export const useUserStore = defineStore('user', () => {
       password
     })
 
-    if (response.token) {
-      token.value = response.token
-      username.value = response.username
+    if (response.success) {
+      token.value = response.data.token
+      username.value = response.data.username
+    } else {
+      return response.data
     }
   }
 
@@ -27,9 +29,11 @@ export const useUserStore = defineStore('user', () => {
       password
     })
 
-    if (response.token) {
-      token.value = response.token
-      username.value = response.username
+    if (response.success) {
+      token.value = response.data.token
+      username.value = response.data.username
+    } else {
+      return response.data
     }
   }
   function signout() {

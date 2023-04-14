@@ -10,9 +10,10 @@ export default async function postData(endpoint, data) {
       }
     })
 
-    return response.data
+    return { data: response.data, success: true }
   } catch (e) {
     console.error(e)
-    return e.response.data
+
+    return { data: e.response.data, success: false }
   }
 }

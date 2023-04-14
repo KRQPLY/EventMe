@@ -34,7 +34,8 @@
           theme-responsive
           @keyup.enter="handleInvite"
         />
-        <Button filled @click="handleInvite">Invite</Button>
+        <Button filled @click="handleInvite" v-if="!isInviting">Invite</Button>
+        <Spinner static v-else />
       </div>
     </div>
   </div>
@@ -44,6 +45,7 @@
 import UsersList from '@/components/UsersList.vue'
 import Select from '@/components/Select.vue'
 import Button from '@/components/Button.vue'
+import Spinner from '@/components/Spinner.vue'
 import FormField from '@/components/FormField.vue'
 import { ref, toRef, computed } from 'vue'
 import { useForm } from 'vee-validate'
@@ -55,6 +57,7 @@ const emits = defineEmits(['updated'])
 
 const friendsRef = toRef(props, 'friendsData')
 const option = ref('friends')
+const isInviting = ref(false)
 
 const { values, setFieldError, setFieldValue } = useForm()
 
@@ -79,14 +82,16 @@ function handleSelect(optionVal) {
 }
 
 async function handleInvite() {
+  isInviting.value = true
   const response = await postData(`${import.meta.env.VITE_API_URL}/friends/${values.username}`)
 
-  if (!response.error) {
-    setFieldError('username', response.error)
-  } else {
+  if (response.success) {
     setFieldValue('username')
+  } else {
+    setFieldError('username', response.data.error)
   }
   emits('updated')
+  isInviting.value = false
 }
 </script>
 

@@ -8,7 +8,7 @@
         <Select @select="handleSortChange" :options="['soonest', 'popularity']" label="Sort by" />
       </template>
     </ControlsContainer>
-    <CardsContainer>
+    <CardsContainer v-if="isEventsLoaded">
       <EventCard
         v-for="event in events"
         :id="event.id"
@@ -17,11 +17,12 @@
         :participants-number="event.participantsNumber"
       />
     </CardsContainer>
+    <Spinner :scale="1" offset-y="70px" height="200px" v-else />
     <Pagination
       @page-change="handlePageChange"
       :results="results"
       v-model="page"
-      v-if="events.length"
+      v-if="events.length > 20 && isEventsLoaded"
     />
   </div>
 </template>
@@ -33,6 +34,7 @@ import ControlsContainer from '@/components/ControlsContainer.vue'
 import Hero from '@/components/Hero.vue'
 import EventCard from '@/components/EventCard.vue'
 import CardsContainer from '@/components/CardsContainer.vue'
+import Spinner from '@/components/Spinner.vue'
 import Pagination from '@/components/Pagination.vue'
 import Select from '@/components/Select.vue'
 import { ref } from 'vue'
@@ -44,10 +46,13 @@ const sort = ref('')
 const filter = ref('')
 const events = ref([])
 const results = ref(0)
+const isEventsLoaded = ref(false)
 
 getEvents()
 
 async function getEvents() {
+  isEventsLoaded.value = false
+
   const response = await getData(
     `${import.meta.env.VITE_API_URL}/events?page=${page.value}&sort-by=${sort.value}&filter=${
       filter.value
@@ -61,12 +66,14 @@ async function getEvents() {
     events.value = []
     results.value = 0
   }
+
+  isEventsLoaded.value = true
 }
 
 function handleSearch(searchVal) {
   name.value = searchVal
   page.value = 1
-  
+
   getEvents()
 }
 
@@ -86,7 +93,7 @@ function handleSortChange(sortVal) {
 function handleFilterChange(filterVal) {
   filter.value = filterVal
   page.value = 1
-  
+
   getEvents()
 }
 </script>

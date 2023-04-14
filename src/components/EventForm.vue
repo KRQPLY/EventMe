@@ -17,7 +17,13 @@
       :label="`Max Participants${eventId ? '' : ' (optional)'}`"
     />
     <FormField name="description" type="textarea" label="Description" />
-    <Button @click="handleSubmit" filled>{{ eventId ? 'Save' : 'Create' }}</Button>
+    <div class="button-section">
+      <Button @click="handleSubmit" filled v-if="!isSubmitting">{{
+        eventId ? 'Save' : 'Create'
+      }}</Button>
+      <Spinner static v-else />
+      <div class="error">{{ error }}</div>
+    </div>
   </div>
 </template>
 
@@ -26,10 +32,12 @@ import FormField from '@/components/FormField.vue'
 import FormAdress from '@/components/FormAdress.vue'
 import FormFile from '@/components/FormFile.vue'
 import Button from '@/components/Button.vue'
+import Spinner from '@/components/Spinner.vue'
 import uploadImage from '@/helpers/uploadImage'
 import postData from '@/helpers/postData'
 import putData from '@/helpers/putData'
 import toTimeDate from '@/helpers/toTimeDate'
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useForm } from 'vee-validate'
 import * as yup from 'yup'
@@ -39,6 +47,8 @@ const props = defineProps({
 })
 
 const router = useRouter()
+const isSubmitting = ref(false)
+const error = ref('')
 
 const schema = props.eventId
   ? yup.object({
@@ -88,18 +98,29 @@ const { values, setFieldError, validate } = useForm({
 })
 
 async function handleSubmit() {
+  isSubmitting.value = true
+  error.value = ''
+
   const validation = await validate()
   if (!values.image) {
     setFieldError('image', 'please upload an image')
+
+    isSubmitting.value = false
+
     return
   }
   if (!validation.valid) {
+    isSubmitting.value = false
+
     return
   }
 
   const imageUrl = await uploadImage(values.image)
   if (!imageUrl) {
     setFieldError('image', 'error while uploading the image')
+
+    isSubmitting.value = false
+
     return
   }
 
@@ -113,15 +134,26 @@ async function handleSubmit() {
   })(values)
 
   if (props.eventId) {
-    await putData(`${import.meta.env.VITE_API_URL}/events`, {
+    const response = await putData(`${import.meta.env.VITE_API_URL}/events`, {
       ...data,
       id: props.eventId
     })
-    router.push({ name: 'event', query: { id: props.eventId } })
+
+    if (response.success) {
+      router.push({ name: 'event', query: { id: props.eventId } })
+    } else {
+      error.value = response.data.error
+    }
   } else {
     const response = await postData(`${import.meta.env.VITE_API_URL}/events`, data)
-    router.push({ name: 'event', query: { id: response.eventId } })
+
+    if (response.success) {
+      router.push({ name: 'event', query: { id: response.data.eventId } })
+    } else {
+      error.value = response.data.error
+    }
   }
+  isSubmitting.value = false
 }
 </script>
 
@@ -138,6 +170,30 @@ async function handleSubmit() {
   background-color: rgba(0, 0, 0, 0.5);
   .title {
     font-weight: 200;
+  }
+  .button-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    .error {
+      margin-top: 5px;
+      height: 18px;
+      font-weight: 400;
+      font-size: 10px;
+      color: $color-danger;
+    }
+  }
+}
+
+@include media-xs {
+  .create-event-form {
+    .button-section {
+      .error {
+        height: 21px;
+        font-size: 14px;
+      }
+    }
   }
 }
 </style>

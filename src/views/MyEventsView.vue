@@ -8,7 +8,7 @@
         <CreateEventButton @click="router.push({ name: 'createEvent' })" />
       </template>
     </ControlsContainer>
-    <CardsContainer class="cards-container">
+    <CardsContainer class="cards-container" v-if="isEventsLoaded">
       <EventCard
         v-for="event in events"
         :id="event.id"
@@ -17,11 +17,12 @@
         :participants-number="event.participantsNumber"
       />
     </CardsContainer>
+    <Spinner :scale="1" offset-y="70px" height="200px" v-else />
     <Pagination
       @page-change="handlePageChange"
       :results="results"
       v-model="page"
-      v-if="events.length"
+      v-if="events.length > 20 && isEventsLoaded"
     />
   </div>
 </template>
@@ -33,6 +34,7 @@ import Search from '@/components/Search.vue'
 import CreateEventButton from '@/components/CreateEventButton.vue'
 import EventCard from '@/components/EventCard.vue'
 import CardsContainer from '@/components/CardsContainer.vue'
+import Spinner from '@/components/Spinner.vue'
 import Pagination from '@/components/Pagination.vue'
 import Select from '@/components/Select.vue'
 import { ref } from 'vue'
@@ -45,10 +47,13 @@ const page = ref(1)
 const events = ref([])
 const results = ref(0)
 const endpoint = ref('user-events')
+const isEventsLoaded = ref(false)
 
 getEvents()
 
 async function getEvents() {
+  isEventsLoaded.value = false
+
   const response = await getData(
     `${import.meta.env.VITE_API_URL}/${endpoint.value}?page=${page.value}&name=${name.value}`,
     true
@@ -61,6 +66,8 @@ async function getEvents() {
     events.value = []
     results.value = 0
   }
+
+  isEventsLoaded.value = true
 }
 
 function handleSearch(searchVal) {

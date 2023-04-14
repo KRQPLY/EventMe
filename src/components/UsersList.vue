@@ -47,16 +47,14 @@ defineProps({
 const emits = defineEmits(['updated', 'custom-click'])
 
 async function handleDelete(username) {
-  const response = await deleteData(`${import.meta.env.VITE_API_URL}/friends/${username}`, true)
+  await deleteData(`${import.meta.env.VITE_API_URL}/friends/${username}`, true)
 
-  // TODO check if deleted
   emits('updated')
 }
 
 async function handleAccept(username) {
-  const response = await postData(`${import.meta.env.VITE_API_URL}/friends/${username}`)
+  await postData(`${import.meta.env.VITE_API_URL}/friends/${username}`)
 
-  // TODO check if accepted
   emits('updated')
 }
 </script>

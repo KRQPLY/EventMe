@@ -6,20 +6,26 @@
     <FormField name="dateOfBirth" type="date" label="Birth date" v-if="isSignup" />
     <FormField name="password" type="password" label="Password" />
     <FormField name="confirmedPassword" type="password" label="Confirm password" v-if="isSignup" />
-    <Button @click="handleSubmit" filled>
-      {{ isSignup ? 'Sign up' : 'Sign in' }}
-    </Button>
+    <div class="button-section">
+      <Button @click="handleSubmit" filled v-if="!isSubmitting">{{
+        isSignup ? 'Sign up' : 'Sign in'
+      }}</Button>
+      <Spinner static v-else />
+      <div class="error">{{ error }}</div>
+    </div>
   </div>
 </template>
 
 <script setup>
-import FormField from './FormField.vue'
-import Button from './Button.vue'
+import FormField from '@/components/FormField.vue'
+import Button from '@/components/Button.vue'
+import Spinner from '@/components/Spinner.vue'
 import { useUserStore } from '../stores/user'
 import { useForm } from 'vee-validate'
 import * as yup from 'yup'
 import { useRouter } from 'vue-router'
 import toTimeDate from '@/helpers/toTimeDate'
+import { ref } from 'vue'
 
 const props = defineProps({
   isSignup: {
@@ -35,6 +41,8 @@ const props = defineProps({
 
 const userStore = useUserStore()
 const router = useRouter()
+const isSubmitting = ref(false)
+const error = ref('')
 const date = new Date()
 
 date.setFullYear(date.getFullYear() - 13)
@@ -65,8 +73,13 @@ async function signin() {
     return
   }
   const query = props.redirectId ? { id: props.redirectId } : {}
-  await userStore.signin(values.email, values.password)
-  router.push({ name: props.redirect, query })
+  const data = await userStore.signin(values.email, values.password)
+
+  if (!data) {
+    router.push({ name: props.redirect, query })
+  } else {
+    error.value = data.error
+  }
 }
 
 async function signup() {
@@ -79,21 +92,30 @@ async function signup() {
     return
   }
   const query = props.redirectId ? { id: props.redirectId } : {}
-  await userStore.signup(
+  const data = await userStore.signup(
     values.email,
     values.username,
     toTimeDate(values.dateOfBirth),
     values.password
   )
-  router.push({ name: props.redirect, query })
+
+  if (!data) {
+    router.push({ name: props.redirect, query })
+  } else {
+    error.value = data.error
+  }
 }
 
-function handleSubmit() {
+async function handleSubmit() {
+  isSubmitting.value = true
+  error.value = ''
+
   if (props.isSignup) {
-    signup()
+    await signup()
   } else {
-    signin()
+    await signin()
   }
+  isSubmitting.value = false
 }
 </script>
 
@@ -110,6 +132,30 @@ function handleSubmit() {
   background: rgba(0, 0, 0, 0.3);
   .title {
     font-weight: 200;
+  }
+  .button-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    .error {
+      margin-top: 5px;
+      height: 18px;
+      font-weight: 400;
+      font-size: 10px;
+      color: $color-danger;
+    }
+  }
+}
+
+@include media-xs {
+  .sign-form {
+    .button-section {
+      .error {
+        height: 21px;
+        font-size: 14px;
+      }
+    }
   }
 }
 </style>

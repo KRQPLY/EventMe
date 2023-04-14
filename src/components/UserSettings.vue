@@ -16,9 +16,8 @@ const userStore = useUserStore()
 const router = useRouter()
 
 async function handleAccountDelete() {
-  const response = await userStore.removeAccount()
+  await userStore.removeAccount()
 
-  // TODO check id account deleted successfully
   router.push({ name: 'signin' })
 }
 </script>

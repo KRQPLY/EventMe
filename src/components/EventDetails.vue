@@ -195,7 +195,6 @@ async function getFriends() {
 async function deleteEvent() {
   await deleteData(`${import.meta.env.VITE_API_URL}/events/${props.eventId}`, true)
 
-  // TODO check if deleted
   router.push({ name: 'findEvents' })
 }
 
