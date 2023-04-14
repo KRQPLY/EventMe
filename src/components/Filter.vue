@@ -1,6 +1,6 @@
 <template>
   <div class="filter">
-    <input type="text" placeholder="Filter" v-model="value" @input="updateValue" />
+    <input type="text" placeholder="Filter" v-model="value" @change="updateValue" />
   </div>
 </template>
 
