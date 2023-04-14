@@ -80,7 +80,11 @@
     <Modal :visible="isInviteModalVisible" @close="isInviteModalVisible = false">
       <template v-slot:header>Select a friend</template>
       <template v-slot:body>
-        <UsersList :users="friendsData" custom-button="Invite" @custom-click="inviteFriend" />
+        <UsersList
+          :users="friendsNotParticipating"
+          custom-button="Invite"
+          @custom-click="inviteFriend"
+        />
       </template>
     </Modal>
     <Modal :visible="isDeleteEventModalVisible" @close="isDeleteEventModalVisible = false">
@@ -102,7 +106,7 @@
             @custom-click="toggleUserParticipation"
             v-if="invitedBy.length"
           />
-          <UsersList :users="participantsUsernames" />
+          <UsersList :users="participantsNotInviting" v-if="participantsNotInviting.length" />
         </div>
       </template>
     </Modal>
@@ -166,6 +170,12 @@ const comments = ref([])
 
 const isJoined = computed(() => participantsUsernames.value.includes(userStore.username))
 const commentsSorted = computed(() => comments.value.sort((a, b) => a.date - b.date))
+const friendsNotParticipating = computed(() =>
+  friendsData.value.filter((friend) => !participantsUsernames.value.includes(friend))
+)
+const participantsNotInviting = computed(() =>
+  participantsUsernames.value.filter((participant) => !invitedBy.value.includes(participant))
+)
 
 onMounted(() => {
   navigator.geolocation.getCurrentPosition(
@@ -207,11 +217,13 @@ async function toggleUserParticipation() {
   emits('update')
 }
 
-async function inviteFriend(friendsUsername) {
+async function inviteFriend(friendUsername) {
   await postData(`${import.meta.env.VITE_API_URL}/event-invite`, {
-    username: friendsUsername,
+    username: friendUsername,
     id: props.eventId
   })
+
+  friendsData.value.shift(friendUsername)
 }
 
 async function getComments() {
