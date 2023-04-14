@@ -1,36 +1,40 @@
 <template>
-  <div class="drawer">
-    <div class="options" v-if="userStore.token">
-      <div
-        class="option"
-        :class="{ active: currentRouteName === 'findEvents' }"
-        @click="handleInDrawerClick('findEvents')"
-      >
-        Find Events
+  <div class="drawer-container">
+    <div class="drawer">
+      <div class="options" v-if="userStore.token">
+        <div
+          class="option"
+          :class="{ active: currentRouteName === 'findEvents' }"
+          @click="handleInDrawerClick('findEvents')"
+        >
+          Find Events
+        </div>
+        <div
+          class="option"
+          :class="{ active: currentRouteName === 'myEvents' }"
+          @click="handleInDrawerClick('myEvents')"
+        >
+          My Events
+        </div>
+        <div
+          class="option"
+          :class="{ active: currentRouteName === 'account' }"
+          @click="handleInDrawerClick('account')"
+        >
+          {{ userStore.username }}
+        </div>
       </div>
-      <div
-        class="option"
-        :class="{ active: currentRouteName === 'myEvents' }"
-        @click="handleInDrawerClick('myEvents')"
-      >
-        My Events
+      <div class="sign-buttons">
+        <Button @click="handleInDrawerClick('signin')" v-if="!userStore.token">Sign in</Button>
+        <Button @click="handleInDrawerClick('signup')" filled v-if="!userStore.token"
+          >Sign up</Button
+        >
+        <Button @click="handleSignOut" v-else>Sign out</Button>
       </div>
-      <div
-        class="option"
-        :class="{ active: currentRouteName === 'account' }"
-        @click="handleInDrawerClick('account')"
-      >
-        {{ userStore.username }}
-      </div>
+      <MoonIcon />
     </div>
-    <div class="sign-buttons">
-      <Button @click="handleInDrawerClick('signin')" v-if="!userStore.token">Sign in</Button>
-      <Button @click="handleInDrawerClick('signup')" filled v-if="!userStore.token">Sign up</Button>
-      <Button @click="handleSignOut" v-else>Sign out</Button>
-    </div>
-    <MoonIcon />
+    <div class="drawer-background" @click="closeDrawer"></div>
   </div>
-  <div class="drawer-background" @click="closeDrawer"></div>
 </template>
 
 <script setup>
@@ -64,6 +68,10 @@ function closeDrawer() {
 </script>
 
 <style lang="scss" scoped>
+.drawer-container {
+  position: relative;
+  z-index: 1050;
+}
 .drawer {
   position: fixed;
   display: flex;
@@ -96,17 +104,12 @@ function closeDrawer() {
 
 .drawer-background {
   position: fixed;
-  z-index: 1050;
-  top: 0;
-  bottom: 0;
+  height: 150vh;
   width: 100%;
   background: rgba(0, 0, 0, 0.6);
 }
 @include media-xs {
-  .drawer {
-    display: none;
-  }
-  .drawer-background {
+  .drawer-container {
     display: none;
   }
 }

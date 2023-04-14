@@ -10,7 +10,9 @@ const isDrawerVisible = ref(false)
 
 <template>
   <Header @toggleDrawer="isDrawerVisible = !isDrawerVisible" />
-  <Drawer @closeDrawer="isDrawerVisible = false" v-if="isDrawerVisible" />
+  <Transition name="fade">
+    <Drawer @closeDrawer="isDrawerVisible = false" v-if="isDrawerVisible" />
+  </Transition>
   <RouterView class="full-height" />
   <Footer />
 </template>
@@ -19,5 +21,16 @@ const isDrawerVisible = ref(false)
 .full-height {
   box-sizing: border-box;
   min-height: calc(100vh - #{$height-header} - #{$height-footer});
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.3s ease-in-out;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  transform: translateY(-50vh);
+  opacity: 0;
 }
 </style>
