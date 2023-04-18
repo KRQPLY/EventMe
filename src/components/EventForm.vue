@@ -4,7 +4,7 @@
     <FormField name="name" type="text" label="Name" />
     <FormField name="category" type="text" label="Category" />
     <FormFile name="image" label="Upload image" />
-    <FormAdress name="marker" label="Address" />
+    <FormAdress name="marker" label="Address" ref="markerField" />
     <FormField name="startDate" type="datetime-local" label="Start date" />
     <FormField
       name="endDate"
@@ -18,7 +18,7 @@
     />
     <FormField name="description" type="textarea" label="Description" />
     <div class="button-section">
-      <Button @click="handleSubmit" filled v-if="!isSubmitting">{{
+      <Button @click="handleSubmit" filled v-if="!isSpinnerVisible">{{
         eventId ? 'Save' : 'Create'
       }}</Button>
       <Spinner static v-else />
@@ -37,18 +37,30 @@ import uploadImage from '@/helpers/uploadImage'
 import postData from '@/helpers/postData'
 import putData from '@/helpers/putData'
 import toTimeDate from '@/helpers/toTimeDate'
+import getData from '@/helpers/getData'
+import createFileFromUrl from '@/helpers/createFileFromUrl'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useForm } from 'vee-validate'
 import * as yup from 'yup'
 
 const props = defineProps({
-  eventId: Number
+  eventId: Number,
+  name: String,
+  category: String,
+  imageUrl: String,
+  marker: Array,
+  startDate: Number,
+  endDate: Number,
+  maxParticipantsNumber: Number,
+  description: String
 })
 
 const router = useRouter()
-const isSubmitting = ref(false)
+const isSpinnerVisible = ref(false)
+const markerField = ref(null)
 const error = ref('')
+let imgFile
 
 const schema = props.eventId
   ? yup.object({
@@ -97,29 +109,66 @@ const { values, setFieldError, validate } = useForm({
   validationSchema: schema
 })
 
+if (props.eventId) {
+  setDefaultValues()
+}
+
+async function setDefaultValues() {
+  isSpinnerVisible.value = true
+
+  imgFile = await createFileFromUrl(props.imageUrl)
+
+  const addressData = await getData(
+    `https://api.geoapify.com/v1/geocode/reverse?lat=${props.marker[0]}&lon=${
+      props.marker[1]
+    }&format=json&apiKey=${import.meta.env.VITE_GEOAPIFY_KEY}`
+  )
+
+  markerField.value.address = addressData.results[0].formatted
+
+  values.name = props.name
+  values.category = props.category
+  values.image = imgFile
+  values.marker = props.marker
+  values.maxParticipantsNumber = props.maxParticipantsNumber
+  values.description = props.description
+  values.startDate = new Date(props.startDate).toISOString().split('.')[0]
+  values.endDate = props.endDate ? new Date(props.endDate).toISOString().split('.')[0] : undefined
+
+  isSpinnerVisible.value = false
+}
+
 async function handleSubmit() {
-  isSubmitting.value = true
+  isSpinnerVisible.value = true
   error.value = ''
+  let imageUrl
 
   const validation = await validate()
+
   if (!values.image) {
     setFieldError('image', 'please upload an image')
 
-    isSubmitting.value = false
+    isSpinnerVisible.value = false
 
     return
   }
+
   if (!validation.valid) {
-    isSubmitting.value = false
+    isSpinnerVisible.value = false
 
     return
   }
 
-  const imageUrl = await uploadImage(values.image)
+  if (!imgFile || imgFile !== values.image) {
+    imageUrl = await uploadImage(values.image)
+  } else {
+    imageUrl = props.imageUrl
+  }
+
   if (!imageUrl) {
     setFieldError('image', 'error while uploading the image')
 
-    isSubmitting.value = false
+    isSpinnerVisible.value = false
 
     return
   }
@@ -153,7 +202,7 @@ async function handleSubmit() {
       error.value = response.data.error
     }
   }
-  isSubmitting.value = false
+  isSpinnerVisible.value = false
 }
 </script>
 

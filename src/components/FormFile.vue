@@ -24,9 +24,7 @@ const props = defineProps({
     type: String,
     required: true
   },
-  label: {
-    type: String
-  }
+  label: String
 })
 
 const nameRef = toRef(props, 'name')
@@ -53,6 +51,7 @@ function handleChange(e) {
     border-bottom: 1px solid #fff;
     cursor: pointer;
     font-weight: 300;
+    overflow: hidden;
   }
 
   input[type='file'] {

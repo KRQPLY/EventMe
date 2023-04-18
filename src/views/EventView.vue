@@ -22,13 +22,15 @@
 <script setup>
 import EventDetails from '@/components/EventDetails.vue'
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 import getData from '@/helpers/getData'
 
 const props = defineProps({
-  id: String
+  id: Number
 })
 
 const event = ref(null)
+const router = useRouter()
 
 getEvent()
 
@@ -37,6 +39,8 @@ async function getEvent() {
 
   if (response) {
     event.value = response
+  } else {
+    router.push({ name: 'findEvents' })
   }
 }
 </script>

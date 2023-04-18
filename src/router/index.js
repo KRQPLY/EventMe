@@ -43,7 +43,7 @@ const router = createRouter({
       path: '/event',
       name: 'event',
       component: () => import('@/views/EventView.vue'),
-      props: (route) => ({ id: route.query.id }),
+      props: (route) => ({ id: Number(route.query.id) }),
       meta: { requiresAuth: true },
       beforeEnter: (to, from) => {
         if (!to.query.id) {

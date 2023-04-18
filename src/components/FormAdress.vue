@@ -36,15 +36,17 @@ const props = defineProps({
     type: String,
     required: true
   },
-  label: {
-    type: String
-  }
+  label: String
 })
 
 const autocompletes = ref([])
 const address = ref('')
 const nameRef = toRef(props, 'name')
 const { value, errorMessage } = useField(nameRef)
+
+defineExpose({
+  address
+})
 
 async function handleInput() {
   value.value = null
