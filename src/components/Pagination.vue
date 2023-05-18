@@ -5,7 +5,7 @@
     :max-pages-shown="5"
     :show-breakpoint-buttons="false"
     :hide-prev-next-when-ends="true"
-    v-model="page"
+    v-model="currentPage"
     :on-click="onClickHandler"
   />
 </template>
@@ -19,7 +19,7 @@ const props = defineProps({
 
 const emits = defineEmits(['pageChange'])
 
-const page = ref(1)
+const currentPage = ref(1)
 
 // watch(page, () => {
 //   emits('pageChange', page.value)
