@@ -20,7 +20,7 @@ const props = defineProps({
 
 const emits = defineEmits(['pageChange'])
 
-const page = ref( props.currentPage ? props.currentPage : 1)
+const page = ref(props.currentPage ? props.currentPage : 1)
 
 function onClickHandler(page){
   emits('pageChange', page)
