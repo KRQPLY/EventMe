@@ -79,6 +79,7 @@ function handleSearch(searchVal) {
 
 function handlePageChange(pageNum) {
   page.value = pageNum
+  console.log(pageNum);
 
   getEvents()
 }
