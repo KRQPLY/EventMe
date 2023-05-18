@@ -23,6 +23,9 @@
       :results="results"
       v-model="page"
     />
+    {{ events }}
+    {{ events.length }}
+    {{ isEventsLoaded }}
   </div>
 </template>
 
