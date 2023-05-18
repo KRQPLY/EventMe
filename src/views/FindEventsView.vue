@@ -22,10 +22,8 @@
       @page-change="handlePageChange"
       :results="results"
       v-model="page"
+      v-if="results > 20 && isEventsLoaded"
     />
-    {{ events }}
-    {{ events.length }}
-    {{ isEventsLoaded }}
   </div>
 </template>
 
