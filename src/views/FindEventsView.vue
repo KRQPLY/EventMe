@@ -21,7 +21,7 @@
     <Pagination
       @page-change="handlePageChange"
       :results="results"
-      :currentPage="page"
+      :current-page="page"
       v-if="results > 20 && isEventsLoaded"
     />
   </div>
@@ -79,7 +79,6 @@ function handleSearch(searchVal) {
 
 function handlePageChange(pageNum) {
   page.value = pageNum
-  console.log(pageNum);
 
   getEvents()
 }
