@@ -14,7 +14,6 @@ import { ref, watch } from 'vue'
 
 const props = defineProps({
   results: Number,
-  page: Number
 })
 
 const emits = defineEmits(['pageChange'])

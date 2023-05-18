@@ -21,7 +21,6 @@
     <Pagination
       @page-change="handlePageChange"
       :results="results"
-      v-model="page"
       v-if="results > 20 && isEventsLoaded"
     />
   </div>
