@@ -6,6 +6,7 @@
     :show-breakpoint-buttons="false"
     :hide-prev-next-when-ends="true"
     v-model="page"
+    :on-click="onClickHandler"
   />
 </template>
 
@@ -20,9 +21,13 @@ const emits = defineEmits(['pageChange'])
 
 const page = ref(1)
 
-watch(page, () => {
-  emits('pageChange', page.value)
-})
+// watch(page, () => {
+//   emits('pageChange', page.value)
+// })
+
+function onClickHandler(page){
+  emits('pageChange', page)
+}
 </script>
 
 <style lang="scss">
