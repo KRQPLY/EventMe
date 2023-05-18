@@ -5,25 +5,22 @@
     :max-pages-shown="5"
     :show-breakpoint-buttons="false"
     :hide-prev-next-when-ends="true"
-    v-model="currentPage"
+    v-model="page"
     :on-click="onClickHandler"
   />
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
 
 const props = defineProps({
   results: Number,
+  currentPage: Number
 })
 
 const emits = defineEmits(['pageChange'])
 
-const currentPage = ref(1)
-
-// watch(page, () => {
-//   emits('pageChange', page.value)
-// })
+const page = ref( props.currentPage ? props.currentPage : 1)
 
 function onClickHandler(page){
   emits('pageChange', page)
