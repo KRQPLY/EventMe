@@ -5,25 +5,16 @@
       <Search @search="handleSearch" />
       <template v-slot:row>
         <Filter @filter="handleFilterChange" />
-        <Select @select="handleSortChange" :options="['soonest', 'popularity']" label="Sort by" />
+        <Select @select="handleSortChange" :options="[...options]" @click="getLocation" label="Sort by" />
       </template>
     </ControlsContainer>
     <CardsContainer v-if="isEventsLoaded">
-      <EventCard
-        v-for="event in events"
-        :id="event.id"
-        :name="event.name"
-        :image-url="event.imageUrl"
-        :participants-number="event.participantsNumber"
-      />
+      <EventCard v-for="event in events" :id="event.id" :name="event.name" :image-url="event.imageUrl"
+        :participants-number="event.participantsNumber" />
     </CardsContainer>
     <Spinner :scale="1" offset-y="70px" height="200px" v-else />
-    <Pagination
-      @page-change="handlePageChange"
-      :results="results"
-      :current-page="page"
-      v-if="results > 20 && isEventsLoaded"
-    />
+    <Pagination @page-change="handlePageChange" :results="results" :current-page="page"
+      v-if="results > 20 && isEventsLoaded" />
   </div>
 </template>
 
@@ -44,19 +35,22 @@ const name = ref('')
 const page = ref(1)
 const sort = ref('')
 const filter = ref('')
+const lat = ref(null)
+const lng = ref(null)
 const events = ref([])
 const results = ref(0)
 const isEventsLoaded = ref(false)
+const options = ref(new Set(['soonest', 'popularity']))
 
 getEvents()
+getLocation()
 
 async function getEvents() {
   isEventsLoaded.value = false
 
   const response = await getData(
-    `${import.meta.env.VITE_API_URL}/events?page=${page.value}&sort-by=${sort.value}&filter=${
-      filter.value
-    }&name=${name.value}`
+    `${import.meta.env.VITE_API_URL}/events?page=${page.value}&sort-by=${sort.value}&filter=${filter.value
+    }&name=${name.value}&lat=${lat.value}&lng=${lng.value}`
   )
 
   if (response) {
@@ -68,6 +62,20 @@ async function getEvents() {
   }
 
   isEventsLoaded.value = true
+}
+
+function getLocation() {
+  navigator.geolocation.getCurrentPosition(
+    (location) => {
+      lat.value = location.coords.latitude
+      lng.value = location.coords.longitude
+
+      options.value.add('closest')
+    },
+    () => {
+      options.value.delete('closest')
+    }
+  )
 }
 
 function handleSearch(searchVal) {
@@ -84,8 +92,8 @@ function handlePageChange(pageNum) {
 }
 
 function handleSortChange(sortVal) {
-  sort.value = sortVal
   page.value = 1
+  sort.value = sortVal
 
   getEvents()
 }
