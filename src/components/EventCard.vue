@@ -1,5 +1,5 @@
 <template>
-  <div class="project-card" @click="router.push({ name: 'event', query: { id: props.id } })">
+  <div class="project-card" @click="router.push({ name: 'event', query: { name: props.name } })">
     <div class="info"></div>
     <img class="img" :src="getImageUrl(imageUrl)" alt="event-photo" />
     <div class="info">
@@ -33,20 +33,23 @@ const router = useRouter()
 .project-card {
   position: relative;
   cursor: pointer;
+
   .img {
     border-radius: 5px;
     width: 100%;
     object-fit: cover;
     aspect-ratio: 4 / 3;
   }
+
   .info {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
     padding: 0 10px;
     font-weight: 300;
     font-size: 14px;
     color: $color-contrast;
+
     .name,
     .participants {
       cursor: pointer;

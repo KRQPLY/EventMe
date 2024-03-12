@@ -1,15 +1,14 @@
 <template>
   <div class="edit-event-container">
     <EventForm
-      :event-id="id"
+      :event-id="event.id"
       :name="event.name"
-      :category="event.category"
+      :categories="event.categories"
       :image-url="event.imageUrl"
-      :marker="event.marker"
+      :marker="[event.latitude, event.longitude]"
       :start-date="event.startDate"
       :end-date="event.endDate"
-      :max-participants-number="event.maxParticipantsNumber"
-      :description="event.description"
+      :max-participants-number="event.habitantes"
       v-if="event"
     />
   </div>
@@ -22,7 +21,7 @@ import { useRouter } from 'vue-router'
 import getData from '@/helpers/getData'
 
 const props = defineProps({
-  id: Number
+  name: String
 })
 
 const event = ref(null)
@@ -31,14 +30,15 @@ const router = useRouter()
 getEvent()
 
 async function getEvent() {
-  const response = await getData(`${import.meta.env.VITE_API_URL}/events/${props.id}`, true)
+  const response = await getData(`${import.meta.env.VITE_API_URL}/object?name=${props.name}`)
 
-  if (!response) {
+  if (!response || !response.length) {
     router.push({ name: 'findEvents' })
+
     return
   }
 
-  event.value = response
+  event.value = response[0]
 }
 </script>
 

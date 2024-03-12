@@ -2,21 +2,16 @@
   <div class="create-event-form" @keyup.enter="handleSubmit">
     <h1 class="title">{{ eventId ? 'Edit Event' : 'Create Event' }}</h1>
     <FormField name="name" type="text" label="Name" />
-    <FormField name="category" type="text" label="Category" />
+    <FormField name="categories" type="text" label="Categories" />
     <FormFile name="image" label="Upload image" />
     <FormAdress name="marker" label="Address" ref="markerField" />
-    <FormField name="startDate" type="datetime-local" label="Start date" />
-    <FormField
-      name="endDate"
-      type="datetime-local"
-      :label="`End date${eventId ? '' : ' (optional)'}`"
-    />
+    <FormField name="startDate" type="date" label="Start date" />
+    <FormField name="endDate" type="date" :label="`End date${eventId ? '' : ' (optional)'}`" />
     <FormField
       name="maxParticipantsNumber"
       type="number"
       :label="`Max Participants${eventId ? '' : ' (optional)'}`"
     />
-    <FormField name="description" type="textarea" label="Description" />
     <div class="button-section">
       <Button @click="handleSubmit" filled v-if="!isSpinnerVisible">{{
         eventId ? 'Save' : 'Create'
@@ -36,7 +31,6 @@ import Spinner from '@/components/Spinner.vue'
 import uploadImage from '@/helpers/uploadImage'
 import postData from '@/helpers/postData'
 import putData from '@/helpers/putData'
-import toTimeDate from '@/helpers/toTimeDate'
 import getData from '@/helpers/getData'
 import createFileFromUrl from '@/helpers/createFileFromUrl'
 import { ref } from 'vue'
@@ -47,13 +41,12 @@ import * as yup from 'yup'
 const props = defineProps({
   eventId: Number,
   name: String,
-  category: String,
+  categories: String,
   imageUrl: String,
   marker: Array,
-  startDate: Number,
-  endDate: Number,
-  maxParticipantsNumber: Number,
-  description: String
+  startDate: String,
+  endDate: String,
+  maxParticipantsNumber: Number
 })
 
 const router = useRouter()
@@ -65,7 +58,7 @@ let imgFile
 const schema = props.eventId
   ? yup.object({
       name: yup.string(),
-      category: yup.string(),
+      categories: yup.string(),
       marker: yup.array(),
       startDate: yup
         .date()
@@ -81,12 +74,11 @@ const schema = props.eventId
         .number()
         .nullable()
         .transform((curr, orig) => (orig === '' ? null : curr))
-        .typeError('please enter a valid participants number'),
-      description: yup.string()
+        .typeError('please enter a valid participants number')
     })
   : yup.object({
       name: yup.string().required('please enter event name'),
-      category: yup.string().required('please enter event category'),
+      categories: yup.string().required('please enter event category'),
       marker: yup.array().required('please choose a direct address'),
       startDate: yup
         .date()
@@ -101,8 +93,7 @@ const schema = props.eventId
         .number()
         .nullable()
         .transform((curr, orig) => (orig === '' ? null : curr))
-        .typeError('please enter a valid participants number'),
-      description: yup.string().required('please provide a description')
+        .typeError('please enter a valid participants number')
     })
 
 const { values, setFieldError, validate } = useForm({
@@ -127,13 +118,12 @@ async function setDefaultValues() {
   markerField.value.address = addressData.results[0].formatted
 
   values.name = props.name
-  values.category = props.category
+  values.categories = props.categories
   values.image = imgFile
   values.marker = props.marker
   values.maxParticipantsNumber = props.maxParticipantsNumber
-  values.description = props.description
-  values.startDate = new Date(props.startDate).toISOString().split('.')[0]
-  values.endDate = props.endDate ? new Date(props.endDate).toISOString().split('.')[0] : undefined
+  values.startDate = new Date(props.startDate).toISOString().split('T')[0]
+  values.endDate = props.endDate ? new Date(props.endDate).toISOString().split('T')[0] : undefined
 
   isSpinnerVisible.value = false
 }
@@ -173,31 +163,33 @@ async function handleSubmit() {
     return
   }
 
-  const data = (({ image, startDate, endDate, ...rest }) => {
+  const data = (({ image, startDate, endDate, marker, maxParticipantsNumber, ...rest }) => {
     return {
       ...rest,
-      startDate: toTimeDate(startDate),
-      endDate: endDate ? toTimeDate(endDate) : undefined,
-      imageUrl
+      startDate: startDate,
+      endDate: endDate ? endDate : undefined,
+      imageUrl,
+      latitude: marker[0],
+      longitude: marker[1],
+      habitantes: maxParticipantsNumber
     }
   })(values)
 
   if (props.eventId) {
-    const response = await putData(`${import.meta.env.VITE_API_URL}/events`, {
-      ...data,
-      id: props.eventId
+    const response = await putData(`${import.meta.env.VITE_API_URL}/update?id=${props.eventId}`, {
+      ...data
     })
 
     if (response.success) {
-      router.push({ name: 'event', query: { id: props.eventId } })
+      router.push({ name: 'event', query: { name: props.name } })
     } else {
       error.value = response.data.error
     }
   } else {
-    const response = await postData(`${import.meta.env.VITE_API_URL}/events`, data)
+    const response = await postData(`${import.meta.env.VITE_API_URL}/object`, data)
 
     if (response.success) {
-      router.push({ name: 'event', query: { id: response.data.eventId } })
+      router.push({ name: 'event', query: { name: response.data.name } })
     } else {
       error.value = response.data.error
     }

@@ -1,5 +1,5 @@
 <template>
-  <button class="create-event-button">
+  <button class="create-event-button" @click="router.push({ name: 'createEvent' })">
     event
     <IconAdd />
   </button>
@@ -7,6 +7,9 @@
 
 <script setup>
 import IconAdd from './IconAdd.vue'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 </script>
 
 <style lang="scss" scoped>

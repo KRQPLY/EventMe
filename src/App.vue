@@ -1,18 +1,11 @@
 <script setup>
 import Header from './components/Header.vue'
-import Drawer from './components/Drawer.vue'
 import Footer from './components/Footer.vue'
 import { RouterView } from 'vue-router'
-import { ref } from 'vue'
-
-const isDrawerVisible = ref(false)
 </script>
 
 <template>
-  <Header @toggleDrawer="isDrawerVisible = !isDrawerVisible" />
-  <Transition name="fade">
-    <Drawer @closeDrawer="isDrawerVisible = false" v-if="isDrawerVisible" />
-  </Transition>
+  <Header />
   <RouterView class="full-height" />
   <Footer />
 </template>

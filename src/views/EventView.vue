@@ -2,19 +2,13 @@
   <div class="event-container">
     <EventDetails
       :event-id="event.id"
-      :description="event.description"
       :name="event.name"
-      :author="event.author"
-      :participants-number="event.participantsNumber"
-      :max-participants-number="event.maxParticipantsNumber"
+      :participants-number="event.habitantes"
       :start-date="event.startDate"
       :end-date="event.endDate"
-      :invited-by="event.invitedBy"
-      :participants-usernames="event.participantsUsernames"
       :image-url="event.imageUrl"
-      :marker="event.marker"
+      :marker="[event.latitude, event.longitude]"
       v-if="event"
-      @update="getEvent"
     />
   </div>
 </template>
@@ -26,7 +20,7 @@ import { useRouter } from 'vue-router'
 import getData from '@/helpers/getData'
 
 const props = defineProps({
-  id: Number
+  name: String
 })
 
 const event = ref(null)
@@ -35,10 +29,10 @@ const router = useRouter()
 getEvent()
 
 async function getEvent() {
-  const response = await getData(`${import.meta.env.VITE_API_URL}/events/${props.id}`, true)
+  const response = await getData(`${import.meta.env.VITE_API_URL}/object?name=${props.name}`)
 
-  if (response) {
-    event.value = response
+  if (response && response.length) {
+    event.value = response[0]
   } else {
     router.push({ name: 'findEvents' })
   }

@@ -1,6 +1,6 @@
 <template>
   <div class="footer">
-    <div class="content">© 2023 <span class="logo">evento</span>. All rights reserved.</div>
+    <div class="content">© 2023 <span class="logo">​el evento</span>. All rights reserved.</div>
   </div>
 </template>
 
@@ -28,7 +28,6 @@
 
 @include media-xs {
   .footer {
-    justify-content: flex-start;
     font-size: 12px;
   }
 }
