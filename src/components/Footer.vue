@@ -4,25 +4,13 @@
       © 2023 <span class="logo">evento</span>. All rights reserved. Powered by
     </div>
     <a :href="companyUrl" target="_blank">
-      <img
-        :src="getImageUrl('../assets/logo-black.png')"
-        alt="company logo"
-        class="light"
-        width="120px"
-      />
-      <img
-        :src="getImageUrl('../assets/logo-white.png')"
-        alt="company logo"
-        class="dark"
-        width="120px"
-      />
+      <img src="../assets/logo-black.png" alt="company logo" class="light" width="120px" />
+      <img src="../assets/logo-white.png" alt="company logo" class="dark" width="120px" />
     </a>
   </div>
 </template>
 
 <script setup>
-import getImageUrl from '@/helpers/getImageUrl'
-
 const companyUrl = import.meta.env.VITE_COMPANY_URL
 </script>
 
