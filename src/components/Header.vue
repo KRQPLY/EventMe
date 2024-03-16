@@ -1,7 +1,11 @@
 <template>
   <div class="header-container sticky">
     <div class="left">
-      <div class="title" @click="router.push({ name: 'findEvents' })">evento</div>
+      <div @click="router.push({ name: 'findEvents' })" class="company-logo">
+        <div class="title">evento</div>
+        <img src="../assets/logo-black.png" alt="company logo" class="light" />
+        <img src="../assets/logo-white.png" alt="company logo" class="dark" />
+      </div>
       <Menu class="desktop" />
     </div>
     <div class="right">
@@ -51,15 +55,26 @@ async function handleSignout() {
   justify-content: space-between;
   align-items: center;
   background: $color-main;
+
   .right,
   .left {
     display: flex;
     align-items: center;
     gap: 5px;
   }
+
   .theme-switch {
     margin-right: 25px;
   }
+
+  .company-logo {
+    img {
+      width: 70px;
+      position: absolute;
+      bottom: 15px;
+    }
+  }
+
   .title {
     font-family: 'Vibur', sans-serif;
     cursor: pointer;
@@ -67,6 +82,7 @@ async function handleSignout() {
     font-size: 30px;
     font-weight: 200;
   }
+
   &.sticky {
     position: fixed;
     top: 0;
