@@ -24,10 +24,12 @@
       :current-page="page"
       v-if="results > 20 && isEventsLoaded"
     />
+    <AdvertisementBannerHorizontal />
   </div>
 </template>
 
 <script setup>
+import AdvertisementBannerHorizontal from '@/components/AdvertisementBannerHorizontal.vue'
 import Hero from '@/components/Hero.vue'
 import ControlsContainer from '@/components/ControlsContainer.vue'
 import Search from '@/components/Search.vue'
@@ -102,5 +104,17 @@ function handleSelect(option) {
   flex-direction: column;
   align-items: center;
   width: 100%;
+
+  :deep(.advertisement-banner-horizontal) {
+    margin: 50px 0;
+
+    a {
+      margin: 0 20px;
+
+      @include media-sm {
+        margin: 0 40px;
+      }
+    }
+  }
 }
 </style>

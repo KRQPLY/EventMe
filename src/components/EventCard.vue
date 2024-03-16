@@ -2,9 +2,12 @@
   <div class="project-card" @click="router.push({ name: 'event', query: { id: props.id } })">
     <div class="info"></div>
     <img class="img" :src="getImageUrl(imageUrl)" alt="event-photo" />
-    <div class="info">
+    <div class="info" :class="{ 'info--sponsored': isSponsored }">
       <div class="name">{{ name }}</div>
-      <div class="participants"><IconUser />{{ nFormatter(participantsNumber) }}</div>
+      <div class="participants" v-if="!isSponsored">
+        <IconUser />{{ nFormatter(participantsNumber) }}
+      </div>
+      <div class="participants" v-else>Sponsored</div>
     </div>
   </div>
 </template>
@@ -23,6 +26,10 @@ const props = defineProps({
     type: String,
     default:
       'https://res.cloudinary.com/dqipqpwdf/image/upload/v1680613127/evento/default_g7tz6t.png'
+  },
+  isSponsored: {
+    type: Boolean,
+    default: false
   }
 })
 
@@ -33,12 +40,14 @@ const router = useRouter()
 .project-card {
   position: relative;
   cursor: pointer;
+
   .img {
     border-radius: 5px;
     width: 100%;
     object-fit: cover;
     aspect-ratio: 4 / 3;
   }
+
   .info {
     display: flex;
     justify-content: space-between;
@@ -47,6 +56,11 @@ const router = useRouter()
     font-weight: 300;
     font-size: 14px;
     color: $color-contrast;
+
+    &.info--sponsored {
+      color: $color-accent;
+    }
+
     .name,
     .participants {
       cursor: pointer;

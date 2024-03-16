@@ -25,20 +25,36 @@
       <div class="error">{{ error }}</div>
     </div>
   </div>
+  <Modal :visible="isModalVisibile">
+    <template v-slot:header> Choose your advertisement option </template>
+    <template v-slot:body>
+      <AdvertisementCard
+        v-for="plan in advertisementPlans"
+        :option="plan.option"
+        :title="plan.title"
+        :description="plan.description"
+        :price="plan.price"
+        @selected="handleOptionSelect"
+      />
+    </template>
+  </Modal>
 </template>
 
 <script setup>
+import AdvertisementCard from './AdvertisementCard.vue'
 import FormField from '@/components/FormField.vue'
 import FormAdress from '@/components/FormAdress.vue'
 import FormFile from '@/components/FormFile.vue'
 import Button from '@/components/Button.vue'
 import Spinner from '@/components/Spinner.vue'
+import Modal from '@/components/Modal.vue'
 import uploadImage from '@/helpers/uploadImage'
 import postData from '@/helpers/postData'
 import putData from '@/helpers/putData'
 import toTimeDate from '@/helpers/toTimeDate'
 import getData from '@/helpers/getData'
 import createFileFromUrl from '@/helpers/createFileFromUrl'
+import { useEventsStore } from '@/stores/useEventsStore'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useForm } from 'vee-validate'
@@ -60,6 +76,33 @@ const router = useRouter()
 const isSpinnerVisible = ref(false)
 const markerField = ref(null)
 const error = ref('')
+const eventObj = ref({})
+const isModalVisibile = ref(false)
+
+const advertisementPlans = [
+  {
+    option: 'free',
+    title: 'Free Plan',
+    description:
+      'Get started with our free plan and enjoy basic advertisement features without any cost. Perfect for individuals or small businesses looking to dip their toes into advertising.',
+    price: 'Free'
+  },
+  {
+    option: 'standard',
+    title: 'Standard Plan',
+    description:
+      'Upgrade to our standard plan for enhanced advertisement features tailored to meet the needs of growing businesses. Unlock more reach and engagement with our affordable monthly subscription.',
+    price: '$15/month'
+  },
+  {
+    option: 'premium',
+    title: 'Premium Plan',
+    description:
+      'Elevate your advertising game with our premium plan, designed for businesses seeking maximum exposure and impact. Unlock premium features and priority support to stay ahead of the competition.',
+    price: '$25/month'
+  }
+]
+
 let imgFile
 
 const schema = props.eventId
@@ -105,7 +148,8 @@ const schema = props.eventId
       description: yup.string().required('please provide a description')
     })
 
-const { values, setFieldError, validate } = useForm({
+const { addToStandardEvents, addToPremiumEvents } = useEventsStore()
+const { values, setFieldError, validate, setFieldValue } = useForm({
   validationSchema: schema
 })
 
@@ -126,16 +170,32 @@ async function setDefaultValues() {
 
   markerField.value.address = addressData.results[0].formatted
 
-  values.name = props.name
-  values.category = props.category
-  values.image = imgFile
-  values.marker = props.marker
-  values.maxParticipantsNumber = props.maxParticipantsNumber
-  values.description = props.description
-  values.startDate = new Date(props.startDate).toISOString().split('.')[0]
-  values.endDate = props.endDate ? new Date(props.endDate).toISOString().split('.')[0] : undefined
+  setFieldValue('name', props.name)
+  setFieldValue('category', props.category)
+  setFieldValue('image', imgFile)
+  setFieldValue('marker', props.marker)
+  setFieldValue('maxParticipantsNumber', props.maxParticipantsNumber)
+  setFieldValue('description', props.description)
+  setFieldValue('startDate', new Date(props.startDate).toISOString().split('.')[0])
+  setFieldValue(
+    'endDate',
+    props.endDate ? new Date(props.endDate).toISOString().split('.')[0] : undefined
+  )
 
   isSpinnerVisible.value = false
+}
+
+function handleOptionSelect(option) {
+  switch (option) {
+    case 'standard':
+      addToStandardEvents(eventObj.value)
+      break
+    case 'premium':
+      addToPremiumEvents(eventObj.value)
+      break
+  }
+
+  router.push({ name: 'event', query: { id: eventObj.value.id } })
 }
 
 async function handleSubmit() {
@@ -189,7 +249,9 @@ async function handleSubmit() {
     })
 
     if (response.success) {
-      router.push({ name: 'event', query: { id: props.eventId } })
+      isModalVisibile.value = true
+
+      eventObj.value = { ...data, id: props.eventId }
     } else {
       error.value = response.data.error
     }
@@ -197,7 +259,9 @@ async function handleSubmit() {
     const response = await postData(`${import.meta.env.VITE_API_URL}/events`, data)
 
     if (response.success) {
-      router.push({ name: 'event', query: { id: response.data.eventId } })
+      isModalVisibile.value = true
+
+      eventObj.value = { ...data, id: response.data.eventId }
     } else {
       error.value = response.data.error
     }
@@ -242,6 +306,25 @@ async function handleSubmit() {
         height: 21px;
         font-size: 14px;
       }
+    }
+  }
+}
+
+:deep(.modal) {
+  margin: 0 20px;
+  .modal-header {
+    font-size: 40px;
+    display: block;
+    text-align: center;
+  }
+
+  .modal-body {
+    display: grid;
+    grid-template-columns: 1fr;
+    max-height: 70vh;
+
+    @include media-md {
+      grid-template-columns: repeat(3, 1fr);
     }
   }
 }

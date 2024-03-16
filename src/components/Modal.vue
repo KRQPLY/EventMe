@@ -2,7 +2,7 @@
   <transition name="modal-fade">
     <div class="modal-backdrop" v-if="isModalVisible">
       <div class="modal" ref="modal">
-        <header class="modal-header">
+        <header class="modal-header" v-if="!isHeaderHidden">
           <slot name="header">{{ title }}</slot>
         </header>
 
@@ -19,8 +19,18 @@ import { ref, toRef } from 'vue'
 import { onClickOutside } from '@vueuse/core'
 
 const props = defineProps({
-  visible: { type: Boolean, default: false },
-  title: { type: String, default: '' }
+  visible: {
+    type: Boolean,
+    default: false
+  },
+  title: {
+    type: String,
+    default: ''
+  },
+  isHeaderHidden: {
+    type: Boolean,
+    default: false
+  }
 })
 
 const emits = defineEmits(['close'])

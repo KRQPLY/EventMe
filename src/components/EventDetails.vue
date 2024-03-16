@@ -6,7 +6,16 @@
           {{ name }}
         </div>
         <div class="participation">
-          <Button filled radius="35% / 50%" @click="toggleUserParticipation" v-if="!isJoined"
+          <Button
+            filled
+            radius="35% / 50%"
+            @click="
+              () => {
+                isAdModalVisible = true
+                toggleUserParticipation()
+              }
+            "
+            v-if="!isJoined"
             >Join</Button
           >
           <Button filled checked @click="toggleUserParticipation" v-if="isJoined">Joined</Button>
@@ -110,10 +119,12 @@
         </div>
       </template>
     </Modal>
+    <AdvertisementModal :visibile="isAdModalVisible" @click="isAdModalVisible = false" />
   </div>
 </template>
 
 <script setup>
+import AdvertisementModal from '@/components/AdvertisementModal.vue'
 import Button from '@/components/Button.vue'
 import Modal from '@/components/Modal.vue'
 import FormField from '@/components/FormField.vue'
@@ -164,6 +175,7 @@ const participantsUsernames = toRef(props, 'participantsUsernames')
 const isInviteModalVisible = ref(false)
 const isDeleteEventModalVisible = ref(false)
 const isParticipantsModalVisible = ref(false)
+const isAdModalVisible = ref(false)
 const friendsData = ref([])
 const map = ref(null)
 const comments = ref([])

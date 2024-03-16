@@ -1,24 +1,47 @@
 <template>
   <div class="footer">
-    <div class="content">© 2023 <span class="logo">evento</span>. All rights reserved.</div>
+    <div class="content">
+      © 2023 <span class="logo">evento</span>. All rights reserved. Powered by
+    </div>
+    <a :href="companyUrl" target="_blank">
+      <img
+        :src="getImageUrl('../assets/logo-black.png')"
+        alt="company logo"
+        class="light"
+        width="120px"
+      />
+      <img
+        :src="getImageUrl('../assets/logo-white.png')"
+        alt="company logo"
+        class="dark"
+        width="120px"
+      />
+    </a>
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import getImageUrl from '@/helpers/getImageUrl'
+
+const companyUrl = import.meta.env.VITE_COMPANY_URL
+</script>
 
 <style lang="scss" scoped>
 .footer {
   box-sizing: border-box;
   height: $height-footer;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 20px;
   background-color: $color-main;
   font-size: 8px;
+
   .content {
     color: $color-contrast;
   }
+
   .logo {
     font-family: 'Vibur', sans-serif;
     font-size: 20px;
@@ -28,7 +51,6 @@
 
 @include media-xs {
   .footer {
-    justify-content: flex-start;
     font-size: 12px;
   }
 }
