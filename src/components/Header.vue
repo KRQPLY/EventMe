@@ -69,9 +69,9 @@ async function handleSignout() {
 
   .company-logo {
     img {
-      width: 70px;
+      width: 80px;
       position: absolute;
-      bottom: 15px;
+      bottom: 13px;
     }
   }
 
