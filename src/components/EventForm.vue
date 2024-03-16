@@ -78,8 +78,7 @@ const markerField = ref(null)
 const error = ref('')
 const eventObj = ref({})
 const isModalVisibile = ref(false)
-
-const advertisementPlans = [
+const advertisementPlans = ref([
   {
     option: 'free',
     title: 'Free Plan',
@@ -101,7 +100,7 @@ const advertisementPlans = [
       'Elevate your advertising game with our premium plan, designed for businesses seeking maximum exposure and impact. Unlock premium features and priority support to stay ahead of the competition.',
     price: '$25/month'
   }
-]
+])
 
 let imgFile
 
