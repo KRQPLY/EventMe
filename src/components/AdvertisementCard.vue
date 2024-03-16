@@ -1,5 +1,5 @@
 <template>
-  <div class="advertisement-card">
+  <div class="card">
     <div class="container-top">
       <div class="title">{{ title }}</div>
       <div class="description">{{ description }}</div>
@@ -35,7 +35,7 @@ defineProps({
 </script>
 
 <style lang="scss" scoped>
-.advertisement-card {
+.card {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
