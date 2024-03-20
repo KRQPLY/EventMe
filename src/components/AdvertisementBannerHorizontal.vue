@@ -1,14 +1,25 @@
 <template>
   <div class="advertisement-banner-horizontal">
     <a :href="companyUrl" target="_blank">
-      <img src="../assets/banner-black.png" alt="company logo" class="dark" />
-      <img src="../assets/banner-white.png" alt="company logo" class="light" />
+      <img :src="secondary ? bannerSecondary : bannerBlack" alt="company logo" class="dark" />
+      <img :src="secondary ? bannerSecondary : bannerWhite" alt="company logo" class="light" />
     </a>
   </div>
 </template>
 
 <script setup>
+import bannerBlack from '@/assets/banner-black.png'
+import bannerWhite from '@/assets/banner-white.png'
+import bannerSecondary from '@/assets/banner-2.png'
+
 const companyUrl = import.meta.env.VITE_COMPANY_URL
+
+defineProps({
+  secondary: {
+    type: Boolean,
+    default: false
+  }
+})
 </script>
 
 <style lang="scss" scoped>

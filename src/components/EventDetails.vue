@@ -86,6 +86,7 @@
         <Button filled danger @click="isDeleteEventModalVisible = true">Delete</Button>
       </div>
     </div>
+    <AdvertisementBannerHorizontal secondary />
     <Modal :visible="isInviteModalVisible" @close="isInviteModalVisible = false">
       <template v-slot:header>Select a friend</template>
       <template v-slot:body>
@@ -124,6 +125,7 @@
 </template>
 
 <script setup>
+import AdvertisementBannerHorizontal from '../components/AdvertisementBannerHorizontal.vue'
 import AdvertisementModal from '@/components/AdvertisementModal.vue'
 import Button from '@/components/Button.vue'
 import Modal from '@/components/Modal.vue'
