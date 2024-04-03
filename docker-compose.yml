@@ -1,0 +1,16 @@
+version: "3.8"
+services:
+  frontend:
+    container_name: cloud_frontend
+    build:
+      context: ./
+      target: prod
+      args:
+        VITE_API_URL: ${VITE_API_URL}
+        VITE_GEOAPIFY_KEY: ${VITE_GEOAPIFY_KEY}
+        VITE_CLOUDINARY_CLOUD_NAME: ${VITE_CLOUDINARY_CLOUD_NAME}
+        VITE_CLOUDINARY_UPLOAD_PRESET: ${VITE_CLOUDINARY_UPLOAD_PRESET}
+    image: evento_frontend
+    ports: 
+      - "8080:8080"
+

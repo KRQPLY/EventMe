@@ -96,7 +96,7 @@ const schema = props.eventId
         .typeError('please enter a valid participants number')
     })
 
-const { values, setFieldError, validate } = useForm({
+const { values, setFieldError, validate, setFieldValue } = useForm({
   validationSchema: schema
 })
 
@@ -117,13 +117,16 @@ async function setDefaultValues() {
 
   markerField.value.address = addressData.results[0].formatted
 
-  values.name = props.name
-  values.categories = props.categories
-  values.image = imgFile
-  values.marker = props.marker
-  values.maxParticipantsNumber = props.maxParticipantsNumber
-  values.startDate = new Date(props.startDate).toISOString().split('T')[0]
-  values.endDate = props.endDate ? new Date(props.endDate).toISOString().split('T')[0] : undefined
+  setFieldValue('name', props.name)
+  setFieldValue('categories', props.categories)
+  setFieldValue('image', imgFile)
+  setFieldValue('marker', props.marker)
+  setFieldValue('maxParticipantsNumber', props.maxParticipantsNumber)
+  setFieldValue('startDate', new Date(props.startDate).toISOString().split('T')[0])
+  setFieldValue(
+    'endDate',
+    props.endDate ? new Date(props.endDate).toISOString().split('T')[0] : undefined
+  )
 
   isSpinnerVisible.value = false
 }

@@ -62,14 +62,8 @@ if (props.type === 'account') {
   width: 100%;
   font-size: 45px;
   padding-bottom: 40px;
-  &.my-events {
-    background-image: url('@/assets/my-background-sm.jpg');
-  }
   &.find-events {
     background-image: url('@/assets/find-background-sm.jpg');
-  }
-  &.account {
-    background-image: url('@/assets/account-background-sm.jpg');
   }
   .credit {
     display: none;
@@ -80,15 +74,8 @@ if (props.type === 'account') {
   .hero {
     height: 350px;
     font-size: 70px;
-    &.my-events {
-      background-image: url('@/assets/my-background-md.jpg');
-    }
     &.find-events {
       background-image: url('@/assets/find-background-md.jpg');
-    }
-    &.account {
-      background-position: center;
-      background-image: url('@/assets/account-background-md.jpg');
     }
     .credit {
       display: block;
@@ -112,14 +99,8 @@ if (props.type === 'account') {
 @include media-hd {
   .hero {
     height: 600px;
-    &.my-events {
-      background-image: url('@/assets/my-background-xl.jpg');
-    }
     &.find-events {
       background-image: url('@/assets/find-background-xl.jpg');
-    }
-    &.account {
-      background-image: url('@/assets/account-background-xl.jpg');
     }
   }
 }
